@@ -28,13 +28,13 @@
 		}
 
 		public function verifyToken(){
-			$r = query("SELECT * FROM `tbl_user_tokens` WHERE token = ? ",$this->token);
+			$r = query("SELECT * FROM `tbl_user_tokens` WHERE `token` = ? ",$this->token);
 			//pre($r);
-			if(!isset($r[0])){
-				return $this->verified = false;
+			if(isset($r[0])){
+				$this->uid = $r[0]['user_id'];
+				return $this->verified = true;
 			}
-			$this->uid = $r[0]['user_id'];
-			return $this->verified = true;
+			return $this->verified = false;
 		}
 
 		public function verifyRefreshToken($key, $origin){
