@@ -24,10 +24,10 @@
 				if($this->uid == null){
 					return array('error' => 'user not set');
 				}else{
-					$res = query("SELECT `id`,`email` FROM `users` WHERE `id` = ?",
+					$res = query("SELECT `id`,`email` FROM `tbl_users` WHERE `id` = ?",
 						$this->uid);
 					if(isset($res[0])){
-						return $res[0];
+						return array("id"=>$res[0]["id"],"email"=>$res[0]["email"]);//$res[0];
 					}else{
 						return array('error' => 'user not found' );;
 					}
@@ -35,7 +35,7 @@
 			}
 		}
 
-		function signup($email, $pass){
+		function signup($email, $pass, $type,$company_id,$project_id){
 			//pre($profile);
 			if($this->searchEmail($email)){
 				return array('error' => 'account exists');
@@ -44,10 +44,25 @@
 				$res = query("INSERT INTO `tbl_users` (`email`,`password`) VALUES (?,?)",
 					$email,$pass);
 				$this->uid = $res;
-				$this->email = $email; 
+				$this->email = $email;
+				$res = query("INSERT INTO `tbl_people` (`user_id`,`type`) VALUES (?,?)",
+					$this->uid,$type); 
 				//TODO: add profile and handle null values
+
+				//handle com
+				if ($company_id!=NULL) {
+					$res = query("INSERT INTO `tbl_company_admins` (`user_id`,`company_id`) VALUES (?,?)",
+					$this->uid,$company_id);	
+				}
+
+				//handle pro
+				if ($company_id!=NULL) {
+					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`,`company_id`) 
+						VALUES (?,?,?)",
+					$this->uid,$project_id,$company_id);	
+				}
 				return $this->getUser();
-			}
+			}//
 		}
 
 		function signin($email, $pass ,$api_access){

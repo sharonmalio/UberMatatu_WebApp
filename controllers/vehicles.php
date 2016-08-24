@@ -24,6 +24,7 @@
 			else{
 				if (!$this->args) {
 					//get all vehicles
+					//return $this->token->getUser();
 					return $this->vehicles->all();
 				}else{
 					//get a specific vehicle by id
@@ -50,7 +51,7 @@
 			}
 		}
 
-		/*function PUT(){
+		function PUT(){
 			if (!$this->headerContains(array('authorisation') )) {
 				//return response constructed by contains()
 				return $this->response;
@@ -69,7 +70,7 @@
 					}					
 				}
 			}
-		}*/
+		}
 
 		function DELETE(){
 			if (!$this->headerContains(array('authorisation') )) {

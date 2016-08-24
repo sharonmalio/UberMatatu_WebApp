@@ -24,7 +24,7 @@
 						return $this->response;
 					}
 					//get me
-					return 0;
+					return $this->token->getUser();
 					break;
 				default:
 					return $this->error('invalid query');
@@ -43,12 +43,31 @@
 						$this->payload->password,$this->api_access);
 					break;
 				case 'signup':
-					if (!$this->contains(array('email','password'))) {
-						//return resposne constructed by contains()
-						return $this->response;
-					}
-					return $this->user->signup($this->payload->email,$this->payload->password);
-					
+						if (!$this->contains(array('email','password','type','api_key'))) {
+							//return resposne constructed by contains()
+							return $this->response;
+						}
+						$payload_array=array();
+						$res=array();
+						if (!is_array($this->payload)) {
+							$payload_array[]=$this->payload;	
+						}else{
+							$payload_array=$this->payload;
+						}
+						foreach ($payload_array as $array_key => $array_value) {
+							$company_id=NULL;
+							$project_id=NULL;
+							if (isset($array_value->company_id)) {
+								$company_id=$array_value->company_id;
+							}
+							if (isset($array_value->project_id)) {
+								$project_id=$array_value->project_id;
+							}
+							$res[]=$this->user->signup($array_value->email,$array_value->password,
+								$array_value->type,$company_id,$project_id);
+						}
+
+						return $res;					
 					break;
 				
 				default:

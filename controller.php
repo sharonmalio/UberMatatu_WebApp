@@ -61,7 +61,40 @@
 				return $this->response;
 			}
 			public function contains($c,$dealbreaker = true){
-				foreach ($c as $key => $value) {
+				//return $c;
+				//return is_array($this->payload);
+				$payload_array=array();
+				if (!is_array($this->payload)) {
+					$payload_array[]=$this->payload;	
+				}else{
+					$payload_array=$this->payload;
+				}
+				foreach ($payload_array as $array_key => $array_value) {
+					//return $array_value;
+					//return print_r($array_value->email);
+					foreach ($c as $key => $value) {
+						//return $value;
+						if (!array_key_exists($value, $array_value) && $dealbreaker) {
+							$this->error("$value required");
+							return false;
+						}
+						//validation
+						if(isset($array_value->email)&& !filter_var($array_value->email, FILTER_VALIDATE_EMAIL)){
+							$this->error('invalid email');
+							return false;
+						}
+						//Validate APIkey
+						if(isset($array_value->api_key)){
+							$this->api_access = new APIAccess($array_value->api_key);
+							if(!$this->api_access->verifyKey()){
+								$this->error('invalid API key');
+								return false;
+							}
+						}
+					}
+				}
+
+				/*foreach ($c as $key => $value) {
 						if (!array_key_exists($value, $this->payload) && $dealbreaker) {
 							$this->error("$value required");
 							return false;
@@ -79,7 +112,7 @@
 								return false;
 							}
 						}
-					}	
+					}*/	
 				return true;
 			}
 
