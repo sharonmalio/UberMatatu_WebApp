@@ -7,5 +7,6 @@
 	require_once('controllers/companies.php');
 	require_once('controllers/vehicles.php');
 	require_once('controllers/people.php');
+	require_once('controllers/projects.php');
 
 ?>
