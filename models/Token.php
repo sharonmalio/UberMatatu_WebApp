@@ -31,9 +31,11 @@
 			$r = query("SELECT * FROM `tbl_user_tokens` WHERE `token` = ? ",$this->token);
 			//pre($r);
 			if(isset($r[0])){
+				//pre($r);
 				$this->uid = $r[0]['user_id'];
 				return $this->verified = true;
 			}
+			//pre($r);
 			return $this->verified = false;
 		}
 

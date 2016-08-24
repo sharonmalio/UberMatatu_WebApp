@@ -138,6 +138,7 @@
 							$t = new Token(str_replace($query,'', $this->headers['authorisation']));
 							if(!$t->verifyToken()){
 								$this->error('invalid token');
+								return false;
 							}
 							$this->token = $t;
 							return true;
