@@ -9,6 +9,7 @@
 	require_once('models/Companies.php');
 	require_once('models/Vehicles.php');
 	require_once('models/People.php');
+	require_once('models/Projects.php');
 
 
 ?>

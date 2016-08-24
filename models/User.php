@@ -56,10 +56,10 @@
 				}
 
 				//handle pro
-				if ($company_id!=NULL) {
-					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`,`company_id`) 
-						VALUES (?,?,?)",
-					$this->uid,$project_id,$company_id);	
+				if ($project_id!=NULL) {
+					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`) 
+						VALUES (?,?)",
+					$this->uid,$project_id);	
 				}
 				return $this->getUser();
 			}//
