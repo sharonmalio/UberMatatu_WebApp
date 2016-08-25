@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Aug 22, 2016 at 06:12 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 5.6.21
+-- Host: localhost
+-- Generation Time: Aug 25, 2016 at 03:12 AM
+-- Server version: 5.7.13-0ubuntu0.16.04.2
+-- PHP Version: 7.0.10-1+deb.sury.org~xenial+1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -86,6 +86,15 @@ CREATE TABLE `tbl_people` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_people`
+--
+
+INSERT INTO `tbl_people` (`id`, `fName`, `lName`, `phone_no`, `type`, `user_id`) VALUES
+(1, 'Kamau', 'Lexxy', 743678154, 2, 1),
+(3, 'Ashley', 'Fernandez', 748731532, 1, 3),
+(4, 'Willy', 'Pozzee', 723618522, 1, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -110,6 +119,16 @@ CREATE TABLE `tbl_projects` (
   `description` varchar(500) NOT NULL,
   `company_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_projects`
+--
+
+INSERT INTO `tbl_projects` (`id`, `name`, `description`, `company_id`) VALUES
+(1, 'Turkana Project', 'Food aid and health services', 2),
+(3, 'Motor Hallo', 'Motorola', 4),
+(4, 'Metro Hallo', 'Motorola', 4),
+(5, 'Motic Hallo', 'Motorola', 4);
 
 -- --------------------------------------------------------
 
@@ -161,7 +180,8 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`id`, `email`, `password`, `user_level_id`) VALUES
-(1, 'toniecairow@gmail.com', 'Shoulder1$', 0);
+(1, 'toniecairow@gmail.com', 'Shoulder1$', 0),
+(2, 'a@b.c', '12345', 0);
 
 -- --------------------------------------------------------
 
@@ -203,7 +223,48 @@ CREATE TABLE `tbl_vehicles` (
 --
 
 INSERT INTO `tbl_vehicles` (`id`, `plate`, `model_id`, `capacity`) VALUES
-(2, 'KAZ 123Y', 2, 5);
+(2, 'KAZ 123Y', 2, 5),
+(3, 'KCC 123T', 2, 4),
+(4, 'KBY 534T', 3, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_vehicle_make`
+--
+
+CREATE TABLE `tbl_vehicle_make` (
+  `id` int(11) NOT NULL,
+  `make` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_vehicle_make`
+--
+
+INSERT INTO `tbl_vehicle_make` (`id`, `make`) VALUES
+(1, 'Toyota'),
+(2, 'Nissan');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_vehicle_model`
+--
+
+CREATE TABLE `tbl_vehicle_model` (
+  `id` int(11) NOT NULL,
+  `model` varchar(25) NOT NULL,
+  `make_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_vehicle_model`
+--
+
+INSERT INTO `tbl_vehicle_model` (`id`, `model`, `make_id`) VALUES
+(1, 'Fuga', 2),
+(2, 'Noah', 1);
 
 --
 -- Indexes for dumped tables
@@ -276,6 +337,18 @@ ALTER TABLE `tbl_vehicles`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_vehicle_make`
+--
+ALTER TABLE `tbl_vehicle_make`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_vehicle_model`
+--
+ALTER TABLE `tbl_vehicle_model`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -288,7 +361,7 @@ ALTER TABLE `tbl_api_access`
 -- AUTO_INCREMENT for table `tbl_companies`
 --
 ALTER TABLE `tbl_companies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `tbl_company_admins`
 --
@@ -298,7 +371,7 @@ ALTER TABLE `tbl_company_admins`
 -- AUTO_INCREMENT for table `tbl_people`
 --
 ALTER TABLE `tbl_people`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tbl_people_type`
 --
@@ -308,7 +381,7 @@ ALTER TABLE `tbl_people_type`
 -- AUTO_INCREMENT for table `tbl_projects`
 --
 ALTER TABLE `tbl_projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `tbl_project_people`
 --
@@ -323,7 +396,7 @@ ALTER TABLE `tbl_trips`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbl_user_tokens`
 --
@@ -333,6 +406,16 @@ ALTER TABLE `tbl_user_tokens`
 -- AUTO_INCREMENT for table `tbl_vehicles`
 --
 ALTER TABLE `tbl_vehicles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `tbl_vehicle_make`
+--
+ALTER TABLE `tbl_vehicle_make`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `tbl_vehicle_model`
+--
+ALTER TABLE `tbl_vehicle_model`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
