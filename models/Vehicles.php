@@ -25,7 +25,8 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `id`,`plate`,`model_id` FROM `tbl_vehicles`");
+			$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity` FROM `tbl_vehicles`
+				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id ");
 			return $res;
 		}
 
