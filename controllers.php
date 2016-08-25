@@ -8,5 +8,8 @@
 	require_once('controllers/vehicles.php');
 	require_once('controllers/people.php');
 	require_once('controllers/projects.php');
+	require_once('controllers/models.php');
+	require_once('controllers/makes.php');
+
 
 ?>
