@@ -71,8 +71,9 @@
 				return $this->response;
 			}
 			else{
-				if ($this->verb=="many") {
-					$payload_array=array();
+				
+					if (!$this->args) {
+						$payload_array=array();
 						$res=array();
 						if (!is_array($this->payload)) {
 							$payload_array[]=$this->payload;	
@@ -91,28 +92,7 @@
 							$res[]=$this->models->update_model($array_value->id,$array_value->model,$array_value->make_id);
 						}
 
-						return $res;	
-					
-				}else{
-					if (!$this->args) {
-						//get all models
-						//return array('error' => 'please choose a model to update');
-						//return $this->payload;
-						return ($this->contains(array('model','make_id')));
-						/*foreach ($this->payload as $key => $value) {
-							if (!$this->contains(array('model','make_id'))) {
-								//return response constructed by contains()
-								return $this->response;
-							}
-						}*/
-						if (!$this->contains(array('model','make_id'))) {
-							//return response constructed by contains()
-							return $this->response;
-						}else{
-							// $model_id=$this->token->getUser();
-							//return $model_id["id"];
-							return $this->models->self_update_model($this->payload->model,$this->payload->make_id);
-						}
+						return $res;
 					}else{
 						if (!$this->contains(array('model','make_id'))) {
 							//return resposne constructed by contains()
@@ -123,7 +103,7 @@
 					}
 				}
 			}
-		}
+		
 
 		function DELETE(){
 			if (!$this->headerContains(array('authorisation') )) {

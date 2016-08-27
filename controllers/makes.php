@@ -71,8 +71,9 @@
 				return $this->response;
 			}
 			else{
-				if ($this->verb=="many") {
-					$payload_array=array();
+				
+					if (!$this->args) {
+						$payload_array=array();
 						$res=array();
 						if (!is_array($this->payload)) {
 							$payload_array[]=$this->payload;	
@@ -82,37 +83,17 @@
 					foreach ($payload_array as $array_key => $array_value) {
 							$id=NULL;
 							
-							if (isset($array_value->company_id)) {
+							/*if (isset($array_value->company_id)) {
 								$company_id=$array_value->company_id;
-							}
+							}*/
 							if (isset($array_value->make_id)) {
 								$make_id=$array_value->make_id;
 							}
 							$res[]=$this->makes->update_make($array_value->id,$array_value->make);
 						}
 
-						return $res;	
-					
-				}else{
-					if (!$this->args) {
-						//get all makes
-						//return array('error' => 'please choose a make to update');
-						//return $this->payload;
-						return ($this->contains(array('make')));
-						/*foreach ($this->payload as $key => $value) {
-							if (!$this->contains(array('make',))) {
-								//return response constructed by contains()
-								return $this->response;
-							}
-						}*/
-						if (!$this->contains(array('make'))) {
-							//return response constructed by contains()
-							return $this->response;
-						}else{
-							// $make_id=$this->token->getUser();
-							//return $make_id["id"];
-							return $this->makes->self_update_make($this->payload->make);
-						}
+						return $res;
+						
 					}else{
 						if (!$this->contains(array('make',))) {
 							//return resposne constructed by contains()
@@ -121,7 +102,7 @@
 							return $this->makes->update_make($this->args[0],$this->payload->make);
 						}					
 					}
-				}
+				
 			}
 		}
 
