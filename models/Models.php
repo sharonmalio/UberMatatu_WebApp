@@ -12,8 +12,9 @@
 		function getModel(){
 			//pre($this->email);
 			if($this->model != null){	
-				$res = query("SELECT `id`,`model`,`make_id`
+				$res = query("SELECT tbl_vehicle_model.id as model_id,`model`,`make_id`,`make`
 					FROM `tbl_vehicle_model`
+					LEFT JOIN `tbl_vehicle_make` ON `make_id`=tbl_vehicle_make.id
 				 	WHERE  `model`= ?",$this->model);
 				if(isset($res[0])){
 					return $res[0];
@@ -25,8 +26,9 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `id`,`model`,`make_id`
-					FROM `tbl_vehicle_model`");
+			$res = query("SELECT tbl_vehicle_model.id as model_id,`model`,`make`,`make_id`
+					FROM `tbl_vehicle_model`
+					LEFT JOIN `tbl_vehicle_make` ON `make_id`=tbl_vehicle_make.id");
 			return $res;
 		}
 
