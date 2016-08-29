@@ -64,26 +64,6 @@
 			}
 		}
 
-		// function self_update_make($name, $name, $description, $company_id){
-		// 	$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-		// 	$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_vehicle_make` WHERE `id`=?",
-		// 		$name);
-		// 	if ($res==null) {
-		// 		return array('error' => 'make does not exist');
-		// 	}else{
-		// 		return $type;
-		// 		$this->name = $res[0]["name"];
-		// 		query("UPDATE `tbl_vehicle_make` SET `name`=?,`description`=?,`company_id`=?,`type`=? WHERE `id`=?",
-		// 			$name, $description, $company_id, $type,$name);
-		// 		regenerate token expiry key
-		// 		$token = new Token();
-		// 		$t = $token->generateToken($this->uid,$api_access);
-		// 		return array($this->getMake());
-		// 		TODO: add profile and handle null values
-		// 		return array('error' => 'invalid email or password');
-		// 	}
-		// }
-
 		function update_make($id,$make){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;

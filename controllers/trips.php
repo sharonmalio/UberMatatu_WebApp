@@ -2,18 +2,18 @@
 	/**
 	* 
 	*/
-	class ModelsController extends Controller
+	class TripsController extends Controller
 	{
 		
-		private $models;
+		private $trips;
 
 		function __construct($method, $verb, $args, $file)
 		{
-			$this->models = new Models();
+			$this->trips = new Trips();
 
 			parent::__construct($method, $verb, $args, $file);
 		}
-		function ModelsController(){
+		function TripsController(){
 		}
 
 		function GET(){
@@ -23,11 +23,11 @@
 			}
 			else{
 				if (!$this->args) {
-					//get all models
-					return $this->models->all();
+					//get all trips
+					return $this->trips->all();
 				}else{
-					//get a specific model by model_id
-					return $this->models->get_model($this->args[0]);
+					//get a specific trip by trip_id
+					return $this->trips->get_trip($this->args[0]);
 				}
 			}
 		}
@@ -39,7 +39,7 @@
 			}
 			else{
 					//return 5;
-					if (!$this->contains(array('model','make_id'))) {
+					if (!$this->contains(array('trip_creator','start_coordinate','end_coordinate'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
@@ -54,10 +54,10 @@
 									/*if (isset($array_value->company_id)) {
 										$company_id=$array_value->company_id;
 									}
-									if (isset($array_value->model_id)) {
-										$model_id=$array_value->model_id;
+									if (isset($array_value->trip_id)) {
+										$trip_id=$array_value->trip_id;
 									}*/
-									$res[]=$this->models->add_model($array_value->model,$array_value->make_id);
+									$res[]=$this->trips->add_trip($array_value->trip_creator,$array_value->start_coordinate,$array_value->end_coordinate);
 								}
 
 								return $res;
@@ -86,19 +86,19 @@
 							if (isset($array_value->company_id)) {
 								$company_id=$array_value->company_id;
 							}
-							if (isset($array_value->model_id)) {
-								$model_id=$array_value->model_id;
+							if (isset($array_value->trip_id)) {
+								$trip_id=$array_value->trip_id;
 							}
-							$res[]=$this->models->update_model($array_value->id,$array_value->model,$array_value->make_id);
+							$res[]=$this->trips->update_trip($array_value->id,$array_value->trip,$array_value->make_id);
 						}
 
 						return $res;
 					}else{
-						if (!$this->contains(array('model','make_id'))) {
+						if (!$this->contains(array('trip','make_id'))) {
 							//return resposne constructed by contains()
 							return $this->response;
 						}else{
-							return $this->models->update_model($this->args[0],$this->payload->model,$this->payload->make_id);
+							return $this->trips->update_trip($this->args[0],$this->payload->trip,$this->payload->make_id);
 						}					
 					}
 				}
@@ -112,10 +112,10 @@
 			}
 			else{
 				if (!$this->args) {
-					//get all models
-					return array('error' => 'please choose a model to delete');
+					//get all trips
+					return array('error' => 'please choose a trip to delete');
 				}else{
-						return $this->models->delete_model($this->args[0]);
+						return $this->trips->delete_trip($this->args[0]);
 					}					
 				}
 			}

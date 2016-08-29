@@ -10,6 +10,7 @@
 	require_once('controllers/projects.php');
 	require_once('controllers/models.php');
 	require_once('controllers/makes.php');
+	require_once('controllers/trips.php');
 
 
 ?>

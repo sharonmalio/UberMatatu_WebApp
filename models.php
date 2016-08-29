@@ -12,6 +12,7 @@
 	require_once('models/Projects.php');
 	require_once('models/Models.php');
 	require_once('models/Makes.php');
+	require_once('models/Trips.php');
 
 
 ?>

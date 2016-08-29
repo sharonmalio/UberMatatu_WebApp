@@ -64,26 +64,6 @@
 			}
 		}
 
-		// function self_update_model($name, $name, $description, $company_id){
-		// 	$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-		// 	$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_vehicle_model` WHERE `id`=?",
-		// 		$name);
-		// 	if ($res==null) {
-		// 		return array('error' => 'model does not exist');
-		// 	}else{
-		// 		return $type;
-		// 		$this->name = $res[0]["name"];
-		// 		query("UPDATE `tbl_vehicle_model` SET `name`=?,`description`=?,`company_id`=?,`type`=? WHERE `id`=?",
-		// 			$name, $description, $company_id, $type,$name);
-		// 		regenerate token expiry key
-		// 		$token = new Token();
-		// 		$t = $token->generateToken($this->uid,$api_access);
-		// 		return array($this->getModel());
-		// 		TODO: add profile and handle null values
-		// 		return array('error' => 'invalid email or password');
-		// 	}
-		// }
-
 		function update_model($id,$model,$make_id){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
