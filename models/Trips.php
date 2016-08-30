@@ -43,7 +43,7 @@
 					//regenerate token expiry key
 					/*$token = new Token();
 					$t = $token->generateToken($this->uid,$api_access);*/
-					return $this->getTrips();
+					return $this->getTrip();
 				}
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');

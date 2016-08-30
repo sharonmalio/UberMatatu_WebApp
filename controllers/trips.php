@@ -38,8 +38,9 @@
 				return $this->response;
 			}
 			else{
+					$trip_creator=$this->token->getUser();
 					//return 5;
-					if (!$this->contains(array('trip_creator','start_coordinate','end_coordinate'))) {
+					if (!$this->contains(array('start_coordinate','end_coordinate'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
@@ -57,7 +58,7 @@
 									if (isset($array_value->trip_id)) {
 										$trip_id=$array_value->trip_id;
 									}*/
-									$res[]=$this->trips->add_trip($array_value->trip_creator,$array_value->start_coordinate,$array_value->end_coordinate);
+									$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate);
 								}
 
 								return $res;
