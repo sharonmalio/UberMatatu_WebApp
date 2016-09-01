@@ -38,14 +38,31 @@
 				return $this->response;
 			}
 			else{
-				//add company
-				//return print_r($this->payload->description);
-				if (!$this->contains(array('name','description'))) {
-						//return resposne constructed by contains()
-						return $this->response;
-				}else{
-					return $this->companies->add_company($this->payload->name,$this->payload->description);
-				}
+				//return 5;
+					if (!$this->contains(array('name', 'description'))) {
+							//return response constructed by contains()
+							return $this->response;
+						}else{
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									/*if (isset($array_value->company_id)) {
+										$company_id=$array_value->company_id;
+									}
+									if (isset($array_value->project_id)) {
+										$project_id=$array_value->project_id;
+									}*/
+									$res[]=$this->companies->add_company($array_value->name,$array_value->description);
+								}
+
+								return $res;
+						}
+			
 			}
 		}
 
