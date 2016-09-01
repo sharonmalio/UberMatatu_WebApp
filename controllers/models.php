@@ -72,35 +72,30 @@
 			}
 			else{
 				
-					if (!$this->args) {
-						$payload_array=array();
-						$res=array();
-						if (!is_array($this->payload)) {
-							$payload_array[]=$this->payload;	
-						}else{
-							$payload_array=$this->payload;
-						}
-					foreach ($payload_array as $array_key => $array_value) {
-							$id=NULL;
-							
-							if (isset($array_value->company_id)) {
-								$company_id=$array_value->company_id;
-							}
-							if (isset($array_value->model_id)) {
-								$model_id=$array_value->model_id;
-							}
-							$res[]=$this->models->update_model($array_value->id,$array_value->model,$array_value->make_id);
-						}
-
-						return $res;
-					}else{
-						if (!$this->contains(array('model','make_id'))) {
-							//return resposne constructed by contains()
+					if (!$this->contains(array('model_id','model','make_id'))) {
+							//return response constructed by contains()
 							return $this->response;
 						}else{
-							return $this->models->update_model($this->args[0],$this->payload->model,$this->payload->make_id);
-						}					
-					}
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									/*if (isset($array_value->company_id)) {
+										$company_id=$array_value->company_id;
+									}
+									if (isset($array_value->model_id)) {
+										$model_id=$array_value->model_id;
+									}*/
+									$res[]=$this->models->update_model($array_value->model_id,
+										$array_value->model,$array_value->make_id);
+								}
+
+								return $res;
+						}
 				}
 			}
 		

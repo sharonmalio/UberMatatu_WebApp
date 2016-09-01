@@ -66,16 +66,17 @@
 			}
 		}
 
-		function update_model($id,$model,$make_id){
+		function update_model($model_id,$model,$make_id){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`model`,`make_id` FROM `tbl_vehicle_model` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`model`,`make_id` FROM `tbl_vehicle_model` WHERE `id` = ?",
+				$model_id);
 			if ($res==null) {
 				return array('error' => 'model does not exist');
 			}else{
-				$this->model = $res[0]["model"];
+				$this->model = $model;
 				$res=query("UPDATE `tbl_vehicle_model` SET `model`=?,`make_id`=? WHERE `id`=?",
-					$model,$make_id,$id);
+					$model,$make_id,$model_id);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/

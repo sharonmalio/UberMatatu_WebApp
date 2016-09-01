@@ -4,7 +4,7 @@
 		/*private $uid = null;
 		private $plate = "";
 		private $email = null;*/
-		private $make = "";
+		private $id = "";
 		
 		function __construct(){
 		}
@@ -71,7 +71,7 @@
 			if ($res==null) {
 				return array('error' => 'make does not exist');
 			}else{
-				$this->make = $res[0]["make"];
+				$this->make = $make;
 				$res=query("UPDATE `tbl_vehicle_make` SET `make`=? WHERE `id`=?",
 					$make,$id);
 				/*//regenerate token expiry key
