@@ -15,5 +15,5 @@
     define("DATABASE", "db_taxi");
     define("SERVER", "localhost");
     define("USERNAME", "root");
-    define("PASSWORD", "1234");
+    define("PASSWORD", "Sc0rpion");
 ?>

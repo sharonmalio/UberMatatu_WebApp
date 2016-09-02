@@ -11,6 +11,7 @@
 	require_once('controllers/models.php');
 	require_once('controllers/makes.php');
 	require_once('controllers/trips.php');
+	require_once('controllers/group.php');
 
 
 ?>

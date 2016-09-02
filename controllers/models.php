@@ -27,7 +27,7 @@
 					return $this->models->all();
 				}else{
 					//get a specific model by model_id
-					return $this->models->get_model($this->args[0]);
+					return $this->models->get_grouptrip($this->args[0]);
 				}
 			}
 		}

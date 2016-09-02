@@ -38,6 +38,35 @@
 				return $this->response;
 			}
 			else{
+				if($this->verb=="many"){
+					$trip_creator=$this->token->getUser();
+					//return 5;
+					if (!$this->contains(array('start_coordinate','end_coordinate'))) {
+							//return response constructed by contains()
+							return $this->response;
+						}else{
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									/*if (isset($array_value->company_id)) {
+										$company_id=$array_value->company_id;
+									}
+									if (isset($array_value->trip_id)) {
+										$trip_id=$array_value->trip_id;
+									}*/
+									
+								}
+
+								return $res;
+						}	
+					
+				}
+				else{
 					$trip_creator=$this->token->getUser();
 					//return 5;
 					if (!$this->contains(array('start_coordinate','end_coordinate'))) {
@@ -63,6 +92,7 @@
 
 								return $res;
 						}	
+				}
 			}
 		}
 
@@ -72,6 +102,8 @@
 				return $this->response;
 			}
 			else{
+
+
 				
 					if (!$this->args) {
 						$payload_array=array();
@@ -84,12 +116,12 @@
 					foreach ($payload_array as $array_key => $array_value) {
 							$id=NULL;
 							
-							if (isset($array_value->company_id)) {
+							/*if (isset($array_value->company_id)) {
 								$company_id=$array_value->company_id;
 							}
 							if (isset($array_value->trip_id)) {
 								$trip_id=$array_value->trip_id;
-							}
+							}*/
 							$res[]=$this->trips->update_trip($array_value->id,$array_value->trip,$array_value->make_id);
 						}
 
