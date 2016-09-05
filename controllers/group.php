@@ -90,7 +90,7 @@
 							if (isset($array_value->trip_id)) {
 								$trip_id=$array_value->trip_id;
 							}*/
-							$res[]=$this->grouptrips->update_grouptrips($array_value->id,$array_value->trip,$array_value->make_id);
+							$res[]=$this->grouptrips->update_grouptrips($array_value->id,$array_value->trip_id,$array_value->user_id);
 						}
 
 						return $res;

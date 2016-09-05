@@ -12,6 +12,7 @@
 	require_once('controllers/makes.php');
 	require_once('controllers/trips.php');
 	require_once('controllers/group.php');
+	require_once('controllers/allocations.php');
 
 
 ?>
