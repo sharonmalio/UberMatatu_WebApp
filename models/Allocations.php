@@ -15,9 +15,9 @@
 				$res = query("SELECT `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage`,`plate` `fName`, `lName` FROM `tbl_allocation`
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
-				 WHERE   `vehicle_id`= ?",$this->vehicle_id);
+				 WHERE   `vehicle_id`= ? AND `return_time` IS NULL ",$this->vehicle_id);
 				if(isset($res[0])){
-					return $res[0];
+					return $res;
 				}else{
 					return array('error' => 'Allocation not found' );
 				}
@@ -58,7 +58,7 @@
 
 		function get_allocation($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation` WHERE `vehicle_id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'allocation does not exist');
 			}else{
