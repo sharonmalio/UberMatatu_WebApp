@@ -103,6 +103,15 @@
 			}
 			else{
 				if (!$this->args) {
+					if($this->verb == "approve"){
+							if (!$this->contains(array('id'))) {
+									//return resposne constructed by contains()
+									return $this->response;
+								}else{
+									return $this->trips->approve_trip($this->payload->id);
+								}
+							}
+						
 					if($this->verb=="start"){
 						
 							if (!$this->contains(array('id','start_milage'))) {
@@ -122,6 +131,7 @@
 									return $this->trips->stop_trip($this->payload->id,$this->payload->end_milage);
 								}
 						}
+
 						
 					}else{
 						if (!$this->contains(array('trip_date','trip_time'))) {

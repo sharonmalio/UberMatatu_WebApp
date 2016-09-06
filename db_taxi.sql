@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2016 at 03:12 AM
+-- Generation Time: Sep 06, 2016 at 06:56 PM
 -- Server version: 5.7.13-0ubuntu0.16.04.2
 -- PHP Version: 7.0.10-1+deb.sury.org~xenial+1
 
@@ -19,6 +19,34 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_taxi`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_allocation`
+--
+
+CREATE TABLE `tbl_allocation` (
+  `id` int(11) NOT NULL,
+  `vehicle_id` int(11) NOT NULL,
+  `driver_id` int(11) NOT NULL,
+  `collect_time` datetime NOT NULL,
+  `return_time` datetime DEFAULT NULL,
+  `start_milage` int(11) NOT NULL,
+  `return_milage` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_allocation`
+--
+
+INSERT INTO `tbl_allocation` (`id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage`) VALUES
+(1, 3, 1, '2016-09-05 19:07:38', '2016-09-05 23:59:02', 32841, 32892),
+(2, 2, 2, '2016-09-05 19:14:48', '2016-09-06 00:07:53', 32841, 22774),
+(4, 5, 2, '2016-09-05 22:57:54', '2016-09-06 00:06:50', 22712, 22774),
+(5, 1, 2, '2016-09-06 14:42:50', NULL, 32841, NULL),
+(6, 3, 3, '2016-09-06 14:44:15', NULL, 23871, NULL),
+(7, 4, 1, '2016-09-06 15:14:23', NULL, 32841, NULL);
 
 -- --------------------------------------------------------
 
@@ -57,7 +85,10 @@ CREATE TABLE `tbl_companies` (
 --
 
 INSERT INTO `tbl_companies` (`id`, `name`, `description`) VALUES
-(5, 'UNDP', 'UN branch');
+(5, 'UNDP', 'UN branch'),
+(6, 'UN', 'Master branch'),
+(7, 'WHO', 'Health'),
+(8, 'UNICEF', 'CLIMATE');
 
 -- --------------------------------------------------------
 
@@ -74,6 +105,31 @@ CREATE TABLE `tbl_company_admins` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_group_trip`
+--
+
+CREATE TABLE `tbl_group_trip` (
+  `id` int(11) NOT NULL,
+  `trip_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_group_trip`
+--
+
+INSERT INTO `tbl_group_trip` (`id`, `trip_id`, `user_id`) VALUES
+(2, 1, 3),
+(3, 2, 1),
+(4, 1, 4),
+(5, 1, 1),
+(20, 2, 3),
+(21, 2, 1),
+(22, 2, 4);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_people`
 --
 
@@ -83,17 +139,18 @@ CREATE TABLE `tbl_people` (
   `lName` varchar(200) NOT NULL,
   `phone_no` int(11) NOT NULL,
   `type` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `allocation_status` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_people`
 --
 
-INSERT INTO `tbl_people` (`id`, `fName`, `lName`, `phone_no`, `type`, `user_id`) VALUES
-(1, 'Kamau', 'Lexxy', 743678154, 2, 1),
-(3, 'Ashley', 'Fernandez', 748731532, 1, 3),
-(4, 'Willy', 'Pozzee', 723618522, 1, 4);
+INSERT INTO `tbl_people` (`id`, `fName`, `lName`, `phone_no`, `type`, `user_id`, `allocation_status`) VALUES
+(1, 'Kamau', 'Lexxy', 743678154, 2, 1, 0),
+(3, 'Ashley', 'Fernandez', 748731532, 1, 3, 0),
+(4, 'Willy', 'Pozzee', 723618522, 1, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -106,6 +163,14 @@ CREATE TABLE `tbl_people_type` (
   `description` varchar(300) NOT NULL,
   `type_name` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_people_type`
+--
+
+INSERT INTO `tbl_people_type` (`id`, `description`, `type_name`) VALUES
+(1, 'Adminis', 'Admin'),
+(2, 'dere', 'Driver');
 
 -- --------------------------------------------------------
 
@@ -127,8 +192,9 @@ CREATE TABLE `tbl_projects` (
 INSERT INTO `tbl_projects` (`id`, `name`, `description`, `company_id`) VALUES
 (1, 'Turkana Project', 'Food aid and health services', 2),
 (3, 'Motor Hallo', 'Motorola', 4),
-(4, 'Metro Hallo', 'Motorola', 4),
-(5, 'Motic Hallo', 'Motorola', 4);
+(4, 'Metropolitan', 'Allah', 3),
+(5, 'Motic Hallo', 'Motorola', 4),
+(6, 'BYOB', 'Bring your own Buzz', 7);
 
 -- --------------------------------------------------------
 
@@ -151,16 +217,30 @@ CREATE TABLE `tbl_project_people` (
 
 CREATE TABLE `tbl_trips` (
   `id` int(11) NOT NULL,
-  `start_milage` int(11) NOT NULL,
-  `end_milage` int(11) NOT NULL,
-  `date` datetime NOT NULL,
-  `vehicle_driver` int(11) NOT NULL,
-  `start_time` datetime NOT NULL,
-  `stop_time` datetime NOT NULL,
+  `start_milage` int(11) DEFAULT NULL,
+  `end_milage` int(11) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `trip_date` date NOT NULL,
+  `trip_time` time NOT NULL,
+  `vehicle_driver` int(11) DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `stop_time` datetime DEFAULT NULL,
   `trip_creator` int(11) NOT NULL,
-  `sart_coordinate` varchar(200) NOT NULL,
-  `end_coordinates` varchar(200) NOT NULL
+  `start_coordinate` varchar(200) NOT NULL,
+  `end_coordinate` varchar(200) NOT NULL,
+  `approval` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_trips`
+--
+
+INSERT INTO `tbl_trips` (`id`, `start_milage`, `end_milage`, `date`, `trip_date`, `trip_time`, `vehicle_driver`, `start_time`, `stop_time`, `trip_creator`, `start_coordinate`, `end_coordinate`, `approval`) VALUES
+(3, NULL, NULL, '2016-08-28 13:48:56', '0000-00-00', '00:00:00', NULL, NULL, NULL, 2, '54321465232E', '643236547N', 0),
+(4, NULL, NULL, '2016-08-30 11:21:23', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0),
+(5, NULL, NULL, '2016-08-30 11:22:08', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0),
+(6, 1249, NULL, '2016-09-06 14:37:13', '0000-00-00', '00:00:00', NULL, '2016-09-06 17:37:13', NULL, 1, '88321E', '98947N', 1),
+(8, 34531, 34586, '2016-09-06 14:06:33', '2015-04-12', '11:43:00', NULL, '2016-09-06 17:06:13', '2016-09-06 17:06:33', 1, '354563E', '76345N', 0);
 
 -- --------------------------------------------------------
 
@@ -181,7 +261,8 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `email`, `password`, `user_level_id`) VALUES
 (1, 'toniecairow@gmail.com', 'Shoulder1$', 0),
-(2, 'a@b.c', '12345', 0);
+(2, 'a@b.c', '12345', 0),
+(3, 'a@d.com', '12345', 0);
 
 -- --------------------------------------------------------
 
@@ -215,17 +296,19 @@ CREATE TABLE `tbl_vehicles` (
   `id` int(11) NOT NULL,
   `plate` varchar(25) NOT NULL,
   `model_id` int(11) NOT NULL,
-  `capacity` int(11) NOT NULL
+  `capacity` int(11) NOT NULL,
+  `vehicle_use` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_vehicles`
 --
 
-INSERT INTO `tbl_vehicles` (`id`, `plate`, `model_id`, `capacity`) VALUES
-(2, 'KAZ 123Y', 2, 5),
-(3, 'KCC 123T', 2, 4),
-(4, 'KBY 534T', 3, 4);
+INSERT INTO `tbl_vehicles` (`id`, `plate`, `model_id`, `capacity`, `vehicle_use`) VALUES
+(2, 'KAZ 123Y', 2, 5, 0),
+(3, 'KAZ 123Y', 1, 4, 1),
+(4, 'KBY 534T', 3, 4, 1),
+(5, 'KBZ 327X', 5, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -244,7 +327,8 @@ CREATE TABLE `tbl_vehicle_make` (
 
 INSERT INTO `tbl_vehicle_make` (`id`, `make`) VALUES
 (1, 'Toyota'),
-(2, 'Nissan');
+(2, 'Nissan'),
+(3, 'Mitsubishi');
 
 -- --------------------------------------------------------
 
@@ -263,12 +347,21 @@ CREATE TABLE `tbl_vehicle_model` (
 --
 
 INSERT INTO `tbl_vehicle_model` (`id`, `model`, `make_id`) VALUES
-(1, 'Fuga', 2),
-(2, 'Noah', 1);
+(1, 'Xtrail', 2),
+(2, 'Noah', 1),
+(3, 'Wish', 3),
+(4, 'Prado', 1),
+(5, 'Colt', 3);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_allocation`
+--
+ALTER TABLE `tbl_allocation`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_api_access`
@@ -286,6 +379,12 @@ ALTER TABLE `tbl_companies`
 -- Indexes for table `tbl_company_admins`
 --
 ALTER TABLE `tbl_company_admins`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_group_trip`
+--
+ALTER TABLE `tbl_group_trip`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -353,6 +452,11 @@ ALTER TABLE `tbl_vehicle_model`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_allocation`
+--
+ALTER TABLE `tbl_allocation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
 -- AUTO_INCREMENT for table `tbl_api_access`
 --
 ALTER TABLE `tbl_api_access`
@@ -361,12 +465,17 @@ ALTER TABLE `tbl_api_access`
 -- AUTO_INCREMENT for table `tbl_companies`
 --
 ALTER TABLE `tbl_companies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `tbl_company_admins`
 --
 ALTER TABLE `tbl_company_admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tbl_group_trip`
+--
+ALTER TABLE `tbl_group_trip`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `tbl_people`
 --
@@ -376,12 +485,12 @@ ALTER TABLE `tbl_people`
 -- AUTO_INCREMENT for table `tbl_people_type`
 --
 ALTER TABLE `tbl_people_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbl_projects`
 --
 ALTER TABLE `tbl_projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `tbl_project_people`
 --
@@ -391,12 +500,12 @@ ALTER TABLE `tbl_project_people`
 -- AUTO_INCREMENT for table `tbl_trips`
 --
 ALTER TABLE `tbl_trips`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tbl_user_tokens`
 --
@@ -406,17 +515,17 @@ ALTER TABLE `tbl_user_tokens`
 -- AUTO_INCREMENT for table `tbl_vehicles`
 --
 ALTER TABLE `tbl_vehicles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `tbl_vehicle_make`
 --
 ALTER TABLE `tbl_vehicle_make`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tbl_vehicle_model`
 --
 ALTER TABLE `tbl_vehicle_model`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

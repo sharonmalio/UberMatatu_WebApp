@@ -12,7 +12,7 @@
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`
+				$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips`
 				 	WHERE  `id`= ?",$this->trips);
 				if(isset($res[0])){
@@ -25,7 +25,7 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips`");
 			return $res;
 		}
@@ -51,7 +51,7 @@
 
 		function get_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'trip does not exist');
 			}else{
@@ -68,7 +68,7 @@
 		function update_trips($id,$trip_date,$trip_time){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id,0);
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips`, `approval` WHERE `id` = ? AND `approval`= ?",$id,0);
 			if ($res==null) {
 				return array('error' => 'trips does not exist');
 			}else{
@@ -84,8 +84,25 @@
 			}
 		}
 
+		function approve_trip($id){
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id, 0);
+			if($res == null){
+				return array('error'=>'trip has already been approved');
+			}
+			else{
+				$this->trips = $res[0]["id"];
+				$res=query("UPDATE `tbl_trips` SET `approval`=? WHERE `id`=?",
+					1,$id);
+				/*//regenerate token expiry key
+				$token = new Token();
+				$t = $token->generateToken($this->uid,$api_access);*/
+				return array($this->getTrip());
+
+			}
+		}
+
 		function start_trip($id,$start_milage){
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id, 1);
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id, 1);
 			if($res == null){
 				return array('error'=>'trip has not approved');
 			}
@@ -103,7 +120,7 @@
 		}
 
 		function stop_trip($id,$start_milage){
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'trip does not exist');
 			}
@@ -122,7 +139,7 @@
 
 		function delete_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id`=?",
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id`=?",
 				$id);
 			if ($res==null) {
 				return array('error' => 'trips does not exist');
