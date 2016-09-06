@@ -68,7 +68,7 @@
 		function update_trips($id,$trip_date,$trip_time){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id,0);
 			if ($res==null) {
 				return array('error' => 'trips does not exist');
 			}else{
@@ -85,9 +85,9 @@
 		}
 
 		function start_trip($id,$start_milage){
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id, 1);
 			if($res == null){
-				return array('error'=>'trip does not exist');
+				return array('error'=>'trip has not approved');
 			}
 			else{
 				$date = date('Y-m-d H:i:s');
