@@ -13,6 +13,7 @@
 	require_once('models/Trips.php');
 	require_once('models/Group.php');
 	require_once('models/Allocations.php');
+	require_once('models/Drivers.php');
 
 
 ?>

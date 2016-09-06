@@ -13,6 +13,7 @@
 	require_once('controllers/trips.php');
 	require_once('controllers/group.php');
 	require_once('controllers/allocations.php');
+	require_once('controllers/drivers.php');
 
 
 ?>

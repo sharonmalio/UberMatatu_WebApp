@@ -38,7 +38,8 @@
 						VALUES (?,?,?,?)",$vehicle_id, $driver_id, $date,$start_milage);
 					$this->vehicle_id = $vehicle_id;
 
-					$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ?", 1,$vehicle_id);				
+					$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ?", 1,$vehicle_id);
+					$res = query("UPDATE `tbl_people` SET `allocation_status`= ? WHERE `id` = ? AND `type` = ?", 1,$driver_id,2);				
 					//regenerate token expiry key
 					/*$token = new Token();
 					$t = $token->generateToken($this->uid,$api_access);*/
@@ -76,7 +77,7 @@
 				$res=query("UPDATE `tbl_allocation` SET `return_time` = ?, `return_milage`=? WHERE `id`=?",$date,
 					$return_milage,$id);
 
-				$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ?", 0,$this->vehicle_id);
+				$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ? ", 0,$this->vehicle_id);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
