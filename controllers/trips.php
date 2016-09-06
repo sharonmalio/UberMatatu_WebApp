@@ -22,7 +22,13 @@
 				return $this->response;
 			}
 			else{
+				
 				if (!$this->args) {
+					if($this->verb == "mytrips"){
+					$trip_creator=$this->token->getUser();
+					
+					return $this->trips->get_mytrips($trip_creator['id']);
+					}
 					//get all trips
 					return $this->trips->all();
 				}else{
@@ -131,6 +137,7 @@
 									return $this->trips->stop_trip($this->payload->id,$this->payload->end_milage);
 								}
 						}
+
 
 						
 					}else{

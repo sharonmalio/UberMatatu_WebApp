@@ -65,6 +65,16 @@
 			}
 		}
 
+		function get_mytrips($trip_creator){
+
+
+			$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE trip_creator = ?",$trip_creator);
+			if($res == null){
+				return array('error' => 'You have no created trips');
+			}else{
+				return $res;
+			}
+		}
 		function update_trips($id,$trip_date,$trip_time){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;

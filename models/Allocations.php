@@ -12,7 +12,10 @@
 		function getAllocation(){
 			//pre($this->email);
 			if($this->vehicle_id != null){	
-				$res = query("SELECT `id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation` WHERE   `vehicle_id`= ?",$this->vehicle_id);
+				$res = query("SELECT `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage`,`plate` `fName`, `lName` FROM `tbl_allocation`
+				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+				 WHERE   `vehicle_id`= ?",$this->vehicle_id);
 				if(isset($res[0])){
 					return $res[0];
 				}else{
@@ -23,7 +26,11 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation`");
+			$res = query("SELECT `vehicle_id`,`plate`,`make`,`model`,`capacity`, `driver_id`,`fName`, `lName`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation`
+				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+				INNER JOIN `tbl_vehicle_model` ON tbl_vehicles.model_id = tbl_vehicle_model.id
+				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_make.id = tbl_vehicle_model.make_id ");
 			return $res;
 		}
 
