@@ -82,20 +82,20 @@
 								$payload_array=array();
 								$res=array();
 								if (!is_array($this->payload)) {
-									$payload_array[]=$this->payload;	
+									$array_value = $this->payload;
+									$res = $this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);	
 								}else{
 									$payload_array=$this->payload;
-								}
-								foreach ($payload_array as $array_key => $array_value) {
-									/*if (isset($array_value->company_id)) {
-										$company_id=$array_value->company_id;
+									foreach ($payload_array as $array_key => $array_value) {
+										/*if (isset($array_value->company_id)) {
+											$company_id=$array_value->company_id;
+										}
+										if (isset($array_value->trip_id)) {
+											$trip_id=$array_value->trip_id;
+										}*/
+										$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
 									}
-									if (isset($array_value->trip_id)) {
-										$trip_id=$array_value->trip_id;
-									}*/
-									$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
-								}
-
+								} 
 								return $res;
 						}	
 				}
