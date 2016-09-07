@@ -48,6 +48,9 @@
 				//return array('error' => 'invalid email or password');
 		}
 
+		function project_trips(){
+			
+		}
 		function get_project($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$id);

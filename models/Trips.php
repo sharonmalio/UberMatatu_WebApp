@@ -79,7 +79,7 @@
 				return $res;
 			}
 		}
-		function update_trips($id,$trip_date,$trip_time){
+		function update_trips($id,$start_coordinate,$end_coordinate,$trip_date,$trip_time){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips`, `approval` WHERE `id` = ? AND `approval`= ?",$id,0);
@@ -87,8 +87,8 @@
 				return array('error' => 'trips does not exist');
 			}else{
 				$this->trips = $res[0]["id"];
-				$res=query("UPDATE `tbl_trips` SET `trip_date`=?,`trip_time`=? WHERE `id`=?",
-					$trip_date,$trip_time,$id);
+				$res=query("UPDATE `tbl_trips` SET `trip_date`=?,`trip_time`=?, `start_coordinate`,`end_coordinate`  WHERE `id`=?",
+					$trip_date,$trip_time,$start_coordinate,$end_coordinate,$id);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/

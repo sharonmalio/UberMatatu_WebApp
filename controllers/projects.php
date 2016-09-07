@@ -23,6 +23,9 @@
 			}
 			else{
 				if (!$this->args) {
+					if($this->verb == "trips"){
+						return $this->trips->project_trips($this->args[0]);
+					}
 					//get all projects
 					return $this->projects->all();
 				}else{

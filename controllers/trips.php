@@ -141,11 +141,11 @@
 
 						
 					}else{
-						if (!$this->contains(array('trip_date','trip_time'))) {
+						if (!$this->contains(array('start_coordinate','end_coordinate','trip_date','trip_time'))) {
 							//return resposne constructed by contains()
 							return $this->response;
 						}else{
-							return $this->trips->update_trip($this->args[0],$this->payload->trip_date,$this->payload->trip_time);
+							return $this->trips->update_trip($this->args[0],$array_value->start_coordinate,$array_value->end_coordinate,$this->payload->trip_date,$this->payload->trip_time);
 						}					
 					}
 				}
