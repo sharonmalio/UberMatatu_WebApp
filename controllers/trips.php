@@ -26,7 +26,7 @@
 				if (!$this->args) {
 					if($this->verb == "mytrips"){
 					$trip_creator=$this->token->getUser();
-					
+
 					return $this->trips->get_mytrips($trip_creator['id']);
 					}
 					//get all trips

@@ -12,7 +12,7 @@
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+				$res = query("SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips`
 				 	WHERE  `id`= ?",$this->trips);
 				if(isset($res[0])){
@@ -39,11 +39,15 @@
 					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 					$res = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`end_coordinate`,`trip_date`,`trip_time`) 
 						VALUES (?,?,?,?,?)",$trip_creator,$start_coordinate,$end_coordinate,$trip_date,$trip_time);
+
+					$res = query("SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+					FROM `tbl_trips` WHERE `id`=(SELECT MAX(`id`) FROM `tbl_trips`)");
+					return $res[0];
 					// $this->trips = $trips;				
-					//regenerate token expiry key
-					/*$token = new Token();
-					$t = $token->generateToken($this->uid,$api_access);*/
-					return $this->getTrip();
+					// //regenerate token expiry key
+					// $token = new Token();
+					// $t = $token->generateToken($this->uid,$api_access);
+					// return $this->getTrip();
 				}
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
@@ -51,7 +55,7 @@
 
 		function get_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("+SELECT `id`,`start_milage`,`end_milage`,`trip_date`,`trip_time`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'trip does not exist');
 			}else{
