@@ -69,6 +69,18 @@
 			
 		}
 
+		function project_staff($project_manager){
+			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
+			$project_id = $res[0]['project_id'];
+
+			$res= query("SELECT `fName`,`lName`,`phone_no`,`email` FROM `tbl_project_people`
+			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
+			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+			WHERE `project_id` = ?",$project_id );
+
+			return $res;
+
+		}
 		function get_project($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$id);

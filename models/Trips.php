@@ -15,18 +15,36 @@
 				$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips`
 				 	WHERE  `id`= ?",$this->trips);
-				if(isset($res[0])){
+				$vehicle = $res[0]["vehicle_id"];
+				if($vehicle != null){
+					$res1 = query("SELECT `make`,`model`,`plate`,`fName`, `lName`,`phone_no` FROM `tbl_allocation`
+				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+				INNER JOIN `tbl_vehicle_model` ON tbl_vehicles.model_id = tbl_vehicle_model.id
+				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_make.id = tbl_vehicle_model.make_id
+				 WHERE   `vehicle_id`= ?",$vehicle);
+
+					 return array($res[0], 'details'=>$res1[0]);
+				}else{
+					if(isset($res[0])){
 					return $res[0];
 				}else{
 					return array('error' => 'Trips not found' );
 				}
+				}
+				
+				
 			}
 		}
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
-					FROM `tbl_trips`");
+			$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips`
+				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_trips.vehicle_id
+				LEFT JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id 
+					");
+			$car = ["vehicle_id"];
 			return $res;
 		}
 

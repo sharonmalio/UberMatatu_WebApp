@@ -30,6 +30,11 @@
 						return $this->projects->project_trips($project_manager['id']);
 					}
 
+					if($this->verb == "staff"){
+
+						return $this->projects->project_staff($project_manager['id']);
+					}
+
 					//get all projects
 					return $this->projects->all($project_manager['id']);
 				}else{
