@@ -54,11 +54,12 @@
 									if (isset($array_value->model_id)) {
 										$model_id=$array_value->model_id;
 									}*/
-									$res[]=$this->models->signin($array_value->email,$array_value->password,$array_value->api_key);
+									$res[]=$this->user->signin($array_value->email,$array_value->password,$this->api_access);
 								}
 
 								return $res;
 						}
+					
 					break;
 				case 'signup':
 						if (!$this->contains(array('email','password','type','api_key'))) {
