@@ -93,21 +93,21 @@
 						
 					if($this->verb=="start"){
 						
-							if (!$this->contains(array('id','start_milage'))) {
+							if (!$this->contains(array('id','start_mileage'))) {
 									//return resposne constructed by contains()
 									return $this->response;
 								}else{
-									return $this->trips->start_trip($this->payload->id,$this->payload->start_milage);
+									return $this->trips->start_trip($this->payload->id,$this->payload->start_mileage);
 								}				
 
 							
 						}
 					if($this->verb == "stop"){
-							if (!$this->contains(array('id','end_milage'))) {
+							if (!$this->contains(array('id','end_mileage'))) {
 									//return resposne constructed by contains()
 									return $this->response;
 								}else{
-									return $this->trips->stop_trip($this->payload->id,$this->payload->end_milage);
+									return $this->trips->stop_trip($this->payload->id,$this->payload->end_mileage);
 								}
 						}
 

@@ -39,7 +39,7 @@
 			}
 			else{
 					//return 5;
-					if (!$this->contains(array('vehicle_id','driver_id','start_milage'))) {
+					if (!$this->contains(array('vehicle_id','driver_id','start_mileage'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
@@ -57,7 +57,7 @@
 									if (isset($array_value->model_id)) {
 										$model_id=$array_value->model_id;
 									}*/
-									$res[]=$this->allocations->add_allocation($array_value->vehicle_id,$array_value->driver_id,$array_value->start_milage);
+									$res[]=$this->allocations->add_allocation($array_value->vehicle_id,$array_value->driver_id,$array_value->start_mileage);
 								}
 
 								return $res;
@@ -72,7 +72,7 @@
 		// 	}
 		// 	else{
 				
-		// 			if (!$this->contains(array('return_milage'))) {
+		// 			if (!$this->contains(array('return_mileage'))) {
 		// 					//return response constructed by contains()
 		// 					return $this->response;
 		// 				}else{
@@ -90,7 +90,7 @@
 		// 							if (isset($array_value->model_id)) {
 		// 								$model_id=$array_value->model_id;
 		// 							}
-		// 							$res[]=$this->allocations->update_allocation($array_value->return_milage);
+		// 							$res[]=$this->allocations->update_allocation($array_value->return_mileage);
 		// 						}
 
 		// 						return $res;
@@ -105,11 +105,11 @@
 			else{
 				
 					
-					if (!$this->contains(array('id','return_milage'))) {
+					if (!$this->contains(array('id','return_mileage'))) {
 						//return resposne constructed by contains()
 						return $this->response;
 					}else{
-						return $this->allocations->update_allocation($this->payload->id,$this->payload->return_milage);
+						return $this->allocations->update_allocation($this->payload->id,$this->payload->return_mileage);
 					}					
 				
 			}
