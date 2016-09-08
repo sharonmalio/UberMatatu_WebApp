@@ -73,6 +73,7 @@
 			
 		}
 
+//functional error here
 		function project_staff($project_manager){
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]['project_id'];
