@@ -16,8 +16,8 @@
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
 				 WHERE   `vehicle_id`= ? AND `return_time` IS NULL ",$this->vehicle_id);
-				if(isset($res)){
-					return $res;
+				if(isset($res[0])){
+					return $res[0];
 				}else{
 					return array('error' => 'Allocation not found' );
 				}
