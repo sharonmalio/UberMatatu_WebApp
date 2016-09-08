@@ -63,11 +63,24 @@
 
 		}
 
+		function projectmanagers($company_head){
+			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+			$company = $res[0]["company_id"];
+
+			$res = query("SELECT `name`,`fName`,`lName` FROM `tbl_projects`
+			INNER JOIN `tbl_project_people` ON tbl_project_people.project_id = tbl_projects.id
+			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
+			 WHERE `company_id` = ? AND `type` = ?",$company,3);
+			return $res;
+
+
+					}
+
 		function company_project($company_head){
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
 
-			$res = query("SELECT id,`name`,`description`,`name`,`company_id`
+			$res = query("SELECT id,`name`,`description`,`company_id`
 				FROM `tbl_projects` WHERE `company_id` = ?",$company);
 			return $res;
 		}

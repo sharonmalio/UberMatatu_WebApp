@@ -22,21 +22,29 @@
 				return $this->response;
 			}
 			else{
-				if (!$this->args) {
+				
 					if($this->verb == "trips"){
 						$company_head=$this->token->getUser();
 
 						return $this->companies->company_trips($company_head['id']);
-
 					}
-				if (!$this->args) {
 					if($this->verb == "projects"){
 						$company_head=$this->token->getUser();
 
 						return $this->companies->company_project($company_head['id']);
 
 					}
-				}
+				
+				
+					if($this->verb == "projectmanagers"){
+						$company_head=$this->token->getUser();
+
+						return $this->companies->projectmanagers($company_head['id']);
+
+					}
+
+					if (!$this->args) {
+				
 					//get all companies
 					return $this->companies->all();
 				}else{
