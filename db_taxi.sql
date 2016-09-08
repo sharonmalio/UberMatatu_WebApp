@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 06, 2016 at 06:56 PM
+-- Generation Time: Sep 08, 2016 at 02:17 PM
 -- Server version: 5.7.13-0ubuntu0.16.04.2
 -- PHP Version: 7.0.10-1+deb.sury.org~xenial+1
 
@@ -102,6 +102,13 @@ CREATE TABLE `tbl_company_admins` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tbl_company_admins`
+--
+
+INSERT INTO `tbl_company_admins` (`id`, `company_id`, `user_id`) VALUES
+(1, 1, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -169,8 +176,10 @@ CREATE TABLE `tbl_people_type` (
 --
 
 INSERT INTO `tbl_people_type` (`id`, `description`, `type_name`) VALUES
-(1, 'Adminis', 'Admin'),
-(2, 'dere', 'Driver');
+(1, 'Company\'s manager', 'Operations Manager  '),
+(2, 'Drives the cabs', 'Driver'),
+(3, 'In charge of all projects', 'Project Manager'),
+(4, 'Runs cab company', 'Dispatcher  ');
 
 -- --------------------------------------------------------
 
@@ -206,8 +215,16 @@ CREATE TABLE `tbl_project_people` (
   `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `accepted` int(11) NOT NULL
+  `accepted` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_project_people`
+--
+
+INSERT INTO `tbl_project_people` (`id`, `project_id`, `user_id`, `accepted`) VALUES
+(1, 3, 1, 0),
+(2, 4, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -240,7 +257,10 @@ INSERT INTO `tbl_trips` (`id`, `start_milage`, `end_milage`, `date`, `trip_date`
 (4, NULL, NULL, '2016-08-30 11:21:23', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0),
 (5, NULL, NULL, '2016-08-30 11:22:08', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0),
 (6, 1249, NULL, '2016-09-06 14:37:13', '0000-00-00', '00:00:00', NULL, '2016-09-06 17:37:13', NULL, 1, '88321E', '98947N', 1),
-(8, 34531, 34586, '2016-09-06 14:06:33', '2015-04-12', '11:43:00', NULL, '2016-09-06 17:06:13', '2016-09-06 17:06:33', 1, '354563E', '76345N', 0);
+(8, 34531, 34586, '2016-09-06 14:06:33', '2015-04-12', '11:43:00', NULL, '2016-09-06 17:06:13', '2016-09-06 17:06:33', 1, '354563E', '76345N', 0),
+(9, NULL, NULL, '2016-09-07 08:00:25', '2016-02-12', '12:34:00', NULL, NULL, NULL, 1, '4362E', '2372N', 0),
+(10, NULL, NULL, '2016-09-07 08:02:11', '2016-03-12', '22:34:00', NULL, NULL, NULL, 1, '1262E', '2372N', 0),
+(11, NULL, NULL, '2016-09-07 08:18:38', '2016-03-12', '22:34:00', NULL, NULL, NULL, 1, '1262E', '2372N', 0);
 
 -- --------------------------------------------------------
 
@@ -262,7 +282,8 @@ CREATE TABLE `tbl_users` (
 INSERT INTO `tbl_users` (`id`, `email`, `password`, `user_level_id`) VALUES
 (1, 'toniecairow@gmail.com', 'Shoulder1$', 0),
 (2, 'a@b.c', '12345', 0),
-(3, 'a@d.com', '12345', 0);
+(3, 'a@d.com', '12345', 0),
+(4, 'as@f.com', '1234', 0);
 
 -- --------------------------------------------------------
 
@@ -470,7 +491,7 @@ ALTER TABLE `tbl_companies`
 -- AUTO_INCREMENT for table `tbl_company_admins`
 --
 ALTER TABLE `tbl_company_admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `tbl_group_trip`
 --
@@ -485,7 +506,7 @@ ALTER TABLE `tbl_people`
 -- AUTO_INCREMENT for table `tbl_people_type`
 --
 ALTER TABLE `tbl_people_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tbl_projects`
 --
@@ -495,17 +516,17 @@ ALTER TABLE `tbl_projects`
 -- AUTO_INCREMENT for table `tbl_project_people`
 --
 ALTER TABLE `tbl_project_people`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbl_trips`
 --
 ALTER TABLE `tbl_trips`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tbl_user_tokens`
 --
