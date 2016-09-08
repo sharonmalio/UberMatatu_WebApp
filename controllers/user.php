@@ -39,8 +39,26 @@
 						//return response constructed by contains()
 						return $this->response;
 					}
-					return $this->user->signin($this->payload->email,
-						$this->payload->password,$this->api_access);
+					else{
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									/*if (isset($array_value->company_id)) {
+										$company_id=$array_value->company_id;
+									}
+									if (isset($array_value->model_id)) {
+										$model_id=$array_value->model_id;
+									}*/
+									$res[]=$this->models->signin($array_value->email,$array_value->password,$array_value->api_key);
+								}
+
+								return $res;
+						}
 					break;
 				case 'signup':
 						if (!$this->contains(array('email','password','type','api_key'))) {
