@@ -103,13 +103,23 @@
 				return $this->response;
 			}
 			else{
-				
-					
 					if (!$this->contains(array('id','return_mileage'))) {
 						//return resposne constructed by contains()
 						return $this->response;
 					}else{
-						return $this->allocations->update_allocation($this->payload->id,$this->payload->return_mileage);
+						$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									$res[]=$this->allocations->update_allocation($array_value->id,$array_value->return_mileage);
+								}
+
+								return $res;
+						//return $this->allocations->update_allocation($array_value->id,$array_value->return_mileage);
 					}					
 				
 			}
