@@ -23,10 +23,13 @@
 			}
 		}
 
-		function all(){
+		function all($company_head){
 			//pre($profile);
+			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+			$company = $res[0]["company_id"];
+
 			$res = query("SELECT id,`name`,`description`,`name`,`company_id`
-				FROM `tbl_projects`");
+				FROM `tbl_projects` WHERE `company_id` = ?",$company);
 			return $res;
 		}
 

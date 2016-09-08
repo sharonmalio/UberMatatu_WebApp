@@ -2,18 +2,18 @@
 	/**
 	* 
 	*/
-	class ProjectsController extends Controller
+	class ProjectmanagersController extends Controller
 	{
 		
-		private $projects;
+		private $projectmanagers;
 
 		function __construct($method, $verb, $args, $file)
 		{
-			$this->projects = new Projects();
+			$this->projectmanagers = new Projectmanagers();
 
 			parent::__construct($method, $verb, $args, $file);
 		}
-		function ProjectsController(){
+		function ProjectmanagersController(){
 		}
 
 		function GET(){
@@ -23,18 +23,11 @@
 			}
 			else{
 				if (!$this->args) {
-					$project_manager=$this->token->getUser();
-					if($this->verb == "trips"){
-						
-
-						return $this->projects->project_trips($project_manager['id']);
-					}
-
-					//get all projects
-					return $this->projects->all($project_manager['id']);
+					//get all projectmanagers
+					return $this->projectmanagers->all();
 				}else{
-					//get a specific project by user_id
-					return $this->projects->get_project($this->args[0]);
+					//get a specific projectmanager by projectmanager_id
+					return $this->projectmanagers->get_projectmanager($this->args[0]);
 				}
 			}
 		}
@@ -46,7 +39,7 @@
 			}
 			else{
 					//return 5;
-					if (!$this->contains(array('name', 'description','company_id'))) {
+					if (!$this->contains(array('projectmanager'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
@@ -61,11 +54,10 @@
 									/*if (isset($array_value->company_id)) {
 										$company_id=$array_value->company_id;
 									}
-									if (isset($array_value->project_id)) {
-										$project_id=$array_value->project_id;
+									if (isset($array_value->projectmanager_id)) {
+										$projectmanager_id=$array_value->projectmanager_id;
 									}*/
-									$res[]=$this->projects->add_project($array_value->name,$array_value->description,
-										$array_value->company_id);
+									$res[]=$this->projectmanagers->add_projectmanager($array_value->projectmanager);
 								}
 
 								return $res;
@@ -79,34 +71,26 @@
 				return $this->response;
 			}
 			else{
-				
-					if (!$this->contains(array('id','name', 'description','company_id'))) {
+					if (!$this->contains(array('projectmanager','id'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
-						
-					$payload_array=array();
+								$payload_array=array();
 								$res=array();
 								if (!is_array($this->payload)) {
 									$payload_array[]=$this->payload;	
-								}else{
-									$payload_array=$this->payload;
-								}
-								foreach ($payload_array as $array_key => $array_value) {
-									/*if (isset($array_value->company_id)) {
-										$company_id=$array_value->company_id;
+									}else{
+										$payload_array=$this->payload;
 									}
-									if (isset($array_value->model_id)) {
-										$model_id=$array_value->model_id;
-									}*/
-									$res[]=$this->models->update_project($array_value->$array_value->name,
-										$array_value->description,$array_value->company_id);
-								}
+								foreach ($payload_array as $array_key => $array_value) {
+										$res[]=$this->projectmanagers->update_projectmanager($array_value->id,$array_value->projectmanager);
+									}
 
-								return $res;
+									return $res;
+						}
+				
 			}
 		}
-	}
 
 		function DELETE(){
 			if (!$this->headerContains(array('authorisation') )) {
@@ -114,14 +98,25 @@
 				return $this->response;
 			}
 			else{
-				if (!$this->args) {
-					//get all projects
-					return array('error' => 'please choose a project to delete');
-				}else{
-						return $this->projects->delete_project($this->args[0]);
-					}					
-				}
-			}
+				if (!$this->contains(array('id'))) {
+							//return response constructed by contains()
+							return $this->response;
+						}else{
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+									}else{
+										$payload_array=$this->payload;
+									}
+								foreach ($payload_array as $array_key => $array_value) {
+										$res[]=$this->projectmanagers->delete_projectmanager($array_value->id);
+									}
+
+									return $res;
+						}					
+					}
+		}
 	}
 
 ?>

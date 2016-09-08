@@ -49,6 +49,10 @@
 		function company_trips($company_head){
 
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+			$company = $res[0]["company_id"];
+			$res = query("SELECT * FROM `tbl_projects` 
+				INNER JOIN `tbl_project_people` ON tbl_projects.id = tbl_project_people.project_id
+				INNER JOIN `tbl_trips` ON tbl_project_people.user_id = tbl_trips.trip_creator WHERE `company_id` =? ", $company);
 
 			if($res == null){
 				return array('error' => 'You are not a company admin');
