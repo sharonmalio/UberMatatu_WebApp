@@ -66,7 +66,7 @@
 		}
 
 		function signin($email, $pass ,$api_access){
-			print_r($email);
+			//print_r($email);
 			//pre($profile);
 			if(!$this->searchEmail($email)){
 				return array('error' => 'invalid email or password');
