@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 08, 2016 at 02:17 PM
+-- Generation Time: Sep 08, 2016 at 06:03 PM
 -- Server version: 5.7.13-0ubuntu0.16.04.2
 -- PHP Version: 7.0.10-1+deb.sury.org~xenial+1
 
@@ -32,15 +32,15 @@ CREATE TABLE `tbl_allocation` (
   `driver_id` int(11) NOT NULL,
   `collect_time` datetime NOT NULL,
   `return_time` datetime DEFAULT NULL,
-  `start_milage` int(11) NOT NULL,
-  `return_milage` int(11) DEFAULT NULL
+  `start_mileage` int(11) NOT NULL,
+  `return_mileage` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_allocation`
 --
 
-INSERT INTO `tbl_allocation` (`id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage`) VALUES
+INSERT INTO `tbl_allocation` (`id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_mileage`, `return_mileage`) VALUES
 (1, 3, 1, '2016-09-05 19:07:38', '2016-09-05 23:59:02', 32841, 32892),
 (2, 2, 2, '2016-09-05 19:14:48', '2016-09-06 00:07:53', 32841, 22774),
 (4, 5, 2, '2016-09-05 22:57:54', '2016-09-06 00:06:50', 22712, 22774),
@@ -107,7 +107,8 @@ CREATE TABLE `tbl_company_admins` (
 --
 
 INSERT INTO `tbl_company_admins` (`id`, `company_id`, `user_id`) VALUES
-(1, 1, 4);
+(1, 1, 4),
+(2, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -179,7 +180,8 @@ INSERT INTO `tbl_people_type` (`id`, `description`, `type_name`) VALUES
 (1, 'Company\'s manager', 'Operations Manager  '),
 (2, 'Drives the cabs', 'Driver'),
 (3, 'In charge of all projects', 'Project Manager'),
-(4, 'Runs cab company', 'Dispatcher  ');
+(4, 'Runs cab company', 'Dispatcher  '),
+(5, 'Works in a company project', 'Staff');
 
 -- --------------------------------------------------------
 
@@ -234,33 +236,34 @@ INSERT INTO `tbl_project_people` (`id`, `project_id`, `user_id`, `accepted`) VAL
 
 CREATE TABLE `tbl_trips` (
   `id` int(11) NOT NULL,
-  `start_milage` int(11) DEFAULT NULL,
-  `end_milage` int(11) DEFAULT NULL,
+  `start_mileage` int(11) DEFAULT NULL,
+  `end_mileage` int(11) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `trip_date` date NOT NULL,
   `trip_time` time NOT NULL,
-  `vehicle_driver` int(11) DEFAULT NULL,
+  `vehicle_id` int(11) DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `stop_time` datetime DEFAULT NULL,
   `trip_creator` int(11) NOT NULL,
   `start_coordinate` varchar(200) NOT NULL,
   `end_coordinate` varchar(200) NOT NULL,
-  `approval` int(11) NOT NULL DEFAULT '0'
+  `approval` int(11) NOT NULL DEFAULT '0',
+  `enroute` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_trips`
 --
 
-INSERT INTO `tbl_trips` (`id`, `start_milage`, `end_milage`, `date`, `trip_date`, `trip_time`, `vehicle_driver`, `start_time`, `stop_time`, `trip_creator`, `start_coordinate`, `end_coordinate`, `approval`) VALUES
-(3, NULL, NULL, '2016-08-28 13:48:56', '0000-00-00', '00:00:00', NULL, NULL, NULL, 2, '54321465232E', '643236547N', 0),
-(4, NULL, NULL, '2016-08-30 11:21:23', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0),
-(5, NULL, NULL, '2016-08-30 11:22:08', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0),
-(6, 1249, NULL, '2016-09-06 14:37:13', '0000-00-00', '00:00:00', NULL, '2016-09-06 17:37:13', NULL, 1, '88321E', '98947N', 1),
-(8, 34531, 34586, '2016-09-06 14:06:33', '2015-04-12', '11:43:00', NULL, '2016-09-06 17:06:13', '2016-09-06 17:06:33', 1, '354563E', '76345N', 0),
-(9, NULL, NULL, '2016-09-07 08:00:25', '2016-02-12', '12:34:00', NULL, NULL, NULL, 1, '4362E', '2372N', 0),
-(10, NULL, NULL, '2016-09-07 08:02:11', '2016-03-12', '22:34:00', NULL, NULL, NULL, 1, '1262E', '2372N', 0),
-(11, NULL, NULL, '2016-09-07 08:18:38', '2016-03-12', '22:34:00', NULL, NULL, NULL, 1, '1262E', '2372N', 0);
+INSERT INTO `tbl_trips` (`id`, `start_mileage`, `end_mileage`, `date`, `trip_date`, `trip_time`, `vehicle_id`, `start_time`, `stop_time`, `trip_creator`, `start_coordinate`, `end_coordinate`, `approval`, `enroute`) VALUES
+(3, NULL, NULL, '2016-08-28 13:48:56', '0000-00-00', '00:00:00', NULL, NULL, NULL, 2, '54321465232E', '643236547N', 0, NULL),
+(4, NULL, NULL, '2016-08-30 11:21:23', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0, NULL),
+(5, NULL, NULL, '2016-08-30 11:22:08', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', '139236547N', 0, NULL),
+(6, 1249, NULL, '2016-09-06 14:37:13', '0000-00-00', '00:00:00', NULL, '2016-09-06 17:37:13', NULL, 1, '88321E', '98947N', 1, NULL),
+(8, 34531, 34586, '2016-09-06 14:06:33', '2015-04-12', '11:43:00', NULL, '2016-09-06 17:06:13', '2016-09-06 17:06:33', 1, '354563E', '76345N', 0, NULL),
+(9, NULL, NULL, '2016-09-07 08:00:25', '2016-02-12', '12:34:00', NULL, NULL, NULL, 1, '4362E', '2372N', 0, NULL),
+(10, NULL, NULL, '2016-09-07 08:02:11', '2016-03-12', '22:34:00', NULL, NULL, NULL, 1, '1262E', '2372N', 0, NULL),
+(11, NULL, NULL, '2016-09-07 08:18:38', '2016-03-12', '22:34:00', NULL, NULL, NULL, 1, '1262E', '2372N', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -491,7 +494,7 @@ ALTER TABLE `tbl_companies`
 -- AUTO_INCREMENT for table `tbl_company_admins`
 --
 ALTER TABLE `tbl_company_admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `tbl_group_trip`
 --
@@ -506,7 +509,7 @@ ALTER TABLE `tbl_people`
 -- AUTO_INCREMENT for table `tbl_people_type`
 --
 ALTER TABLE `tbl_people_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `tbl_projects`
 --

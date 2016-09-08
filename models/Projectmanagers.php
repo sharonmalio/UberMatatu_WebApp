@@ -25,7 +25,7 @@
 			//pre($profile);
 			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people`
 			INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
-			INNER JOIN `tbl_projects` WHERE `type` = 3");
+			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id WHERE `type` = 3");
 			return $res;
 		}
 
