@@ -12,7 +12,7 @@
 		function getDriver(){
 			//pre($this->email);
 			if($this->drivers != null){	
-				$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`driver_creator`,`start_coordinate`,`end_coordinate`
+				$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`driver_creator`,`start_coordinate`,`end_coordinate`
 					FROM `tbl_drivers`
 				 	WHERE  `id`= ?",$this->drivers);
 				if(isset($res[0])){
@@ -85,7 +85,7 @@
 
 		// function delete_driver($id){
 		// 	//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-		// 	$res = query("SELECT `id`,`start_milage`,`end_milage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`driver_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_drivers` WHERE `id`=?",
+		// 	$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_driver`,`start_time`,`stop_time`,`driver_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_drivers` WHERE `id`=?",
 		// 		$id);
 		// 	if ($res==null) {
 		// 		return array('error' => 'drivers does not exist');
