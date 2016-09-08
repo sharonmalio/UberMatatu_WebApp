@@ -111,6 +111,15 @@
 								}
 						}
 
+					if($this->verb == "dispatch"){
+						if(!$this->contains(array('vehicle_id'))){
+
+							return $this->response;
+						}else{
+							return $this->trips->dispatch_vehicle($this->payload->vehicle_id);
+						}
+					}
+
 
 						if (!$this->contains(array('id','start_coordinate','end_coordinate','trip_date','trip_time'))) {
 							//return response constructed by contains()

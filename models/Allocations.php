@@ -12,7 +12,7 @@
 		function getAllocation(){
 			//pre($this->email);
 			if($this->vehicle_id != null){	
-				$res = query("SELECT `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage`,`plate`,`fName`, `lName` FROM `tbl_allocation`
+				$res = query("SELECT tbl_allocation.id, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage`,`plate`,`fName`, `lName` FROM `tbl_allocation`
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
 				 WHERE   `vehicle_id`= ? AND `return_time` IS NULL ",$this->vehicle_id);

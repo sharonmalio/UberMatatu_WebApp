@@ -103,17 +103,15 @@
 				return $this->response;
 			}
 			else{
-				if (!$this->args) {
-					//get all companies
-					return array('error' => 'please choose an allocation to update');
-				}else{
-					if (!$this->contains(array('return_milage'))) {
+				
+					
+					if (!$this->contains(array('id','return_milage'))) {
 						//return resposne constructed by contains()
 						return $this->response;
 					}else{
-						return $this->allocations->update_allocation($this->args[0],$this->payload->return_milage);
+						return $this->allocations->update_allocation($this->payload->id,$this->payload->return_milage);
 					}					
-				}
+				
 			}
 		}
 
