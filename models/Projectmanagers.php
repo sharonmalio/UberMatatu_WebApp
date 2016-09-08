@@ -12,7 +12,10 @@
 		function getProjectmanager(){
 			//pre($this->email);
 			if($this->projectmanager != null){	
-				$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people` WHERE `type` = 3 `id`= ?",$this->projectmanager);
+				$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`name` AS `Project Name` FROM `tbl_people`
+					INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
+					INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+					WHERE `type` = 3 AND tbl_people.id = ?",$this->projectmanager);
 				if(isset($res[0])){
 					return $res[0];
 				}else{
@@ -23,9 +26,10 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people`
+			$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`name` AS `Project Name` FROM `tbl_people`
 			INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
-			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id WHERE `type` = 3");
+			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+			WHERE `type` = 3");
 			return $res;
 		}
 
@@ -41,7 +45,7 @@
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
-				return $this->getProjectmanager();
+					return $this->getProjectmanager();
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
 			}
