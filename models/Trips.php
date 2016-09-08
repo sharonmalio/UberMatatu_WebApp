@@ -1,4 +1,4 @@
-<?php
+ <?php
 	class Trips
 	{
 		/*private $uid = null;
@@ -153,6 +153,10 @@
 
 		function dispatch_vehicle($vehicle_id, $trip_id){
 			$res = query("UPDATE `tbl_trips` SET `vehicle_id` = ? WHERE `id` = ?",$vehicle_id,$trip_id);
+
+			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+					FROM `tbl_trips` WHERE `id`= ?",$trip_id);
+					return $res[0];
 		}
 
 		function delete_trip($id){

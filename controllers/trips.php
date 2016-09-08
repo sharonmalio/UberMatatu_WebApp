@@ -112,11 +112,11 @@
 						}
 
 					if($this->verb == "dispatch"){
-						if(!$this->contains(array('vehicle_id'))){
+						if(!$this->contains(array('vehicle_id','trip_id'))){
 
 							return $this->response;
 						}else{
-							return $this->trips->dispatch_vehicle($this->payload->vehicle_id);
+							return $this->trips->dispatch_vehicle($this->payload->vehicle_id,$this->payload->trip_id);
 						}
 					}
 
