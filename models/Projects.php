@@ -48,9 +48,24 @@
 				//return array('error' => 'invalid email or password');
 		}
 
-		function project_trips(){
+		function project_trips($project_manager){
+
+			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
+			$project_id = $res[0]["project_id"];
+			$res = query("SELECT * FROM `tbl_project_people`
+			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
+			INNER JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
+			 WHERE `project_id` = ?",$project_id);
+
+			if($res == null){
+				return array('error' => 'You are not included in this trip');
+			} 
+			else{
+				return $res;
+			}
 			
 		}
+
 		function get_project($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$id);

@@ -3,7 +3,7 @@
 	* 
 	*/
 	class TripsController extends Controller
-	{
+	{	
 		
 		private $trips;
 
@@ -44,13 +44,14 @@
 				return $this->response;
 			}
 			else{
-				if($this->verb=="many"){
-					$trip_creator=$this->token->getUser();
+									
 					//return 5;
 					if (!$this->contains(array('start_coordinate','end_coordinate','trip_date','trip_time'))) {
 							//return response constructed by contains()
 							return $this->response;
-						}else{
+						}else
+						{
+								$trip_creator=$this->token->getUser();
 								$payload_array=array();
 								$res=array();
 								if (!is_array($this->payload)) {
@@ -65,42 +66,14 @@
 									if (isset($array_value->trip_id)) {
 										$trip_id=$array_value->trip_id;
 									}*/
-									
+								$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
 								}
 
 								return $res;
 						}	
 					
+					}
 				}
-				else{
-					$trip_creator=$this->token->getUser();
-					//return 5;
-					if (!$this->contains(array('start_coordinate','end_coordinate','trip_date','trip_time'))) {
-							//return response constructed by contains()
-							return $this->response;
-						}else{
-								$payload_array=array();
-								$res=array();
-								if (!is_array($this->payload)) {
-									$array_value = $this->payload;
-									$res = $this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);	
-								}else{
-									$payload_array=$this->payload;
-									foreach ($payload_array as $array_key => $array_value) {
-										/*if (isset($array_value->company_id)) {
-											$company_id=$array_value->company_id;
-										}
-										if (isset($array_value->trip_id)) {
-											$trip_id=$array_value->trip_id;
-										}*/
-										$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
-									}
-								} 
-								return $res;
-						}	
-				}
-			}
-		}
 
 		function PUT(){
 			if (!$this->headerContains(array('authorisation') )) {
@@ -108,7 +81,7 @@
 				return $this->response;
 			}
 			else{
-				if (!$this->args) {
+				
 					if($this->verb == "approve"){
 							if (!$this->contains(array('id'))) {
 									//return resposne constructed by contains()
@@ -139,15 +112,33 @@
 						}
 
 
-						
-					}else{
-						if (!$this->contains(array('start_coordinate','end_coordinate','trip_date','trip_time'))) {
-							//return resposne constructed by contains()
+						if (!$this->contains(array('id','start_coordinate','end_coordinate','trip_date','trip_time'))) {
+							//return response constructed by contains()
 							return $this->response;
 						}else{
-							return $this->trips->update_trip($this->args[0],$array_value->start_coordinate,$array_value->end_coordinate,$this->payload->trip_date,$this->payload->trip_time);
-						}					
-					}
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									/*if (isset($array_value->company_id)) {
+										$company_id=$array_value->company_id;
+									}
+									if (isset($array_value->model_id)) {
+										$model_id=$array_value->model_id;
+									}*/
+									$res[]=$this->models->update_model($array_value->id,
+										$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+								}
+
+								return $res;
+						}
+					
+											
+					
 				}
 			}
 		

@@ -58,7 +58,7 @@
 
 		function get_allocation($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation` WHERE `vehicle_id` = ?",$id);
+			$res = query("SELECT `id`, `vehicle_id`, `driver_id`, `collect_time`, `return_time`, `start_milage`, `return_milage` FROM `tbl_allocation` WHERE `vehicle_id` = ? AND `return_time` IS NULL ",$id);
 			if ($res==null) {
 				return array('error' => 'allocation does not exist');
 			}else{

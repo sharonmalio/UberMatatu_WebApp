@@ -46,6 +46,19 @@
 				//return array('error' => 'invalid email or password');
 		}
 
+		function company_trips($company_head){
+
+			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+
+			if($res == null){
+				return array('error' => 'You are not a company admin');
+			} 
+			else{
+				return $res;
+			}
+
+		}
+
 		function get_company($id){
 			//$username = (isset($profile->username)) ? $profile->username : null;
 			$res = query("SELECT `id`,`name`,`description` FROM `tbl_companies` WHERE `id`=?",

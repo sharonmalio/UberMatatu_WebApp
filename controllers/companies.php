@@ -23,6 +23,12 @@
 			}
 			else{
 				if (!$this->args) {
+					if($this->verb == "trips"){
+						$company_head=$this->token->getUser();
+
+						return $this->companies->company_trips($company_head['id']);
+
+					}
 					//get all companies
 					return $this->companies->all();
 				}else{

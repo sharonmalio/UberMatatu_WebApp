@@ -24,8 +24,11 @@
 			else{
 				if (!$this->args) {
 					if($this->verb == "trips"){
-						return $this->trips->project_trips($this->args[0]);
+						$project_manager=$this->token->getUser();
+
+						return $this->projects->project_trips($project_manager['id']);
 					}
+
 					//get all projects
 					return $this->projects->all();
 				}else{
@@ -75,62 +78,34 @@
 				return $this->response;
 			}
 			else{
-				if ($this->verb=="many") {
-					$payload_array=array();
-						$res=array();
-						if (!is_array($this->payload)) {
-							$payload_array[]=$this->payload;	
-						}else{
-							$payload_array=$this->payload;
-						}
-					foreach ($payload_array as $array_key => $array_value) {
-							$id=NULL;
-							
-							if (isset($array_value->company_id)) {
-								$company_id=$array_value->company_id;
-							}
-							if (isset($array_value->project_id)) {
-								$project_id=$array_value->project_id;
-							}
-							$res[]=$this->projects->update_project($array_value->id,$array_value->name,$array_value->description,
-								$array_value->company_id);
-						}
-
-						return $res;	
-					
-				}else{
-					if (!$this->args) {
-						//get all projects
-						//return array('error' => 'please choose a project to update');
-						//return $this->payload;
-						return ($this->contains(array('name', 'description','company_id')));
-						/*foreach ($this->payload as $key => $value) {
-							if (!$this->contains(array('name', 'description','company_id'))) {
-								//return response constructed by contains()
-								return $this->response;
-							}
-						}*/
-						if (!$this->contains(array('name', 'description','company_id'))) {
+				
+					if (!$this->contains(array('id','name', 'description','company_id'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
-							// $user_id=$this->token->getUser();
-							//return $user_id["id"];
-							return $this->projects->self_update_project($this->payload->name,
-								$this->payload->description,$this->payload->company_id);
-						}
-					}else{
-						if (!$this->contains(array('name','description','company_id'))) {
-							//return resposne constructed by contains()
-							return $this->response;
-						}else{
-							return $this->projects->update_project($this->args[0],$this->payload->name,
-								$this->payload->description,$this->payload->company_id);
-						}					
-					}
-				}
+						
+					$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									/*if (isset($array_value->company_id)) {
+										$company_id=$array_value->company_id;
+									}
+									if (isset($array_value->model_id)) {
+										$model_id=$array_value->model_id;
+									}*/
+									$res[]=$this->models->update_project($array_value->$array_value->name,
+										$array_value->description,$array_value->company_id);
+								}
+
+								return $res;
 			}
 		}
+	}
 
 		function DELETE(){
 			if (!$this->headerContains(array('authorisation') )) {
