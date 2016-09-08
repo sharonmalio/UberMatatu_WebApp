@@ -2,18 +2,18 @@
 	/**
 	* 
 	*/
-	class StaffsController extends Controller
+	class StaffController extends Controller
 	{
 		
-		private $staffs;
+		private $staff;
 
 		function __construct($method, $verb, $args, $file)
 		{
-			$this->staffs = new Staffs();
+			$this->staff = new Staff();
 
 			parent::__construct($method, $verb, $args, $file);
 		}
-		function StaffsController(){
+		function StaffController(){
 		}
 
 		function GET(){
@@ -24,10 +24,10 @@
 			else{
 				if (!$this->args) {
 					//get all staffs
-					return $this->staffs->all();
+					return $this->staff->all();
 				}else{
 					//get a specific staff by staff_id
-					return $this->staffs->get_staff($this->args[0]);
+					return $this->staff->get_staff($this->args[0]);
 				}
 			}
 		}

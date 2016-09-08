@@ -50,8 +50,9 @@
 				return $this->response;
 			}
 			else{
+					$project_manager=$this->token->getUser();
 					//return 5;
-					if (!$this->contains(array('name', 'description','company_id'))) {
+					if (!$this->contains(array('name', 'description'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
@@ -69,8 +70,7 @@
 									if (isset($array_value->project_id)) {
 										$project_id=$array_value->project_id;
 									}*/
-									$res[]=$this->projects->add_project($array_value->name,$array_value->description,
-										$array_value->company_id);
+									$res[]=$this->projects->add_project($array_value->name,$array_value->description,$project_manager['id']);
 								}
 
 								return $res;

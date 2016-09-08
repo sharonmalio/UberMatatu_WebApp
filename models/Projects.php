@@ -33,14 +33,18 @@
 			return $res;
 		}
 
-		function add_project($name, $description, $company_id){
+		function add_project($name, $description, $company_head){
+
+
+			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+			$company = $res[0]["company_id"];
 			//pre($profile);
 			if($this->searchName($name)){
 				return array('error' => 'project already exists');
 			}else{
 					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 					$res = query("INSERT INTO `tbl_projects` (`name`,`description`,`company_id`) 
-						VALUES (?,?,?)",$name, $description, $company_id);
+						VALUES (?,?,?)",$name, $description, $company);
 					$this->name = $name;				
 					//regenerate token expiry key
 					/*$token = new Token();

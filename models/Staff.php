@@ -1,5 +1,5 @@
 <?php
-	class Staffs
+	class Staff
 	{
 		/*private $uid = null;
 		private $plate = "";
