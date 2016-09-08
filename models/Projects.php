@@ -33,14 +33,18 @@
 			return $res;
 		}
 
-		function add_project($name, $description, $company_id){
+		function add_project($name, $description, $company_head){
+
+
+			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+			$company = $res[0]["company_id"];
 			//pre($profile);
 			if($this->searchName($name)){
 				return array('error' => 'project already exists');
 			}else{
 					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 					$res = query("INSERT INTO `tbl_projects` (`name`,`description`,`company_id`) 
-						VALUES (?,?,?)",$name, $description, $company_id);
+						VALUES (?,?,?)",$name, $description, $company);
 					$this->name = $name;				
 					//regenerate token expiry key
 					/*$token = new Token();
@@ -69,6 +73,18 @@
 			
 		}
 
+		function project_staff($project_manager){
+			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
+			$project_id = $res[0]['project_id'];
+
+			$res= query("SELECT `fName`,`lName`,`phone_no`,`email` FROM `tbl_project_people`
+			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
+			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+			WHERE `project_id` = ?",$project_id );
+
+			return $res;
+
+		}
 		function get_project($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$id);

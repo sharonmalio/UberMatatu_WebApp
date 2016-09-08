@@ -63,6 +63,14 @@
 
 		}
 
+		function company_project($company_head){
+			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
+			$company = $res[0]["company_id"];
+
+			$res = query("SELECT id,`name`,`description`,`name`,`company_id`
+				FROM `tbl_projects` WHERE `company_id` = ?",$company);
+			return $res;
+		}
 		function get_company($id){
 			//$username = (isset($profile->username)) ? $profile->username : null;
 			$res = query("SELECT `id`,`name`,`description` FROM `tbl_companies` WHERE `id`=?",

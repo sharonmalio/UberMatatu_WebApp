@@ -12,9 +12,10 @@
 		function getProjectmanager(){
 			//pre($this->email);
 			if($this->projectmanager != null){	
-				$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`name` AS `Project Name` FROM `tbl_people`
+				$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Project Name` FROM `tbl_people`
 					INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
-					INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+					INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id
+					INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id 
 					WHERE `type` = 3 AND tbl_people.id = ?",$this->projectmanager);
 				if(isset($res[0])){
 					return $res[0];
@@ -26,9 +27,10 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`name` AS `Project Name` FROM `tbl_people`
+			$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Project Name` FROM `tbl_people`
 			INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
-			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id
+			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id 
 			WHERE `type` = 3");
 			return $res;
 		}
@@ -37,7 +39,7 @@
 
 		function get_projectmanager($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people` WHERE `type` = 3 AND `id` = ?",$id);
+			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people` WHERE `type` = 3 AND `user_id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'projectmanager does not exist');
 			}else{
