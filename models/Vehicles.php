@@ -12,7 +12,7 @@
 		function getVehicle(){
 			//pre($this->email);
 			if(!$this->plate == null){	
-				$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity` FROM `tbl_vehicles`
+				$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity`,`vehicle_dispatched` FROM `tbl_vehicles`
 				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id WHERE `plate` = ?",
 					$this->plate);
 				if(isset($res[0])){
@@ -25,7 +25,7 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity`,`vehicle_use` FROM `tbl_vehicles`
+			$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity`,`vehicle_dispatched` FROM `tbl_vehicles`
 				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id ");
 			return $res;
 		}
