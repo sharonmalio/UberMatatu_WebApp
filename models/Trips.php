@@ -25,7 +25,7 @@
 				 WHERE   `vehicle_id`= ?",$vehicle);
 
 					$res[0]["details"]=$res1[0];
-					return array($res[0]);
+					return $res[0];
 				}else{
 					if(isset($res[0])){
 					return $res[0];
