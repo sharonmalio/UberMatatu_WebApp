@@ -24,7 +24,8 @@
 				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_make.id = tbl_vehicle_model.make_id
 				 WHERE   `vehicle_id`= ?",$vehicle);
 
-					 return array($res[0], 'details'=>$res1[0]);
+					$res[0]["details"]=$res1[0];
+					return array($res[0]);
 				}else{
 					if(isset($res[0])){
 					return $res[0];
