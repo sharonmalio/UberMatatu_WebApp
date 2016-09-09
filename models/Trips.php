@@ -151,7 +151,7 @@
 			}
 		}
 
-		function stop_trip($id,$start_mileage){
+		function stop_trip($id,$end_mileage){
 			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'trip does not exist');
@@ -160,7 +160,9 @@
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $res[0]["id"];
 				$res=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=? WHERE `id`=?",
-					$start_mileage,$date,$id);
+					$end_mileage,$date,$id);
+
+				$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$vehicle_id);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
@@ -172,9 +174,12 @@
 		function dispatch_vehicle($vehicle_id, $trip_id){
 			$res = query("UPDATE `tbl_trips` SET `vehicle_id` = ? WHERE `id` = ?",$vehicle_id,$trip_id);
 
+			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",1,$vehicle_id);
+
 			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips` WHERE `id`= ?",$trip_id);
 					return $res[0];
+
 		}
 
 		function delete_trip($id){
