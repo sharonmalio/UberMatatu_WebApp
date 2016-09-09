@@ -51,25 +51,20 @@
 							return $this->response;
 						}else
 						{
-								$trip_creator=$this->token->getUser();
-								$payload_array=array();
-								$res=array();
-								if (!is_array($this->payload)) {
-									$payload_array[]=$this->payload;	
-								}else{
-									$payload_array=$this->payload;
-								}
-								foreach ($payload_array as $array_key => $array_value) {
-									/*if (isset($array_value->company_id)) {
-										$company_id=$array_value->company_id;
-									}
-									if (isset($array_value->trip_id)) {
-										$trip_id=$array_value->trip_id;
-									}*/
-								$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
-								}
+							$trip_creator=$this->token->getUser();
+							$payload_array=array();
+							$res=array();
+							if (!is_array($this->payload)) {
+								$payload_array[]=$this->payload;	
+							}else{
+								$payload_array=$this->payload;
+							}
+							foreach ($payload_array as $array_key => $array_value) {
+							
+							$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+							}
 
-								return $res;
+							return $res;
 						}	
 					
 					}
@@ -87,7 +82,20 @@
 									//return resposne constructed by contains()
 									return $this->response;
 								}else{
-									return $this->trips->approve_trip($this->payload->id);
+									$trip_creator=$this->token->getUser();
+									$payload_array=array();
+									$res=array();
+									if (!is_array($this->payload)) {
+										$payload_array[]=$this->payload;	
+									}else{
+										$payload_array=$this->payload;
+									}
+									foreach ($payload_array as $array_key => $array_value) {
+									
+									$res[]=$this->trips->approve_trip($array_value->id);
+									}
+
+									return $res;
 								}
 							}
 						
@@ -116,6 +124,21 @@
 
 							return $this->response;
 						}else{
+							$trip_creator=$this->token->getUser();
+									$payload_array=array();
+									$res=array();
+									if (!is_array($this->payload)) {
+										$payload_array[]=$this->payload;	
+									}else{
+										$payload_array=$this->payload;
+									}
+									foreach ($payload_array as $array_key => $array_value) {
+									
+									$res[]=$this->trips->dispatch_vehicle($array_value->id,$array_value->trip_id);
+									}
+
+									return $res;
+
 							return $this->trips->dispatch_vehicle($this->payload->vehicle_id,$this->payload->trip_id);
 						}
 					}
@@ -133,13 +156,8 @@
 									$payload_array=$this->payload;
 								}
 								foreach ($payload_array as $array_key => $array_value) {
-									/*if (isset($array_value->company_id)) {
-										$company_id=$array_value->company_id;
-									}
-									if (isset($array_value->model_id)) {
-										$model_id=$array_value->model_id;
-									}*/
-									$res[]=$this->models->update_model($array_value->id,
+									
+									$res[]=$this->trips->update_trip($array_value->id,
 										$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
 								}
 

@@ -43,6 +43,14 @@
 
 					}
 
+					if($this->verb == "staff"){
+						$company_head=$this->token->getUser();
+
+						return $this->companies->company_staff($company_head['id']);
+
+					}
+
+
 					if (!$this->args) {
 				
 					//get all companies
