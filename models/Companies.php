@@ -67,7 +67,7 @@
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
 
-			$res = query("SELECT `name`,`fName`,`lName` FROM `tbl_projects`
+			$res = query("SELECT tbl_project_people.user_id,`name`,`fName`,`lName` FROM `tbl_projects`
 			INNER JOIN `tbl_project_people` ON tbl_project_people.project_id = tbl_projects.id
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
 			 WHERE `company_id` = ? AND `type` = ?",$company,3);
