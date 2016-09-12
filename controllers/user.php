@@ -41,7 +41,7 @@
 					}
 					else{
 								$payload_array=array();
-								$res=array();
+								
 								if (!is_array($this->payload)) {
 									$payload_array[]=$this->payload;	
 								}else{
@@ -54,7 +54,7 @@
 									if (isset($array_value->model_id)) {
 										$model_id=$array_value->model_id;
 									}*/
-									$res[]=$this->user->signin($array_value->email,$array_value->password,$this->api_access);
+									$res=$this->user->signin($array_value->email,$array_value->password,$this->api_access);
 								}
 
 								return $res;

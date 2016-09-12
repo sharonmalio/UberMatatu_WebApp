@@ -57,10 +57,11 @@
 
 				//handle pro
 				if ($project_id!=NULL) {
-					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`) 
-						VALUES (?,?)",
+
+					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`) VALUES (?,?)",
 					$this->uid,$project_id);	
 				}
+
 				return $this->getUser();
 			}//
 		}
