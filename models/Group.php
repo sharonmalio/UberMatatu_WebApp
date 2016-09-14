@@ -12,8 +12,10 @@
 		function getGrouptrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.user_id,`fName`,`lName`
-					FROM `tbl_group_trip` INNER JOIN `tbl_people` ON tbl_group_trip.user_id = tbl_people.user_id
+				$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.email,`fName`,`lName`
+					FROM `tbl_group_trip` 
+					INNER JOIN `tbl_users` ON tbl_group_trip.email = tbl_users.email 
+					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id
 				 	WHERE  `trip_id`= ? ORDER BY `trip_id`",$this->trips);
 				if(isset($res[0])){
 					return $res;
@@ -25,20 +27,22 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.user_id,`fName`,`lName`
-					FROM `tbl_group_trip` INNER JOIN `tbl_people` ON tbl_group_trip.user_id = tbl_people.user_id ");
+			$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.email,`fName`,`lName`
+					FROM `tbl_group_trip` 
+					INNER JOIN `tbl_users` ON tbl_group_trip.email = tbl_users.email 
+					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id ");
 			return $res;
 		}
 
-		function add_grouptrip($trip_id,$user_id){
+		function add_grouptrip($trip_id,$email){
 
 			//pre($profile);
-			if($this->searchName($trip_id,$user_id)){
+			if($this->searchName($trip_id,$email)){
 				return array('error' => 'User in trip already exists');
 			}else{
 					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-					$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`user_id`) 
-						VALUES (?,?)",$trip_id,$user_id);
+					$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`email`) 
+						VALUES (?,?)",$trip_id,$email);
 					// $this->trips = $trips;				
 					//regenerate token expiry key
 					/*$token = new Token();
@@ -51,7 +55,7 @@
 
 		function get_grouptrip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`trip_id`,`user_id`
+			$res = query("SELECT `id`,`trip_id`,`email`
 					FROM `tbl_group_trip` WHERE `trip_id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'Group trip does not exist');
@@ -66,16 +70,16 @@
 			}
 		}
 
-		function update_grouptrips($id,$trip_id,$user_id){
+		function update_grouptrips($id,$trip_id,$email){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`trip_id`,`user_id`
-					FROM `tbl_group_trip` WHERE `trip_id` = ? AND `user_id` = ? ",$trip_id, $user_id);
+			$res = query("SELECT `id`,`trip_id`,`email`
+					FROM `tbl_group_trip` WHERE `trip_id` = ? AND `email` = ? ",$trip_id, $email);
 			if ($res==null) {
 				return array('error' => 'User does not exist in the selected trip');
 			}else{
 				$this->trips = $res[0]["trips"];
-				$res=query("UPDATE `tbl_group_trip` SET `user_id` = ? WHERE `id`=?",
+				$res=query("UPDATE `tbl_group_trip` SET `email` = ? WHERE `id`=?",
 					$user_id,$id);
 				/*//regenerate token expiry key
 				$token = new Token();
@@ -95,7 +99,7 @@
 				return array('error' => 'trip does not exist');
 			}else{
 				$this->id = $res[0]["id"];
-				query("DELETE FROM `tbl_group_trip` WHERE `trip_id`=? ",
+				query("DELETE FROM `tbl_group_trip` WHERE `email`=? ",
 					$id);
 				/*//regenerate token expiry key
 				$token = new Token();
@@ -108,14 +112,23 @@
 
 
 		static function searchName($trip_id, $user){
-			$res = query("SELECT * FROM `tbl_group_trip` WHERE `trip_id` = ? AND `user_id` = ?",$trip_id, $user);
-			if($res == null){
-				return false;
+			$res = query("SELECT * FROM `tbl_users` WHERE `email` = ?", $user);
+			if ($res == null) {
+				 
+				return array('error' => 'user does not exist');
 			}
 			if(isset($res[0])){
-				return array('error' => 'trips already exists');
+				$res = query("SELECT * FROM `tbl_group_trip` WHERE `trip_id` = ? AND `email` = ?",$trip_id, $user);
+				if($res == null){
+					return false;
+				}
+				if(isset($res[0])){
+					return array('error' => 'trips already exists');
+				}
+				return true;
+
 			}
-			return true;
+			
 		}
 	}
 ?>

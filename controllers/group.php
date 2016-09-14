@@ -39,7 +39,7 @@
 					}
 					else{
 						//return 5;
-							if (!$this->contains(array('trip_id', 'user_id'))) {
+							if (!$this->contains(array('trip_id', 'email'))) {
 									//return response constructed by contains()
 									return $this->response;
 								}else{
@@ -57,7 +57,7 @@
 											if (isset($array_value->project_id)) {
 												$project_id=$array_value->project_id;
 											}*/
-											$res[]=$this->grouptrips->add_grouptrip($array_value->trip_id,$array_value->user_id);
+											$res[]=$this->grouptrips->add_grouptrip($array_value->trip_id,$array_value->email);
 										}
 
 										return $res;
@@ -90,7 +90,7 @@
 							if (isset($array_value->trip_id)) {
 								$trip_id=$array_value->trip_id;
 							}*/
-							$res[]=$this->grouptrips->update_grouptrips($array_value->id,$array_value->trip_id,$array_value->user_id);
+							$res[]=$this->grouptrips->update_grouptrips($array_value->id,$array_value->trip_id,$array_value->email);
 						}
 
 						return $res;

@@ -41,13 +41,14 @@
 					}
 					else{
 								$payload_array=array();
-								
+								$array_value = $this->payload;
+								/*$res=array();
 								if (!is_array($this->payload)) {
 									$payload_array[]=$this->payload;	
 								}else{
 									$payload_array=$this->payload;
-								}
-								foreach ($payload_array as $array_key => $array_value) {
+								}*/
+								//foreach ($payload_array as $array_key => $array_value) {
 									/*if (isset($array_value->company_id)) {
 										$company_id=$array_value->company_id;
 									}
@@ -55,7 +56,7 @@
 										$model_id=$array_value->model_id;
 									}*/
 									$res=$this->user->signin($array_value->email,$array_value->password,$this->api_access);
-								}
+								//}
 
 								return $res;
 						}

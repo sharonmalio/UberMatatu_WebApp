@@ -56,12 +56,15 @@
 				return array('error' => 'trips already exists');
 			}else{*/
 					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-					$res = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`end_coordinate`,`trip_date`,`trip_time`) 
+					$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`end_coordinate`,`trip_date`,`trip_time`) 
 						VALUES (?,?,?,?,?)",$trip_creator,$start_coordinate,$end_coordinate,$trip_date,$trip_time);
 
-					$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
-					FROM `tbl_trips` WHERE `id`=(SELECT MAX(`id`) FROM `tbl_trips`)");
-					return $res[0];
+					return $tripID;
+					$res = query("SELECT * FROM `tbl_group_trip` WHERE `trip_id` = ?",$tripID);
+
+					// $res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+					//  FROM `tbl_trips` WHERE `id`=(SELECT MAX(`id`) FROM `tbl_trips`)");
+					// return $res[0];
 					// $this->trips = $trips;				
 					// //regenerate token expiry key
 					// $token = new Token();
