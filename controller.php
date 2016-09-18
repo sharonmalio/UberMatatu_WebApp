@@ -118,7 +118,7 @@
 
 			public function headerContains($c,$dealbreaker = true){
 				$this->headers = ($this->headers == null)? getallheaders(): $this->headers;
-				//pre($this->headers);
+				pre($this->headers);
 				foreach ($c as $key => $value) {
 						//pre($value);
 						if (!array_key_exists($value, $this->headers) && $dealbreaker) {
@@ -130,7 +130,7 @@
 						if($value == 'authorisation'){
 							$query = 'Bearer ';
 							if(substr($this->headers['authorisation'],0, strlen($query)) !== $query){
-								$this->error('invalid Authorisation');
+								$this->error('invalid authorisation');
 								return false;
 							}
 							//Validate Token
