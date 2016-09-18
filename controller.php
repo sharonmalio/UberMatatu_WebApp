@@ -74,54 +74,48 @@
 					//return print_r($array_value->email);
 					foreach ($c as $key => $value) {
 						//return $value;
-						if (!array_key_exists($value, $array_value) && $dealbreaker) {
-							$this->error("$value required");
-							return false;
-						}
-						//validation
-						if(isset($array_value->email)&& !filter_var($array_value->email, FILTER_VALIDATE_EMAIL)){
-							$this->error('invalid email');
-							return false;
-						}
-						//Validate APIkey
-						if(isset($array_value->api_key)){
-							$this->api_access = new APIAccess($array_value->api_key);
-							if(!$this->api_access->verifyKey()){
-								$this->error('invalid API key');
-								return false;
+						if (!array_key_exists($value, $array_value)) {
+							if ($dealbreaker) {
+								$this->error("$value required");
 							}
+							return false;
+						}
+						
+					}
+					//validation
+					if(isset($array_value->email)&& !filter_var($array_value->email, FILTER_VALIDATE_EMAIL)){
+						$this->error('invalid email');
+						return false;
+					}
+					//Validate APIkey
+					if(isset($array_value->api_key)){
+						$this->api_access = new APIAccess($array_value->api_key);
+						if(!$this->api_access->verifyKey()){
+							$this->error('invalid API key');
+							return false;
 						}
 					}
 				}
 
-				/*foreach ($c as $key => $value) {
-						if (!array_key_exists($value, $this->payload) && $dealbreaker) {
-							$this->error("$value required");
-							return false;
-						}
-						//validation
-						if($value == 'email' && !filter_var($this->payload->email, FILTER_VALIDATE_EMAIL)){
-							$this->error('invalid email');
-							return false;
-						}
-						//Validate APIkey
-						if($value == 'api_key'){
-							$this->api_access = new APIAccess($this->payload->api_key);
-							if(!$this->api_access->verifyKey()){
-								$this->error('invalid API key');
-								return false;
-							}
-						}
-					}*/	
 				return true;
 			}
 
 			public function headerContains($c,$dealbreaker = true){
-				$this->headers = ($this->headers == null)? getallheaders(): $this->headers;
-				pre($this->headers);
+				if($this->headers == null){
+					$mHeaders = getallheaders();
+			        //convert all to lowercase
+			        foreach ($mHeaders as $key => $value) {
+			        	$this->headers[strtolower($key)] = $value;
+			        }
+			    }
+
+				//var_dump($this->headers);
+				//var_dump(isset($this->headers["authorisation"]));
+				//var_dump(array_key_exists('authorisation', $this->headers));
 				foreach ($c as $key => $value) {
 						//pre($value);
-						if (!array_key_exists($value, $this->headers) && $dealbreaker) {
+						if (!array_key_exists($value, $this->headers)) {
+						//if (!isset($this->headers[$value])) {
 							$this->error("$value required");
 							//TODO: implement dealbreaker
 							return false;
@@ -130,7 +124,9 @@
 						if($value == 'authorisation'){
 							$query = 'Bearer ';
 							if(substr($this->headers['authorisation'],0, strlen($query)) !== $query){
-								$this->error('invalid authorisation');
+								if($dealbreaker){
+									$this->error('invalid authorisation');
+								}
 								return false;
 							}
 							//Validate Token

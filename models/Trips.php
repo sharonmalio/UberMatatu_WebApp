@@ -59,8 +59,10 @@
 					$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`end_coordinate`,`trip_date`,`trip_time`) 
 						VALUES (?,?,?,?,?)",$trip_creator,$start_coordinate,$end_coordinate,$trip_date,$trip_time);
 
-					return $tripID;
-					$res = query("SELECT * FROM `tbl_group_trip` WHERE `trip_id` = ?",$tripID);
+					//pre($tripID);
+					$res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
+					//pre($res);
+					return $res[0];
 
 					// $res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					//  FROM `tbl_trips` WHERE `id`=(SELECT MAX(`id`) FROM `tbl_trips`)");
