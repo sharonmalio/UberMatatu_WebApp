@@ -17,7 +17,7 @@
 		}
 
 		function GET(){
-			if (!$this->headerContains(array('authorisation') )) {
+			if (!$this->headerContains(array('Authorisation') )) {
 				//return response constructed by contains()
 				return $this->response;
 			}
@@ -34,7 +34,7 @@
 		}
 
 		function POST(){
-			if (!$this->headerContains(array('authorisation') )) {
+			if (!$this->headerContains(array('Authorisation') )) {
 				//return response constructed by contains()
 				return $this->response;
 			}
@@ -52,7 +52,7 @@
 		}
 
 		function PUT(){
-			if (!$this->headerContains(array('authorisation') )) {
+			if (!$this->headerContains(array('Authorisation') )) {
 				//return response constructed by contains()
 				return $this->response;
 			}
@@ -73,7 +73,7 @@
 		}
 
 		function DELETE(){
-			if (!$this->headerContains(array('authorisation') )) {
+			if (!$this->headerContains(array('Authorisation') )) {
 				//return response constructed by contains()
 				return $this->response;
 			}
