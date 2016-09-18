@@ -1,9 +1,6 @@
 <?php
 	class Grouptrips
 	{
-		/*private $uid = null;
-		private $plate = "";
-		private $email = null;*/
 		private $trips = "";
 		
 		function __construct(){
@@ -11,7 +8,6 @@
 
 
 		function getGrouptrip(){
-			//pre($this->email);
 			if($this->trips != null){	
 				$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.email,`fName`,`lName`
 					FROM `tbl_group_trip` 
@@ -28,7 +24,6 @@
 
 		
 		function all(){
-			//pre($profile);
 			$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.email,`fName`,`lName`
 					FROM `tbl_group_trip` 
 					INNER JOIN `tbl_users` ON tbl_group_trip.email = tbl_users.email 
@@ -37,21 +32,13 @@
 		}
 
 		function add_grouptrip($trip_id,$email){
-			//pre($profile);
 			if($this->searchName($trip_id,$email)){
 				return array('error' => 'User in trip already exists');
 			}else{
-					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 					$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`email`) 
 						VALUES (?,?)",$trip_id,$email);
-					// $this->trips = $trips;				
-					//regenerate token expiry key
-					/*$token = new Token();
-					$t = $token->generateToken($this->uid,$api_access);*/
-					return $this->getGrouptrip();
-				}
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+					return $this->get_grouptrip($res);
+			}
 	 }
 
 		function get_grouptrip($id){
@@ -62,12 +49,7 @@
 				return array('error' => 'Group trip does not exist');
 			}else{
 				$this->trips = $res[0]["trip_id"];				
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
-				return $this->getGrouptrip();
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+				return $res;
 			}
 		}
 
@@ -102,12 +84,7 @@
 				$this->id = $res[0]["id"];
 				query("DELETE FROM `tbl_group_trip` WHERE `email`=? ",
 					$id);
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
 				return array('trips' => $res);
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
 			}
 		}
 

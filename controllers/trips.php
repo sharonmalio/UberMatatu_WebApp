@@ -59,11 +59,15 @@
 								if($this->contains(array('group'),false))
 								{
 									$mGroup = new Grouptrips();
-									//print_r($res[$array_key]);
 									foreach ($array_value->group as $email_key => $email) {
 										$mGroup->add_grouptrip($res['id'],$email);
 									}
-								}	
+									$gtrips = $mGroup->get_grouptrip($res['id']);
+									foreach ($gtrips as $gtrip_key => $user) {
+										//pre($user);
+										$res['group'][] = $user['email']; 
+									}
+								}
 							}else{
 								$res=array();
 								$payload_array=$this->payload;
@@ -75,6 +79,11 @@
 										//print_r($res[$array_key]);
 										foreach ($array_value->group as $email_key => $email) {
 											$mGroup->add_grouptrip($res[$array_key]['id'],$email);
+										}
+										$gtrips = $mGroup->get_grouptrip($res[$array_key]['id']);
+										foreach ($gtrips as $gtrip_key => $user) {
+											//pre($user);
+											$res[$array_key]['group'][] = $user['email']; 
 										}
 									}
 								}
