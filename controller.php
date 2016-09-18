@@ -118,9 +118,9 @@
 
 			public function headerContains($c,$dealbreaker = true){
 				$this->headers = ($this->headers == null)? getallheaders(): $this->headers;
-				pre($this->headers);
+				//pre($this->headers);
 				foreach ($c as $key => $value) {
-						pre($value);
+						//pre($value);
 						if (!array_key_exists($value, $this->headers) && $dealbreaker) {
 							$this->error("$value required");
 							//TODO: implement dealbreaker
