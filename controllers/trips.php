@@ -63,10 +63,13 @@
 										$mGroup->add_grouptrip($res['id'],$email);
 									}
 									$gtrips = $mGroup->get_grouptrip($res['id']);
-									foreach ($gtrips as $gtrip_key => $user) {
-										//pre($user);
-										$res['group'][] = $user['email']; 
-									}
+									//pre($gtrips);
+									if(count($gtrips) != 0 && !array_key_exists('error',$gtrips)){	
+										foreach ($gtrips as $gtrip_key => $user) {
+											//pre($user);
+											$res['group'][] = $user['email']; 
+										}
+									}	
 								}
 							}else{
 								$res=array();
@@ -81,9 +84,11 @@
 											$mGroup->add_grouptrip($res[$array_key]['id'],$email);
 										}
 										$gtrips = $mGroup->get_grouptrip($res[$array_key]['id']);
-										foreach ($gtrips as $gtrip_key => $user) {
-											//pre($user);
-											$res[$array_key]['group'][] = $user['email']; 
+										if(count($gtrips) != 0 && !array_key_exists('error',$gtrips)){
+											foreach ($gtrips as $gtrip_key => $user) {
+												//pre($user);
+												$res[$array_key]['group'][] = $user['email']; 
+											}
 										}
 									}
 								}
