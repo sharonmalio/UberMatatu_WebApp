@@ -12,32 +12,37 @@
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
-					FROM `tbl_trips`
-				 	WHERE  `id`= ?",$this->trips);
-				$vehicle = $res[0]["vehicle_id"];
-				if($vehicle != null){
-					$res1 = query("SELECT `make`,`model`,`plate`,`fName`, `lName`,`phone_no` FROM `tbl_allocation`
-				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
-				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
-				INNER JOIN `tbl_vehicle_model` ON tbl_vehicles.model_id = tbl_vehicle_model.id
-				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_make.id = tbl_vehicle_model.make_id
-				 WHERE   `vehicle_id`= ?",$vehicle);
+				$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips`
+				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_trips.vehicle_id
+				LEFT JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+				 	WHERE  tbl_trips.id= ?",$this->trips);
 
-					$res[0]["details"]=$res1[0];
-					return $res[0];
-				}else{
-					if(isset($res[0])){
-					return $res[0];
+				
+				if(isset($res[0])){
+					// return $res;
+					return array('trip' => $res, 'members' => $this->groupmembers());
 				}else{
 					return array('error' => 'Trips not found' );
 				}
-				}
-				
 				
 			}
 		}
 
+		function groupmembers(){
+			if($this->trips != null){	
+				$res = query("SELECT tbl_group_trip.email,`fName`,`lName`
+					FROM `tbl_group_trip` 
+					INNER JOIN `tbl_users` ON tbl_group_trip.email = tbl_users.email 
+					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id
+				 	WHERE  `trip_id`= ? ORDER BY `trip_id`",$this->trips);
+				if(isset($res)){
+					return $res;
+				}else{
+					return array('error' => 'Grouptrip not found' );
+				}
+			}
+		}
 		function all(){
 			//pre($profile);
 			$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips`
@@ -51,31 +56,19 @@
 
 		function add_trip($trip_creator,$start_coordinate,$end_coordinate,$trip_date,$trip_time){
 
-			//pre($profile);
-			/*if($this->searchName($trips)){
-				return array('error' => 'trips already exists');
-			}else{*/
-					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-					$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`end_coordinate`,`trip_date`,`trip_time`) 
-						VALUES (?,?,?,?,?)",$trip_creator,$start_coordinate,$end_coordinate,$trip_date,$trip_time);
+			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
+			$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`end_coordinate`,`trip_date`,`trip_time`) 
+				VALUES (?,?,?,?,?)",$trip_creator,$start_coordinate,$end_coordinate,$trip_date,$trip_time);
+			//pre($tripID);
+			$res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
+			//pre($res);
+			return $res[0];
+			
 
-					//pre($tripID);
-					$res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
-					//pre($res);
-					return $res[0];
-
-					// $res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
-					//  FROM `tbl_trips` WHERE `id`=(SELECT MAX(`id`) FROM `tbl_trips`)");
-					// return $res[0];
-					// $this->trips = $trips;				
-					// //regenerate token expiry key
-					// $token = new Token();
-					// $t = $token->generateToken($this->uid,$api_access);
-					// return $this->getTrip();
-				}
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
-		// }
+			/*$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+			FROM `tbl_trips` WHERE `id`= ? ",$tripID);
+					return $res[0];*/
+		}
 
 		function get_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;

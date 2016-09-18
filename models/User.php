@@ -29,7 +29,7 @@
 					if(isset($res[0])){
 						return array("id"=>$res[0]["id"],"email"=>$res[0]["email"],"type"=>$res[0]["type"]);//$res[0];
 					}else{
-						return array('error' => 'user not found' );;
+						return array('error' => 'user not found' );
 					}
 				}
 			}
@@ -104,4 +104,5 @@
 			return true;
 		}
 	}
+
 ?>
