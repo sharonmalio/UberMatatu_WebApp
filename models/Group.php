@@ -9,6 +9,7 @@
 		function __construct(){
 		}
 
+
 		function getGrouptrip(){
 			//pre($this->email);
 			if($this->trips != null){	
@@ -25,17 +26,17 @@
 			}
 		}
 
+		
 		function all(){
 			//pre($profile);
 			$res = query("SELECT tbl_group_trip.id,`trip_id`,tbl_group_trip.email,`fName`,`lName`
 					FROM `tbl_group_trip` 
 					INNER JOIN `tbl_users` ON tbl_group_trip.email = tbl_users.email 
-					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id ");
+					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id ORDER BY `trip_id`");
 			return $res;
 		}
 
 		function add_grouptrip($trip_id,$email){
-
 			//pre($profile);
 			if($this->searchName($trip_id,$email)){
 				return array('error' => 'User in trip already exists');
