@@ -43,12 +43,9 @@ abstract class API
 	        header("Access-Control-Allow-Methods: *");
 	        header("Content-Type: application/json");
 
-	        $mHeaders = getallheaders();
+	        $this->headers = getallheaders();
 	        //convert all to lowercase
-	        foreach ($mHeaders as $key => $value) {
-	        	$this->headers[strtolower($key)] = $value;
-	        }
-	        //var_dump($this->headers);
+			array_change_key_case($this->headers,CASE_LOWER);
 
 	        $this->args = explode('/', rtrim($request, '/'));
 	        $this->endpoint = array_shift($this->args);
@@ -96,7 +93,7 @@ abstract class API
         		*/
         		$cont = ucfirst($this->endpoint)."Controller";
         		$class = new $cont($this->method,$this->verb,
-        							$this->args,$this->file);
+        							$this->args,$this->file,$this->headers);
         		return  $this->_response($class->response(),$class->rescode());
         	}
         	return $this->_response(array('response' => 'not found' ), 404);

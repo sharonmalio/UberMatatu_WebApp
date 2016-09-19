@@ -7,11 +7,11 @@
 		
 		private $projects;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->projects = new Projects();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function ProjectsController(){
 		}

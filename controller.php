@@ -11,12 +11,17 @@
 			protected $api_access = null;
 			protected $token = null;
 
-			function __construct($m, $v, $a, $file)
+			function __construct($m, $v, $a, $file,$headers)
 			{
 				$this->method = $m;
 				$this->verb = $v;
 				$this->args = $a;
 				$this->payload = ($file == null) ? array() : $file; //When the payload is not JSON
+				$mHeaders = $headers;
+
+				foreach ($mHeaders as $key => $value) {
+			       	$this->headers[strtolower($key)] = $value;
+			    }
 
 				switch($this->method) {
 			        case 'DELETE':
@@ -102,20 +107,21 @@
 
 			public function headerContains($c,$dealbreaker = true){
 				if($this->headers == null){
-					$mHeaders = getallheaders();
-			        //convert all to lowercase
-			        foreach ($mHeaders as $key => $value) {
-			        	$this->headers[strtolower($key)] = $value;
-			        }
+					$this->headers = getallheaders();
 			    }
-
-				//var_dump($this->headers);
+			    $mHeaders = $this->headers;
+			    foreach($mHeaders as $key=>$value){
+		           $tl=strtolower($key);
+		           //pre($tl);
+		           unset($mHeaders[$key]);
+		           $mHeaders[$tl]=$value; 
+		        }
 				//var_dump(isset($this->headers["authorisation"]));
 				//var_dump(array_key_exists('authorisation', $this->headers));
 				foreach ($c as $key => $value) {
 						//pre($value);
-						if (!array_key_exists($value, $this->headers)) {
-						//if (!isset($this->headers[$value])) {
+						if (!array_key_exists($value, $mHeaders)) {
+						//if (!isset($this->headers[strtolower($value)])) {
 							$this->error("$value required");
 							//TODO: implement dealbreaker
 							return false;
@@ -123,7 +129,7 @@
 						//TODO: validation
 						if($value == 'authorisation'){
 							$query = 'Bearer ';
-							if(substr($this->headers['authorisation'],0, strlen($query)) !== $query){
+							if(substr($mHeaders['authorisation'],0, strlen($query)) !== $query){
 								if($dealbreaker){
 									$this->error('invalid authorisation');
 								}
@@ -132,7 +138,7 @@
 							//Validate Token
 							/*$mytoken = str_replace($query,'', $this->headers['authorisation']);
 							echo $mytoken;*/
-							$t = new Token(str_replace($query,'', $this->headers['authorisation']));
+							$t = new Token(str_replace($query,'', $mHeaders['authorisation']));
 							if(!$t->verifyToken()){
 								$this->error('invalid token');
 								return false;

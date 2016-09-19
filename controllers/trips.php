@@ -7,11 +7,11 @@
 		
 		private $trips;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->trips = new Trips();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function TripsController(){
 		}
@@ -75,7 +75,7 @@
 										$mGroup->add_grouptrip($res[0]['id'],$email);
 									}
 								}
-								$res=$this->trips->get_trip($res[0]['id']);
+								$res=$this->trips->get_trip($res[0]['id'])[0];
 							}else{
 								$res=array();
 								$payload_array=$this->payload;

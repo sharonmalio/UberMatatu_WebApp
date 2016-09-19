@@ -17,7 +17,4 @@
 	require_once('controllers/staff.php');
 	require_once('controllers/projectmanagers.php');
 	require_once('controllers/operationmanagers.php');
-
-
-
 ?>

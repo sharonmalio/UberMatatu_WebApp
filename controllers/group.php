@@ -7,11 +7,11 @@
 		
 		private $grouptrips;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->grouptrips = new GroupTrips();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function GroupController(){
 		}

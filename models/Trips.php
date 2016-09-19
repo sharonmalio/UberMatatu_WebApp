@@ -22,6 +22,8 @@
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
 				 WHERE   `vehicle_id`= ?  ",$res[0]['vehicle_id']);
+
+				//pre($res);
 				if(isset($res[0])){
 					// return $res;
 					$mGroup = new Grouptrips();

@@ -7,11 +7,11 @@
 		
 		private $vehicles;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->vehicles = new Vehicles();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function VehiclesController(){
 		}
