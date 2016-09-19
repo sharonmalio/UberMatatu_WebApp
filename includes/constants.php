@@ -1,4 +1,4 @@
-<?php 
+    <?php 
 	
     //Path constants (directories contain / at the end)
     define("CONTROLS_PATH", __DIR__ . "/../");
@@ -15,5 +15,5 @@
     define("DATABASE", "db_taxi");
     define("SERVER", "localhost");
     define("USERNAME", "root");
-    define("PASSWORD", "1234");
+    define("PASSWORD", "Sc0rpion");
 ?>
