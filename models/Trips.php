@@ -18,10 +18,17 @@
 				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
 				 	WHERE  tbl_trips.id= ?",$this->trips);
 
-				
+				pre($res);
 				if(isset($res[0])){
 					// return $res;
-					return array('trip' => $res, 'members' => $this->groupmembers());
+					//group
+					$mGroup = new Grouptrips();
+					$gtrips = $mGroup->get_grouptrip($res['id']);
+					foreach ($gtrips as $gtrip_key => $user) {
+						//pre($user);
+						$res['group'][] = $user['email']; 
+					}
+					return $res;
 				}else{
 					return array('error' => 'Trips not found' );
 				}
@@ -63,11 +70,6 @@
 			$res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
 			//pre($res);
 			return $res[0];
-			
-
-			/*$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
-			FROM `tbl_trips` WHERE `id`= ? ",$tripID);
-					return $res[0];*/
 		}
 
 		function get_trip($id){

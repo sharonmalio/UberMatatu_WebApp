@@ -12,8 +12,8 @@
     define("LOAD_PATH", VIEWS_PATH . "templates/load.php");
 
     //Database constants (for connecting to mysql)
-    define("DATABASE", "db_taxi");
+    define("DATABASE", "taxi");
     define("SERVER", "localhost");
     define("USERNAME", "root");
-    define("PASSWORD", "1234");
+    define("PASSWORD", "");
 ?>
