@@ -22,6 +22,7 @@
 				return $this->response;
 			}
 			else{
+
 				
 				if (!$this->args){
 
@@ -31,6 +32,7 @@
 					return $this->trips->get_mytrips($trip_creator['id']);
 					
 					}else if($this->verb == "user"){
+						
 						return array('error' => 'please choose a user');
 						
 					}
