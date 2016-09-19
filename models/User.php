@@ -29,7 +29,7 @@
 					if(isset($res[0])){
 						return array("id"=>$res[0]["id"],"email"=>$res[0]["email"],"type"=>$res[0]["type"]);//$res[0];
 					}else{
-						return array('error' => 'user not found' );
+						return array('error' => 'user not found' );;
 					}
 				}
 			}
@@ -57,16 +57,16 @@
 
 				//handle pro
 				if ($project_id!=NULL) {
-
-					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`) VALUES (?,?)",
+					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`) 
+						VALUES (?,?)",
 					$this->uid,$project_id);	
 				}
-
 				return $this->getUser();
 			}//
 		}
 
 		function signin($email, $pass ,$api_access){
+			//print_r($email);
 			//pre($profile);
 			if(!$this->searchEmail($email)){
 				return array('error' => 'invalid email or password');
@@ -104,5 +104,3 @@
 			return true;
 		}
 	}
-
-?>

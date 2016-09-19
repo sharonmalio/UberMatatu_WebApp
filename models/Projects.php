@@ -78,7 +78,7 @@
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]["project_id"];
 
-			$res= query("SELECT `tbl_people.user_id`,`name`,`fName`,`lName`,`phone_no`,`email` FROM `tbl_project_people`
+			$res= query("SELECT tbl_people.user_id,`name`,`fName`,`lName`,`phone_no`,`email` FROM `tbl_project_people`
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
 			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
 			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
