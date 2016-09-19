@@ -18,7 +18,7 @@
 				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
 				 	WHERE  tbl_trips.id= ?",$this->trips);
 
-				pre($res);
+				//pre($res);
 				if(isset($res[0])){
 					// return $res;
 					$mGroup = new Grouptrips();
@@ -30,7 +30,7 @@
 							$res[0]['group'][] = $user['email']; 
 						}
 					}
-					return $res[0];
+					return $res;
 				}else{
 					return array('error' => 'Trips not found' );
 				}

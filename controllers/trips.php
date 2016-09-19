@@ -73,7 +73,7 @@
 										$mGroup->add_grouptrip($res[0]['id'],$email);
 									}
 								}
-								$res=$this->trips->get_trip($res[0]['id']);
+								$res=$this->trips->get_trip($res[0]['id'])[0];
 							}else{
 								$res=array();
 								$payload_array=$this->payload;
