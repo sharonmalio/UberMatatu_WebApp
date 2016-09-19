@@ -29,6 +29,15 @@
 
 					return $this->trips->get_mytrips($trip_creator['id']);
 					}
+					// get a given user's trips
+					if($this->verb == "user"){
+						if(!$this->args){
+							return array('error' => 'please choose a user');
+						}
+						else{
+							return $this->projects->get_usertrips($this->args[0]);
+						}
+					}
 					//get all trips
 					return $this->trips->all();
 				}else{
@@ -46,7 +55,7 @@
 			else{
 									
 					//return 5;
-					if (!$this->contains(array('start_coordinate','end_coordinate','trip_date','trip_time'))) {
+					if (!$this->contains(array('start_coordinate','start_location','end_coordinate','end_location','trip_date','trip_time'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else
@@ -61,7 +70,7 @@
 							}
 							foreach ($payload_array as $array_key => $array_value) {
 							
-							$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+							$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->start_location,$array_value->end_coordinate,$array_value->end_location,$array_value->trip_date,$array_value->trip_time);
 								if($this->contains(array('group')))
 								{
 									$mGroup = new Grouptrips();
