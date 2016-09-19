@@ -30,7 +30,7 @@
 							$res[0]['group'][] = $user['email']; 
 						}
 					}
-					return $res;
+					return $res[0];
 				}else{
 					return array('error' => 'Trips not found' );
 				}

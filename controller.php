@@ -129,7 +129,7 @@
 						//TODO: validation
 						if($value == 'authorisation'){
 							$query = 'Bearer ';
-							if(substr($this->headers['authorisation'],0, strlen($query)) !== $query){
+							if(substr($mHeaders['authorisation'],0, strlen($query)) !== $query){
 								if($dealbreaker){
 									$this->error('invalid authorisation');
 								}
@@ -138,7 +138,7 @@
 							//Validate Token
 							/*$mytoken = str_replace($query,'', $this->headers['authorisation']);
 							echo $mytoken;*/
-							$t = new Token(str_replace($query,'', $this->headers['authorisation']));
+							$t = new Token(str_replace($query,'', $mHeaders['authorisation']));
 							if(!$t->verifyToken()){
 								$this->error('invalid token');
 								return false;
