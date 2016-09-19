@@ -23,17 +23,27 @@
 			}
 			else{
 				
-				if (!$this->args) {
+				if (!$this->args){
+
 					if($this->verb == "mytrips"){
 					$trip_creator=$this->token->getUser();
 
 					return $this->trips->get_mytrips($trip_creator['id']);
+					
+					}else if($this->verb == "user"){
+						return array('error' => 'please choose a user');
+						
 					}
+
 					//get all trips
 					return $this->trips->all();
 				}else{
-					//get a specific trip by trip_id
-					return $this->trips->get_trip($this->args[0]);
+					if($this->verb == "user"){
+						return $this->trips->get_usertrips($this->args[0]);
+					}else{	
+						//get a specific trip by trip_id
+						return $this->trips->get_trip($this->args[0]);
+					}
 				}
 			}
 		}
@@ -46,7 +56,7 @@
 			else{
 									
 					//return 5;
-					if (!$this->contains(array('start_coordinate','end_coordinate','trip_date','trip_time'))) {
+					if (!$this->contains(array('start_coordinate','start_location','end_coordinate','end_location','trip_date','trip_time'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else
@@ -55,24 +65,20 @@
 							$payload_array=array();
 							if (!is_array($this->payload)) {
 								$array_value=$this->payload;
-								$res=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+								$res=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->start_location,$array_value->end_coordinate,$array_value->end_location,$array_value->trip_date,$array_value->trip_time);
 								if($this->contains(array('group'),false))
 								{
 									$mGroup = new Grouptrips();
 									foreach ($array_value->group as $email_key => $email) {
-										$mGroup->add_grouptrip($res['id'],$email);
-									}
-									$gtrips = $mGroup->get_grouptrip($res['id']);
-									foreach ($gtrips as $gtrip_key => $user) {
-										//pre($user);
-										$res['group'][] = $user['email']; 
+										$mGroup->add_grouptrip($res[0]['id'],$email);
 									}
 								}
+								$res=$this->trips->get_trip($res[0]['id']);
 							}else{
 								$res=array();
 								$payload_array=$this->payload;
 								foreach ($payload_array as $array_key => $array_value) {
-									$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+									$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->start_location,$array_value->end_coordinate,$array_value->end_location,$array_value->trip_date,$array_value->trip_time);
 									if($this->contains(array('group'),false))
 									{
 										$mGroup = new Grouptrips();

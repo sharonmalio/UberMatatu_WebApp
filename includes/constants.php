@@ -1,4 +1,4 @@
-<?php 
+    <?php 
 	
     //Path constants (directories contain / at the end)
     define("CONTROLS_PATH", __DIR__ . "/../");
