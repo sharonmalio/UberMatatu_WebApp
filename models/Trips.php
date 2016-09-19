@@ -71,17 +71,8 @@
 			//pre($tripID);
 			// $res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
 			//pre($res);
-<<<<<<< HEAD
-			return $res[0];
-=======
 			$this->trips = $tripID;
 			return $this->getTrip();
-			
-
-			/*$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
-			FROM `tbl_trips` WHERE `id`= ? ",$tripID);
-					return $res[0];*/
->>>>>>> 082ddf6af02829513a3041fa7461b1b69d2bbcae
 		}
 
 		function get_trip($id){
