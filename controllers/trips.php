@@ -53,15 +53,45 @@
 						{
 							$trip_creator=$this->token->getUser();
 							$payload_array=array();
-							$res=array();
 							if (!is_array($this->payload)) {
-								$payload_array[]=$this->payload;	
+								$array_value=$this->payload;
+								$res=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+								if($this->contains(array('group'),false))
+								{
+									$mGroup = new Grouptrips();
+									foreach ($array_value->group as $email_key => $email) {
+										$mGroup->add_grouptrip($res['id'],$email);
+									}
+									$gtrips = $mGroup->get_grouptrip($res['id']);
+									//pre($gtrips);
+									if(count($gtrips) != 0 && !array_key_exists('error',$gtrips)){	
+										foreach ($gtrips as $gtrip_key => $user) {
+											//pre($user);
+											$res['group'][] = $user['email']; 
+										}
+									}	
+								}
 							}else{
+								$res=array();
 								$payload_array=$this->payload;
-							}
-							foreach ($payload_array as $array_key => $array_value) {
-							
-							$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+								foreach ($payload_array as $array_key => $array_value) {
+									$res[]=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+									if($this->contains(array('group'),false))
+									{
+										$mGroup = new Grouptrips();
+										//print_r($res[$array_key]);
+										foreach ($array_value->group as $email_key => $email) {
+											$mGroup->add_grouptrip($res[$array_key]['id'],$email);
+										}
+										$gtrips = $mGroup->get_grouptrip($res[$array_key]['id']);
+										if(count($gtrips) != 0 && !array_key_exists('error',$gtrips)){
+											foreach ($gtrips as $gtrip_key => $user) {
+												//pre($user);
+												$res[$array_key]['group'][] = $user['email']; 
+											}
+										}
+									}
+								}
 							}
 
 							return $res;

@@ -22,6 +22,7 @@
 			$t = bin2hex(openssl_random_pseudo_bytes($this->TOKEN_LEN));
 			$res = query("INSERT INTO `tbl_user_tokens` (user_id,api_access_id,token) VALUES(?,?,?)",
 				$uid,$api_access->api_access_id,$t);
+			//var_dump($res);
 			$this->token = $t;
 			$this->uid = $uid;
 			return $this->token;
