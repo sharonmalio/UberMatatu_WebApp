@@ -18,6 +18,7 @@
 				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
 				 	WHERE  tbl_trips.id= ?",$this->trips);
 
+
 				$res1 = query("SELECT `fName`, `lName`,`phone_no` FROM `tbl_allocation`
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
