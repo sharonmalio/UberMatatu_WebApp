@@ -7,11 +7,11 @@
 		
 		private $allocations;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->allocations = new Allocations();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function AllocationsController(){
 		}

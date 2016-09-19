@@ -7,11 +7,11 @@
 		
 		private $models;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->models = new Models();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function ModelsController(){
 		}

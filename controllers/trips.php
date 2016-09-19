@@ -7,11 +7,11 @@
 		
 		private $trips;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->trips = new Trips();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function TripsController(){
 		}

@@ -7,11 +7,11 @@
 		
 		private $makes;
 
-		function __construct($method, $verb, $args, $file)
+		function __construct($method, $verb, $args, $file, $headers)
 		{
 			$this->makes = new Makes();
 
-			parent::__construct($method, $verb, $args, $file);
+			parent::__construct($method, $verb, $args, $file, $headers);
 		}
 		function MakesController(){
 		}
