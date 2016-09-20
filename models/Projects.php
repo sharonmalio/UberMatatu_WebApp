@@ -55,6 +55,26 @@
 				//return array('error' => 'invalid email or password');
 		}
 
+		function my_projects($project_person){
+
+			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_person);
+			$project_id = $res[0]["project_id"];
+			
+			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$project_id);
+			if ($res==null) {
+				return array('error' => 'project does not exist');
+			}else{
+				$this->name = $res[0]["name"];				
+				/*//regenerate token expiry key
+				$token = new Token();
+				$t = $token->generateToken($this->uid,$api_access);*/
+				return $this->getProject();
+				//TODO: add profile and handle null values
+				//return array('error' => 'invalid email or password');
+			}
+
+		}
+
 		function project_trips($project_manager){
 
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
@@ -70,7 +90,7 @@
 			else{
 				return $res;
 			}
-			
+	
 		}
 
 //functional error here
@@ -78,7 +98,7 @@
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]["project_id"];
 
-			$res= query("SELECT tbl_people.user_id,`name`,`fName`,`lName`,`phone_no`,`email` FROM `tbl_project_people`
+			$res= query("SELECT tbl_people.user_id,`name`,`fName`,`lName`,`phone_no`,`email`,tbl_projects.id AS 'project_id' FROM `tbl_project_people`
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
 			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
 			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 

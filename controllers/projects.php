@@ -34,6 +34,10 @@
 
 						return $this->projects->project_staff($project_manager['id']);
 					}
+					if($this->verb == "me"){
+						$project_person=$this->token->getUser();
+						return $this->projects->my_projects($project_person['id']);
+					}
 
 					//get all projects
 					return $this->projects->all($project_manager['id']);
