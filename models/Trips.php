@@ -12,17 +12,18 @@
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`approval` FROM `tbl_trips`
-				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_trips.vehicle_id
-				LEFT JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
-				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+				$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`approval` FROM `tbl_trips`
+					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
+				
 				 	WHERE  tbl_trips.id= ?",$this->trips);
 
 
-				$res1 = query("SELECT `fName`, `lName`,`phone_no` FROM `tbl_allocation`
+				$res1 = query("SELECT `fName`, `lName`,`phone_no`,`vehicle_id`,`plate`, `make`,`model` FROM `tbl_allocation`
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
-				 WHERE   `vehicle_id`= ?  ",$res[0]['vehicle_id']);
+				INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+				WHERE   `vehicle_id`= ?  ",$res[0]['vehicle_id']);
 
 				//pre($res);
 				if(isset($res[0])){
@@ -40,7 +41,7 @@
 						// foreach ($res1 as $key => $value) {
 						// 	$res[0]['driver'][]= $res1[$key];
 						// }
-						$res[0]['driver'][]= $res1[0];
+						$res[0]['vehicle_driver'][]= $res1[0];
 					}
 					 
 
@@ -76,6 +77,17 @@
 			$this->trips = $tripID;
 			return $this->getTrip();
 		}
+
+		function add_members($trip_id,$email){
+			if($this->searchName($trip_id)){
+				return array('error' => 'Trip does not exists');
+			}else{
+					$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`email`) 
+						VALUES (?,?)",$trip_id,$email);
+					
+					return $this->getTrip($trip_id);
+			}
+	 }
 
 		function get_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;

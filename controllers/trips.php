@@ -109,7 +109,6 @@
 				return $this->response;
 			}
 			else{
-				
 					if($this->verb == "approve"){
 							if (!$this->contains(array('id'))) {
 									//return resposne constructed by contains()
@@ -200,10 +199,8 @@
 
 						}
 					}
-
-
-						if (!$this->contains(array('id','start_coordinate','end_coordinate','trip_date','trip_time'))) {
-							//return response constructed by contains()
+					if($this->verb == "add_members"){
+						if(!$this->contains(array('id','email'))){
 							return $this->response;
 						}else{
 								$payload_array=array();
@@ -214,13 +211,33 @@
 									$payload_array=$this->payload;
 								}
 								foreach ($payload_array as $array_key => $array_value) {
-									
-									$res[]=$this->trips->update_trip($array_value->id,
-										$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+								
+								$res[]=$this->trips->add_members($array_value->trip_id,$array_value->email);
 								}
 
-								return $res;
-						}
+							return $res;						}
+					}
+					
+
+					if (!$this->contains(array('id','start_coordinate','end_coordinate','trip_date','trip_time'))) {
+						//return response constructed by contains()
+						return $this->response;
+					}else{
+							$payload_array=array();
+							$res=array();
+							if (!is_array($this->payload)) {
+								$payload_array[]=$this->payload;	
+							}else{
+								$payload_array=$this->payload;
+							}
+							foreach ($payload_array as $array_key => $array_value) {
+								
+								$res[]=$this->trips->update_trip($array_value->id,
+									$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time);
+							}
+
+							return $res;
+					}
 					
 											
 					

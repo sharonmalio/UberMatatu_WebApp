@@ -62,7 +62,7 @@
 			if ($res==null) {
 				return array('error' => 'allocation does not exist');
 			}else{
-				$this->vehicle_id= $res[0]["vehicle_id"];				
+				$this->allocation_id= $res[0]["id"];				
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
