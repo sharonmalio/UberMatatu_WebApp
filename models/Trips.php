@@ -78,17 +78,32 @@
 			return $this->getTrip();
 		}
 
-		// function add_members($trip_id,$email){
-		// 	if($this->searchName($trip_id)){
-		// 		return array('error' => 'Trip does not exists');
-		// 	}else{
-		// 			$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`email`) 
-		// 				VALUES (?,?)",$trip_id,$email);
+		function add_members($trip_id,$email){
+			// if($this->searchName($trip_id)){
+			// 	return array('error' => 'Trip does not exists');
+			// }else{
+					$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`email`) 
+						VALUES (?,?)",$trip_id,$email);
 					
-		// 			return $this->getTrip($trip_id);
-		// 	}
-	 // }
+					return $this->get_trip($trip_id);
+			// }
+	 }
 
+	 function remove_member($id){
+	 	$res = query("SELECT `id`, `email` FROM `tbl_group_trip` WHERE `id`=?",
+				$id);
+			if ($res==null) {
+				return array('error' => 'member does not exist');
+			}else{
+				$this->id = $res[0]["id"];
+				query("DELETE FROM `tbl_group_trip` WHERE `id`=?",
+					$id);
+				
+				return array('Removed trip member' => $res[0]['email']);
+				//TODO: add profile and handle null values
+				//return array('error' => 'invalid email or password');
+			}
+	 }
 		function get_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id` FROM `tbl_trips` WHERE `id` = ?",$id);
@@ -212,7 +227,7 @@
 
 		function delete_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id`=?",
+			$res = query("SELECT `id`FROM `tbl_trips` WHERE `id`=?",
 				$id);
 			if ($res==null) {
 				return array('error' => 'trips does not exist');
@@ -223,7 +238,7 @@
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
-				return array('trips' => $res[0]);
+				return array('Deleted trip' => $res[0]);
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
 			}

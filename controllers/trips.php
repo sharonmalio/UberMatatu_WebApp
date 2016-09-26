@@ -200,7 +200,7 @@
 						}
 					}
 					if($this->verb == "add_members"){
-						if(!$this->contains(array('id','email'))){
+						if(!$this->contains(array('trip_id','email'))){
 							return $this->response;
 						}else{
 								$payload_array=array();
@@ -251,8 +251,14 @@
 				return $this->response;
 			}
 			else{
+				if($this->verb == 'remove_members'){
+						if ($this->args){
+							return $this->trips->remove_member($this->args[0]);
+							}
+					}
 				if (!$this->args) {
 					//get all trips
+
 					return array('error' => 'please choose a trip to delete');
 				}else{
 						return $this->trips->delete_trip($this->args[0]);
