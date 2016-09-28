@@ -41,11 +41,11 @@
 						// foreach ($res1 as $key => $value) {
 						// 	$res[0]['driver'][]= $res1[$key];
 						// }
-						$res[0]['vehicle_driver'][]= $res1[0];
+						$res[0]['vehicle_driver']= $res1[0];
 					}
 					 
 
-					 return $res;
+					 return $res[0];
 				}else{
 					return array('error' => 'Trips not found' );
 				}
@@ -55,7 +55,7 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`approval` FROM `tbl_trips`
+			$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_trips.vehicle_id
 				LEFT JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
 				 LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id 
@@ -66,11 +66,11 @@
 			return $res;
 		}
 
-		function add_trip($trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id){
+		function add_trip($trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id, $fare_estimate){
 
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`project_id`) 
-				VALUES (?,?,?,?,?,?,?,?)",$trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id);
+			$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`project_id`,`fare_estimate`) 
+				VALUES (?,?,?,?,?,?,?,?,?)",$trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id, $fare_estimate);
 			//pre($tripID);
 			// $res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
 			//pre($res);
@@ -189,12 +189,12 @@
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
-				return array($this->getTrip());
+				return $this->getTrip();
 
 			}
 		}
 
-		function stop_trip($id,$end_mileage){
+		function stop_trip($id,$end_mileage,$actual_fare){
 			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'trip does not exist');
@@ -202,14 +202,15 @@
 			else{
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $res[0]["id"];
-				$res=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=? WHERE `id`=?",
-					$end_mileage,$date,$id);
+				$res=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `actual_fare`=? WHERE `id`=?",
+					$end_mileage,$date,$actual_fare,$id);
 
 				$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$vehicle_id);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
-				return array($this->getTrip());
+				return $this->getTrip()
+				;
 
 			}
 		}

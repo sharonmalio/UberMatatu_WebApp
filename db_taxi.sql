@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 27, 2016 at 03:30 PM
+-- Generation Time: Sep 28, 2016 at 11:49 AM
 -- Server version: 5.7.15-0ubuntu0.16.04.1
 -- PHP Version: 7.0.11-1+deb.sury.org~xenial+1
 
@@ -290,33 +290,35 @@ CREATE TABLE `tbl_trips` (
   `end_location` varchar(100) DEFAULT NULL,
   `project_id` int(11) NOT NULL,
   `approval` int(11) NOT NULL DEFAULT '0',
-  `enroute` int(11) DEFAULT NULL
+  `enroute` int(11) DEFAULT NULL,
+  `fare_estimate` int(11) DEFAULT NULL,
+  `actual_fare` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbl_trips`
 --
 
-INSERT INTO `tbl_trips` (`id`, `start_mileage`, `end_mileage`, `date`, `trip_date`, `trip_time`, `vehicle_id`, `start_time`, `stop_time`, `trip_creator`, `start_coordinate`, `start_location`, `end_coordinate`, `end_location`, `project_id`, `approval`, `enroute`) VALUES
-(3, NULL, NULL, '2016-08-28 13:48:56', '0000-00-00', '00:00:00', NULL, NULL, NULL, 2, '54321465232E', NULL, '643236547N', NULL, 0, 0, NULL),
-(4, NULL, NULL, '2016-09-08 16:19:40', '0000-00-00', '00:00:00', 2, NULL, NULL, 1, '67321465232E', NULL, '139236547N', NULL, 0, 0, NULL),
-(5, NULL, NULL, '2016-08-30 11:22:08', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', NULL, '139236547N', NULL, 0, 0, NULL),
-(6, 1249, NULL, '2016-09-19 20:21:44', '0000-00-00', '00:00:00', NULL, '2016-09-06 17:37:13', NULL, 1, '88321E', NULL, '98947N', NULL, 0, 0, NULL),
-(31, NULL, NULL, '2016-09-15 05:33:53', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 0, NULL),
-(32, NULL, NULL, '2016-09-15 07:37:08', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 0, NULL),
-(33, NULL, NULL, '2016-09-19 20:24:22', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 1, NULL),
-(34, NULL, NULL, '2016-09-15 07:40:15', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 0, NULL),
-(37, NULL, NULL, '2016-09-25 18:43:14', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 1, NULL),
-(40, NULL, NULL, '2016-09-19 20:25:22', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 1, NULL),
-(41, NULL, NULL, '2016-09-19 20:33:50', '2016-10-12', '13:00:00', 2, NULL, NULL, 1, '35264N', 'Nairobi', 'Kisumu', '234234E', 0, 1, NULL),
-(42, NULL, NULL, '2016-09-19 13:58:38', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL),
-(43, NULL, NULL, '2016-09-19 14:00:21', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL),
-(44, NULL, NULL, '2016-09-19 14:01:07', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL),
-(45, NULL, NULL, '2016-09-19 14:03:43', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL),
-(46, NULL, NULL, '2016-09-19 14:04:25', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL),
-(47, NULL, NULL, '2016-09-19 14:07:30', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL),
-(48, NULL, NULL, '2016-09-19 21:16:22', '2016-10-12', '13:00:00', 4, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 1, NULL),
-(49, NULL, NULL, '2016-09-20 15:38:34', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Eldoret', 2, 0, NULL);
+INSERT INTO `tbl_trips` (`id`, `start_mileage`, `end_mileage`, `date`, `trip_date`, `trip_time`, `vehicle_id`, `start_time`, `stop_time`, `trip_creator`, `start_coordinate`, `start_location`, `end_coordinate`, `end_location`, `project_id`, `approval`, `enroute`, `fare_estimate`, `actual_fare`) VALUES
+(3, NULL, NULL, '2016-08-28 13:48:56', '0000-00-00', '00:00:00', NULL, NULL, NULL, 2, '54321465232E', NULL, '643236547N', NULL, 0, 0, NULL, 0, 0),
+(4, NULL, 234, '2016-09-28 08:23:20', '0000-00-00', '00:00:00', 2, NULL, '2016-09-28 11:23:20', 1, '67321465232E', NULL, '139236547N', NULL, 0, 0, NULL, 0, 2300),
+(5, NULL, NULL, '2016-08-30 11:22:08', '0000-00-00', '00:00:00', NULL, NULL, NULL, 1, '67321465232E', NULL, '139236547N', NULL, 0, 0, NULL, 0, 0),
+(6, 1249, NULL, '2016-09-19 20:21:44', '0000-00-00', '00:00:00', NULL, '2016-09-06 17:37:13', NULL, 1, '88321E', NULL, '98947N', NULL, 0, 0, NULL, 0, 0),
+(31, NULL, NULL, '2016-09-15 05:33:53', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 0, NULL, 0, 0),
+(32, NULL, NULL, '2016-09-15 07:37:08', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 0, NULL, 0, 0),
+(33, NULL, NULL, '2016-09-19 20:24:22', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 1, NULL, 0, 0),
+(34, NULL, NULL, '2016-09-15 07:40:15', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 0, NULL, 0, 0),
+(37, NULL, NULL, '2016-09-25 18:43:14', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 1, NULL, 0, 0),
+(40, NULL, NULL, '2016-09-19 20:25:22', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', NULL, '234234E', NULL, 0, 1, NULL, 0, 0),
+(41, NULL, NULL, '2016-09-19 20:33:50', '2016-10-12', '13:00:00', 2, NULL, NULL, 1, '35264N', 'Nairobi', 'Kisumu', '234234E', 0, 1, NULL, 0, 0),
+(42, NULL, NULL, '2016-09-19 13:58:38', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL, 0, 0),
+(43, NULL, NULL, '2016-09-19 14:00:21', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL, 0, 0),
+(44, NULL, NULL, '2016-09-19 14:01:07', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL, 0, 0),
+(45, NULL, NULL, '2016-09-19 14:03:43', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL, 0, 0),
+(46, NULL, NULL, '2016-09-19 14:04:25', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL, 0, 0),
+(47, NULL, NULL, '2016-09-19 14:07:30', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 0, NULL, 0, 0),
+(48, NULL, NULL, '2016-09-19 21:16:22', '2016-10-12', '13:00:00', 4, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Nairobi', 0, 1, NULL, 0, 0),
+(49, NULL, NULL, '2016-09-20 15:38:34', '2016-10-12', '13:00:00', NULL, NULL, NULL, 1, '35264N', 'Nakuru', '234234E', 'Eldoret', 2, 0, NULL, 0, 0);
 
 -- --------------------------------------------------------
 
