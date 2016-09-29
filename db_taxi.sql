@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 29, 2016 at 06:15 PM
+-- Generation Time: Sep 29, 2016 at 06:30 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -62,14 +62,15 @@ CREATE TABLE IF NOT EXISTS `tbl_api_access` (
   `description` text NOT NULL,
   `api_key` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `tbl_api_access`
 --
 
 INSERT INTO `tbl_api_access` (`id`, `name`, `description`, `api_key`) VALUES
-(1, 'api_key', 'this verifys the app', '1111');
+(1, 'site_key', 'this verifys requests from the site', '1111'),
+(2, 'app_key', 'this verifys requests from the site Mobile App', '2222');
 
 -- --------------------------------------------------------
 
