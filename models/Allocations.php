@@ -62,7 +62,8 @@
 			if ($res==null) {
 				return array('error' => 'allocation does not exist');
 			}else{
-				$this->allocation_id= $res[0]["id"];				
+				$this->allocation_id= $res[0]["id"];
+				$this->vehicle_id=$res[0]["vehicle_id"];				
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
@@ -88,7 +89,7 @@
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
-				return array($this->getAllocation());
+				return $this->getAllocation();
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
 			}
