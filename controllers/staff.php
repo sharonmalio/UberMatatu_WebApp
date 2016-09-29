@@ -22,6 +22,11 @@
 				return $this->response;
 			}
 			else{
+				if($this->verb == "fellow"){
+					$staff=$this->token->getUser();
+
+					return $this->staff->get_fellow_staff($staff['id']);
+				}
 				if (!$this->args) {
 					//get all staffs
 					return $this->staff->all();

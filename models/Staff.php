@@ -25,6 +25,20 @@
 			}
 		}
 
+		function get_fellow_staff($staff){
+			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$staff);
+
+			$project = $res[0]["project_id"];
+
+			$res= query("SELECT `email`  FROM `tbl_project_people`
+			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
+			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+			WHERE project_id = ? ",$project );
+
+			return $res[0];
+
+		}
+
 		function all(){
 			//pre($profile);
 			$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Company Name` FROM `tbl_people`

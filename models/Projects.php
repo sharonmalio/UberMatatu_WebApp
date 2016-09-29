@@ -16,7 +16,7 @@
 					FROM `tbl_projects`
 				 	WHERE  `name`= ?",$this->name);
 				if(isset($res[0])){
-					return $res[0];
+					return $res;
 				}else{
 					return array('error' => 'Project not found' );
 				}
@@ -57,21 +57,10 @@
 
 		function my_projects($project_person){
 
-			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_person);
-			$project_id = $res[0]["project_id"];
+			$res = query("SELECT tbl_projects.id,`name`, `description`, `company_id` FROM `tbl_project_people` INNER JOIN tbl_projects ON tbl_project_people.project_id = tbl_projects.id WHERE `user_id` = ?",$project_person);
 			
-			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$project_id);
-			if ($res==null) {
-				return array('error' => 'project does not exist');
-			}else{
-				$this->name = $res[0]["name"];				
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
-				return $this->getProject();
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
-			}
+			//$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id` = ?",$project_id);
+			return $res;
 
 		}
 

@@ -13,7 +13,7 @@
 		function getUser(){
 			//pre($this->email);
 			if(!$this->email == null){	
-				$res = query("SELECT tbl_users.id,`email`,`type` FROM `tbl_users` INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id WHERE `email` = ?",
+				$res = query("SELECT tbl_users.id,`email`,`fName`,`lName`,`type` FROM `tbl_users` INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id WHERE `email` = ?",
 					$this->email);
 				if(isset($res[0])){
 					return $res[0];
@@ -24,10 +24,10 @@
 				if($this->uid == null){
 					return array('error' => 'user not set');
 				}else{
-					$res = query("SELECT tbl_users.id,`email`,`type` FROM `tbl_users` INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id WHERE tbl_users.id = ?",
+					$res = query("SELECT tbl_users.id,`email`,`type`,`fName`,`lName` FROM `tbl_users` INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id WHERE tbl_users.id = ?",
 						$this->uid);
 					if(isset($res[0])){
-						return array("id"=>$res[0]["id"],"email"=>$res[0]["email"],"type"=>$res[0]["type"]);//$res[0];
+						return array("id"=>$res[0]["id"],"email"=>$res[0]["email"],"type"=>$res[0]["type"],"fName"=>$res[0]['fName'],"lName"=>$res[0]['lName']);//$res[0];
 					}else{
 						return array('error' => 'user not found' );;
 					}
