@@ -140,16 +140,16 @@
 				return $res;
 			}
 		}
-		function update_trips($id,$start_coordinate,$end_coordinate,$trip_date,$trip_time){
+		function update_trips($id,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time){
 			//return $id;
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate` FROM `tbl_trips`, `approval` WHERE `id` = ? AND `approval`= ?",$id,0);
+			$res = query("SELECT `id` FROM `tbl_trips`, `approval` WHERE `id` = ? AND `approval`= ?",$id,0);
 			if ($res==null) {
 				return array('error' => 'trips does not exist');
 			}else{
 				$this->trips = $res[0]["id"];
-				$res=query("UPDATE `tbl_trips` SET `trip_date`=?,`trip_time`=?, `start_coordinate`,`end_coordinate`  WHERE `id`=?",
-					$trip_date,$trip_time,$start_coordinate,$end_coordinate,$id);
+				$res=query("UPDATE `tbl_trips` SET `trip_date`=?,`trip_time`=?, `start_coordinate`,`start_location`,`end_coordinate`,`end_location`  WHERE `id`=?",
+					$trip_date,$trip_time,$start_coordinate,$start_location,$end_coordinate,$end_location,$id);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/

@@ -219,7 +219,7 @@
 					}
 					
 
-					if (!$this->contains(array('id','start_coordinate','end_coordinate','trip_date','trip_time','project_id'))) {
+					if (!$this->contains(array('id',`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,'trip_date','trip_time','project_id'))) {
 						//return response constructed by contains()
 						return $this->response;
 					}else{
@@ -233,7 +233,7 @@
 							foreach ($payload_array as $array_key => $array_value) {
 								
 								$res[]=$this->trips->update_trip($array_value->id,
-									$array_value->start_coordinate,$array_value->end_coordinate,$array_value->trip_date,$array_value->trip_time,$array_value->project_id);
+									$array_value->start_coordinate,$array_value->start_location,$array_value->end_coordinate,$$array_value->end_location,$array_value->trip_date,$array_value->trip_time,$array_value->project_id);
 							}
 
 							return $res;
