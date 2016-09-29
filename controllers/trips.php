@@ -75,7 +75,7 @@
 										$mGroup->add_grouptrip($res[0]['id'],$email);
 									}
 								}
-								$res=$this->trips->get_trip($res[0]['id'])[0];
+								$res=$this->trips->get_trip($res[0]['id']);
 							}else{
 								$res=array();
 								$payload_array=$this->payload;

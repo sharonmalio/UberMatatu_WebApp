@@ -71,11 +71,10 @@
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`project_id`,`fare_estimate`) 
 				VALUES (?,?,?,?,?,?,?,?,?)",$trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id, $fare_estimate);
-			//pre($tripID);
-			// $res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID);
-			//pre($res);
-			$this->trips = $tripID;
-			return $this->getTrip();
+			// $res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID['id']);
+			
+			// $this->id = $res[0]['id'];
+			// return $this->getTrip();
 		}
 
 		function add_members($trip_id,$email){
@@ -122,7 +121,7 @@
 
 		function get_usertrips($user_id){
 
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE trip_creator = ?",$user_id);
+			$res = query("SELECT * FROM `tbl_trips` WHERE trip_creator = ?",$user_id);
 			if($res == null){
 				return array('error' => 'User has no created trips');
 			}else{
@@ -133,7 +132,7 @@
 		function get_mytrips($trip_creator){
 
 
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE trip_creator = ?",$trip_creator);
+			$res = query("SELECT * FROM `tbl_trips` WHERE trip_creator = ?",$trip_creator);
 			if($res == null){
 				return array('error' => 'You have no created trips');
 			}else{

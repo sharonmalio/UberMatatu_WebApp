@@ -81,12 +81,7 @@
 									$payload_array=$this->payload;
 								}
 								foreach ($payload_array as $array_key => $array_value) {
-									/*if (isset($array_value->company_id)) {
-										$company_id=$array_value->company_id;
-									}
-									if (isset($array_value->project_id)) {
-										$project_id=$array_value->project_id;
-									}*/
+									
 									$res[]=$this->companies->add_company($array_value->name,$array_value->description);
 								}
 
@@ -102,19 +97,27 @@
 				return $this->response;
 			}
 			else{
-				if (!$this->args) {
-					//get all companies
-					return array('error' => 'please choose a company to update');
-				}else{
-					if (!$this->contains(array('name','description'))) {
+				
+					if (!$this->contains(array('id','name','description'))) {
 						//return resposne constructed by contains()
 						return $this->response;
 					}else{
-						return $this->companies->update_company($this->args[0],$this->payload->name,
-							$this->payload->description);
+						$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+									
+									$res[]=$this->companies->update_company($array_value->id,$array_value->name,$array_value->description);
+								}
+
+								return $res;
 					}					
 				}
-			}
+		
 		}
 
 		function DELETE(){
