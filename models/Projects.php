@@ -69,12 +69,12 @@
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]["project_id"];
 			$res = query("SELECT * FROM `tbl_project_people`
-			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
-			INNER JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
+			LEFT JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
+			LEFT JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
 			 WHERE tbl_project_people.project_id = ?",$project_id);
 
 			if($res == null){
-				return array('error' => 'You are not included in this trip');
+				return array('error' => 'No tbl_trips for this project');
 			} 
 			else{
 				return $res;
@@ -88,9 +88,9 @@
 			$project_id = $res[0]["project_id"];
 
 			$res= query("SELECT tbl_people.user_id,`name`,`fName`,`lName`,`phone_no`,`email`,tbl_projects.id AS 'project_id' FROM `tbl_project_people`
-			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
-			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
-			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+			LEFT JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
+			LEFT JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+			LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
 			WHERE project_id = ? ",$project_id );
 
 			return $res;
