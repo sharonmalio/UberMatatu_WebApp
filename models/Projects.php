@@ -71,7 +71,7 @@
 			$res = query("SELECT * FROM `tbl_project_people`
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
 			INNER JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
-			 WHERE tbl_project_people.project_id = ?",$project_id);
+			 WHERE tbl_project_people.project_id = ? AND type = ?",$project_id, 5);
 
 			if($res == null){
 				return 'No trips for this project';
