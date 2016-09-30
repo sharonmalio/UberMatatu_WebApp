@@ -39,7 +39,9 @@
 
 		function get_projectmanager($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people` WHERE `type` = 3 AND `user_id` = ?",$id);
+			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`,`email`, `user_id` FROM `tbl_people`
+				INNER JOIN `tbl_user` ON tbl_user.id = tbl_people.user_id
+			 WHERE `type` = 3 AND `user_id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'projectmanager does not exist');
 			}else{
