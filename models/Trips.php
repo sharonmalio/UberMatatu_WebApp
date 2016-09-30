@@ -138,8 +138,18 @@
 			if($res == null){
 				return array('error' => 'You have no created trips');
 			}else{
-				return $res;
-			}
+				$mGroup = new Grouptrips();
+				foreach ($res as $key => $trip) {
+					$trip['id'];
+
+				}
+				$gtrips = $mGroup->get_grouptrip($res[0]['id']);
+					foreach ($gtrips as $gtrip_key => $user) {
+					pre($user);
+					//$res[$array_key]['group'][] = $user['email']; 
+				}
+				return  $res;
+			}	
 		}
 		function update_trips($id,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time){
 			//return $id;
@@ -217,7 +227,7 @@
 		}
 
 		function dispatch_vehicle($vehicle_id, $trip_id){
-			$res = query("UPDATE `tbl_trips` SET `vehicle_id` = ?, allocated = 2 WHERE `id` = ?",$vehicle_id,$trip_id);
+			$res = query("UPDATE `tbl_trips` SET `vehicle_id` = ?, approval = 2 WHERE `id` = ?",$vehicle_id,$trip_id);
 
 			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",1,$vehicle_id);
 
