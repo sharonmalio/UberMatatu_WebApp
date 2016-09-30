@@ -72,10 +72,10 @@
 								{
 									$mGroup = new Grouptrips();
 									foreach ($array_value->group as $email_key => $email) {
-										$mGroup->add_grouptrip($res[0]['id'],$email);
+										$mGroup->add_grouptrip($res['id'],$email);
 									}
 								}
-								//$res=$this->trips->get_trip($res[0]['id']);
+								$res=$this->trips->get_trip($res['id']);
 							}else{
 								$res=array();
 								$payload_array=$this->payload;
