@@ -41,11 +41,14 @@
 			}
 	 }
 
-		function get_grouptrip($id){
+		function get_grouptrip($id, $cannull = false){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`trip_id`,`email`
 					FROM `tbl_group_trip` WHERE `trip_id` = ?",$id);
 			if ($res==null) {
+				if ($cannull) {
+					return null;
+				}
 				return array('error' => 'Group trip does not exist');
 			}else{
 				$this->trips = $res[0]["trip_id"];				

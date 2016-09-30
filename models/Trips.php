@@ -143,10 +143,13 @@
 					$trip['id'];
 
 				}
-				$gtrips = $mGroup->get_grouptrip($res[0]['id']);
+				$gtrips = $mGroup->get_grouptrip($res[0]['id'],true);
+				if($gtrips !=null ){
+					
 					foreach ($gtrips as $gtrip_key => $user) {
-					pre($user);
-					//$res[$array_key]['group'][] = $user['email']; 
+					$res[$array_key]['group'][] = $user['email']; 
+
+					}
 				}
 				return  $res;
 			}	
