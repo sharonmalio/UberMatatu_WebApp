@@ -109,8 +109,8 @@
 				return $this->response;
 			}
 			else{
-					if($this->verb == "approve"){
-							if (!$this->contains(array('id'))) {
+					if($this->verb == "decide"){
+							if (!$this->contains(array('decision','trip_id'))) {
 									//return resposne constructed by contains()
 									return $this->response;
 								}else{
@@ -124,7 +124,7 @@
 									}
 									foreach ($payload_array as $array_key => $array_value) {
 									
-									$res[]=$this->trips->approve_trip($array_value->id);
+									$res[]=$this->trips->approve_trip($array_value->decision,$array_value->trip_id);
 									}
 
 									return $res;
@@ -193,6 +193,52 @@
 								foreach ($payload_array as $array_key => $array_value) {
 								
 								$res[]=$this->trips->dispatch_vehicle($array_value->vehicle_id,$array_value->trip_id);
+								}
+
+							return $res;
+
+						}
+					}
+
+					if($this->verb == "cancel"){
+						if(!$this->contains(array('trip_id'))){
+
+							return $this->response;
+						}else{
+								$trip_creator=$this->token->getUser();
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+								
+								$res[]=$this->trips->cancel_trip($array_value->trip_id);
+								}
+
+							return $res;
+
+						}
+					}
+
+					if($this->verb == "deny"){
+						if(!$this->contains(array('trip_id'))){
+
+							return $this->response;
+						}else{
+								$trip_creator=$this->token->getUser();
+								$payload_array=array();
+								$res=array();
+								if (!is_array($this->payload)) {
+									$payload_array[]=$this->payload;	
+								}else{
+									$payload_array=$this->payload;
+								}
+								foreach ($payload_array as $array_key => $array_value) {
+								
+								$res[]=$this->trips->deny_trip($array_value->trip_id);
 								}
 
 							return $res;
