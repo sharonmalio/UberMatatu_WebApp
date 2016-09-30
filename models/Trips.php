@@ -134,25 +134,66 @@
 		function get_mytrips($trip_creator){
 
 
-			$res = query("SELECT * FROM `tbl_trips` WHERE trip_creator = ?",$trip_creator);
-			if($res == null){
-				return array('error' => 'You have no created trips');
-			}else{
-				$mGroup = new Grouptrips();
-				foreach ($res as $key => $trip) {
-					$trip['id'];
+			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
+					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
+					LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval 
+				
+				 	WHERE  tbl_trips.trip_creator= ?",$trip_creator);
 
-				}
-				$gtrips = $mGroup->get_grouptrip($res[0]['id'],true);
-				if($gtrips !=null ){
-					
-					foreach ($gtrips as $gtrip_key => $user) {
-					$res[$array_key]['group'][] = $user['email']; 
 
+				$res1 = query("SELECT `fName`, `lName`,`phone_no`,`vehicle_id`,`plate`, `make`,`model` FROM `tbl_allocation`
+				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+				INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+				WHERE   `vehicle_id`= ?  ",$res[0]['vehicle_id']);
+
+				//pre($res);
+				
+				if(isset($res[0])){
+					// return $res;
+					$mGroup = new Grouptrips();
+					$gtrips = $mGroup->get_grouptrip($this->trips);
+					//pre($gtrips);
+					if(count($gtrips) != 0 && !array_key_exists('error', $gtrips)){
+						foreach ($gtrips as $gtrip_key => $user) {
+							//pre($user);
+							$res[0]['group'][] = $user['email']; 
+						}
 					}
+					if (isset($res1[0])) {
+						// foreach ($res1 as $key => $value) {
+						// 	$res[0]['driver'][]= $res1[$key];
+						// }
+						$res[0]['vehicle_driver']= $res1[0];
+					}
+					 
+
+					 return $res;
+				}else{
+					return array('error' => 'Trips not found' );
 				}
-				return  $res;
-			}	
+
+			// $res = query("SELECT * FROM `tbl_trips` WHERE trip_creator = ?",$trip_creator);
+			// if($res == null){
+			// 	return array('error' => 'You have no created trips');
+			// }else{
+			// 	$mGroup = new Grouptrips();
+			// 	foreach ($res as $key => $trip) {
+			// 		$trip['id'];
+
+			// 	}
+			// 	$gtrips = $mGroup->get_grouptrip($res[0]['id'],true);
+			// 	if($gtrips !=null ){
+					
+			// 		foreach ($gtrips as $gtrip_key => $user) {
+			// 		$res[$array_key]['group'][] = $user['email'];
+
+			// 		return $this->get_trip($trip); 
+
+			// 		}
+			// 	}	
+			// }	
 		}
 		function update_trips($id,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time){
 			//return $id;
