@@ -12,7 +12,7 @@
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`approval` FROM `tbl_trips`
+				$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
 				
 				 	WHERE  tbl_trips.id= ?",$this->trips);
@@ -71,10 +71,10 @@
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$tripID = query("INSERT INTO `tbl_trips` (`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`project_id`,`fare_estimate`) 
 				VALUES (?,?,?,?,?,?,?,?,?)",$trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id, $fare_estimate);
+			//print_r($tripID);
 			// $res = query("SELECT * FROM `tbl_trips` WHERE `id` = ?",$tripID['id']);
-			
-			// $this->id = $res[0]['id'];
-			// return $this->getTrip();
+			$this->trips = $tripID;
+			 return $this->getTrip();
 		}
 
 		function add_members($trip_id,$email){
