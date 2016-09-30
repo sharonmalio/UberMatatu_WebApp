@@ -69,12 +69,12 @@
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]["project_id"];
 			$res = query("SELECT * FROM `tbl_project_people`
-			LEFT JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
-			LEFT JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
+			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
+			INNER JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
 			 WHERE tbl_project_people.project_id = ?",$project_id);
 
 			if($res == null){
-				return 'No tbl_trips for this project';
+				return 'No trips for this project';
 			} 
 			else{
 				return $res;
