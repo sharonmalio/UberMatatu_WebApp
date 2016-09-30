@@ -74,7 +74,7 @@
 			 WHERE tbl_project_people.project_id = ?",$project_id);
 
 			if($res == null){
-				return array('error' => 'No tbl_trips for this project');
+				return 'No tbl_trips for this project';
 			} 
 			else{
 				return $res;
