@@ -223,7 +223,7 @@
 		}
 
 		function start_trip($id,$start_mileage){
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id, 2);
+			$res = query("SELECT `id`,`approval` FROM `tbl_trips` WHERE `id` = ? AND `approval`= ?",$id, 2);
 			if($res == null){
 				return array('error'=>'Could not update trip');
 			}
@@ -238,7 +238,7 @@
 		}
 
 		function stop_trip($id,$end_mileage,$actual_fare){
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`approval` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'Trip not found');
 			}
