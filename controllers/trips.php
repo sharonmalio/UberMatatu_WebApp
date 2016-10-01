@@ -116,17 +116,15 @@
 								}else{
 									$trip_creator=$this->token->getUser();
 									$payload_array=array();
-									$res=array();
 									if (!is_array($this->payload)) {
-										$payload_array[]=$this->payload;	
+										$res=$this->trips->approve_trip($payload->decision,$payload->trip_id);	
 									}else{
 										$payload_array=$this->payload;
+										$res=array();
+										foreach ($payload_array as $array_key => $array_value) {
+											$res[]=$this->trips->approve_trip($array_value->decision,$array_value->trip_id);
+										}
 									}
-									foreach ($payload_array as $array_key => $array_value) {
-									
-									$res[]=$this->trips->approve_trip($array_value->decision,$array_value->trip_id);
-									}
-
 									return $res;
 								}
 							}
@@ -139,15 +137,14 @@
 								}else{
 										$trip_creator=$this->token->getUser();
 										$payload_array=array();
-										$res=array();
 										if (!is_array($this->payload)) {
-											$payload_array[]=$this->payload;	
+											$res=$this->trips->start_trip($payload->id,$payload->start_mileage);	
 										}else{
 											$payload_array=$this->payload;
-										}
-										foreach ($payload_array as $array_key => $array_value) {
-										
-											$res[]=$this->trips->start_trip($array_value->id,$array_value->start_mileage);
+											$res=array();
+											foreach ($payload_array as $array_key => $array_value) {
+												$res[]=$this->trips->start_trip($array_value->id,$array_value->start_mileage);
+											}
 										}
 
 									return $res;
@@ -159,22 +156,20 @@
 							if (!$this->contains(array('id','end_mileage','actual_fare'))) {
 									//return resposne constructed by contains()
 									return $this->response;
-								}else{
-									$trip_creator=$this->token->getUser();
+							}else{
+								$trip_creator=$this->token->getUser();
 								$payload_array=array();
-								$res=array();
 								if (!is_array($this->payload)) {
-									$payload_array[]=$this->payload;	
+									$res=$this->trips->stop_trip($payload->id,$payload->end_mileage,$payload->actual_fare);
 								}else{
+									$res=array();
 									$payload_array=$this->payload;
+									foreach ($payload_array as $array_key => $array_value) {
+										$res[]=$this->trips->stop_trip($array_value->id,$array_value->end_mileage,$array_value->actual_fare);
+									}
 								}
-								foreach ($payload_array as $array_key => $array_value) {
-								
-								$res[]=$this->trips->stop_trip($array_value->id,$array_value->end_mileage,$array_value->actual_fare);
-								}
-
-							return $res;
-								}
+								return $res;
+							}
 						}
 
 					if($this->verb == "dispatch"){
@@ -205,21 +200,18 @@
 
 							return $this->response;
 						}else{
-								$trip_creator=$this->token->getUser();
-								$payload_array=array();
+							$trip_creator=$this->token->getUser();
+							$payload_array=array();
+							if (!is_array($this->payload)) {
+								$res=$this->trips->cancel_trip($payload->trip_id);
+							}else{
 								$res=array();
-								if (!is_array($this->payload)) {
-									$payload_array[]=$this->payload;	
-								}else{
-									$payload_array=$this->payload;
+								$payload_array=$this->payload;
+								foreach ($payload_array as $array_key => $array_value) {	
+									$res[]=$this->trips->cancel_trip($array_value->trip_id);
 								}
-								foreach ($payload_array as $array_key => $array_value) {
-								
-								$res[]=$this->trips->cancel_trip($array_value->trip_id);
-								}
-
+							}
 							return $res;
-
 						}
 					}
 
