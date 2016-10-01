@@ -238,20 +238,17 @@
 		}
 
 		function stop_trip($id,$end_mileage,$actual_fare){
-			$res = query("SELECT `id`,`approval` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`approval`,`vehicle_id` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'Trip not found');
 			}
 			else{
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $res[0]["id"];
-				$res=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4 `actual_fare`=? WHERE `id`=?",
+				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ? WHERE `id`=?",
 					$end_mileage,$date,$actual_fare,$id);
-
-				$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$vehicle_id);
-				return $this->getTrip()
-				;
-
+				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['vehicle_id']);
+				return $this->getTrip();
 			}
 		}
 

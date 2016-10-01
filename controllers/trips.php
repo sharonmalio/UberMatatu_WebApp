@@ -117,7 +117,7 @@
 									$trip_creator=$this->token->getUser();
 									$payload_array=array();
 									if (!is_array($this->payload)) {
-										$res=$this->trips->approve_trip($payload->decision,$payload->trip_id);	
+										$res=$this->trips->approve_trip($this->payload->decision,$this->payload->trip_id);	
 									}else{
 										$payload_array=$this->payload;
 										$res=array();
@@ -138,7 +138,7 @@
 										$trip_creator=$this->token->getUser();
 										$payload_array=array();
 										if (!is_array($this->payload)) {
-											$res=$this->trips->start_trip($payload->id,$payload->start_mileage);	
+											$res=$this->trips->start_trip($this->payload->id,$this->payload->start_mileage);	
 										}else{
 											$payload_array=$this->payload;
 											$res=array();
@@ -160,7 +160,7 @@
 								$trip_creator=$this->token->getUser();
 								$payload_array=array();
 								if (!is_array($this->payload)) {
-									$res=$this->trips->stop_trip($payload->id,$payload->end_mileage,$payload->actual_fare);
+									$res=$this->trips->stop_trip($this->payload->id,$this->payload->end_mileage,$this->payload->actual_fare);
 								}else{
 									$res=array();
 									$payload_array=$this->payload;
@@ -203,7 +203,7 @@
 							$trip_creator=$this->token->getUser();
 							$payload_array=array();
 							if (!is_array($this->payload)) {
-								$res=$this->trips->cancel_trip($payload->trip_id);
+								$res=$this->trips->cancel_trip($this->payload->trip_id);
 							}else{
 								$res=array();
 								$payload_array=$this->payload;
