@@ -237,16 +237,24 @@
 			}
 		}
 
-		function stop_trip($id,$end_mileage,$actual_fare){
+		function stop_trip($id,$end_mileage){
 			$res = query("SELECT `id`,`approval`,`vehicle_id` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'Trip not found');
 			}
 			else{
+				$res = query("SELECT `id`,`vehicle_id`,`start_mileage` FROM `tbl_trips` WHERE `id` = ?",$id);
+
+				//getting trip cost at 70 ksh per km
+				$start = $res[0]['start_mileage'];
+				$distance = ($end_mileage - $start);
+				$fare =($distance * 70);
+
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $res[0]["id"];
-				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ? WHERE `id`=?",
-					$end_mileage,$date,$actual_fare,$id);
+
+				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ?  WHERE `id`=?",
+					$end_mileage,$date,$fare,$id);
 				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['vehicle_id']);
 				return $this->getTrip();
 			}

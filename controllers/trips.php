@@ -153,19 +153,19 @@
 							
 						}
 					if($this->verb == "stop"){
-							if (!$this->contains(array('id','end_mileage','actual_fare'))) {
+							if (!$this->contains(array('id','end_mileage'))) {
 									//return resposne constructed by contains()
 									return $this->response;
 							}else{
 								$trip_creator=$this->token->getUser();
 								$payload_array=array();
 								if (!is_array($this->payload)) {
-									$res=$this->trips->stop_trip($this->payload->id,$this->payload->end_mileage,$this->payload->actual_fare);
+									$res=$this->trips->stop_trip($this->payload->id,$this->payload->end_mileage);
 								}else{
 									$res=array();
 									$payload_array=$this->payload;
 									foreach ($payload_array as $array_key => $array_value) {
-										$res[]=$this->trips->stop_trip($array_value->id,$array_value->end_mileage,$array_value->actual_fare);
+										$res[]=$this->trips->stop_trip($array_value->id,$array_value->end_mileage);
 									}
 								}
 								return $res;
