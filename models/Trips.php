@@ -12,7 +12,7 @@
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
-				$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
+				$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
 					LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval
 					LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_trips.project_id 
@@ -25,7 +25,7 @@
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
 				INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
 				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
-				WHERE   `vehicle_id`= ?  ",$res[0]['vehicle_id']);
+				WHERE   tbl_allocation.id= ?  ",$res[0]['allocation_id']);
 
 				//pre($res);
 				if(isset($res[0])){
@@ -59,14 +59,15 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
-				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_trips.vehicle_id
+			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
+				LEFT JOIN `tbl_allocation` ON tbl_trips.allocation_id = tbl_allocation.id
+				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_allocation.vehicle_id
 				LEFT JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
 				LEFT JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
 				LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval
 				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_trips.project_id 
 					");
-			$car = ["vehicle_id"];
+			$car = ["allocation_id"];
 
 
 			return $res;
@@ -134,7 +135,7 @@
 		}
 
 		function get_mytrips($trip_creator){
-			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS Project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
+			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS Project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
 					LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval
 					LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_trips.project_id  
@@ -147,7 +148,7 @@
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
 				INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
 				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
-				WHERE   `vehicle_id`= ?  ",$res[$key]['vehicle_id']);
+				WHERE   tbl_allocation.id= ?  ",$res[$key]['allocation_id']);
 
 				if (isset($res1[0])) {
 					foreach ($res1 as $key1 => $value) {
@@ -241,12 +242,12 @@
 		}
 
 		function stop_trip($id,$end_mileage){
-			$res = query("SELECT `id`,`approval`,`vehicle_id` FROM `tbl_trips` WHERE `id` = ?",$id);
+			$res = query("SELECT `id`,`approval`,`allocation_id` FROM `tbl_trips` WHERE `id` = ?",$id);
 			if($res == null){
 				return array('error'=>'Trip not found');
 			}
 			else{
-				$res = query("SELECT `id`,`vehicle_id`,`start_mileage` FROM `tbl_trips` WHERE `id` = ?",$id);
+				$res = query("SELECT `id`,`allocation_id`,`start_mileage` FROM `tbl_trips` WHERE `id` = ?",$id);
 
 				//getting trip cost at 70 ksh per km
 				$start = $res[0]['start_mileage'];
@@ -258,17 +259,17 @@
 
 				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ?  WHERE `id`=?",
 					$end_mileage,$date,$fare,$id);
-				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['vehicle_id']);
+				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['allocation_id']);
 				return $this->getTrip();
 			}
 		}
 
-		function dispatch_vehicle($vehicle_id, $trip_id){
-			$res = query("UPDATE `tbl_trips` SET `vehicle_id` = ?, approval = 2 WHERE `id` = ?",$vehicle_id,$trip_id);
+		function dispatch_vehicle($allocation_id, $trip_id){
+			$res = query("UPDATE `tbl_trips` SET `allocation_id` = ?, approval = 2 WHERE `id` = ?",$allocation_id,$trip_id);
 
-			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",1,$vehicle_id);
+			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",1,$allocation_id);
 
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips` WHERE `id`= ?",$trip_id);
 					return $res[0];
 
@@ -279,10 +280,10 @@
 			$res = query("UPDATE `tbl_trips` SET `approval` = 3 WHERE `id` =?", $trip_id);
 
 			$res = query("SELECT * FROM `tbl_trips` WHERE `id`=?", $trip_id);
-			$vehicle = $res[0]['vehicle_id'];
-			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id` = ?",0,$vehicle_id);
+			$vehicle = $res[0]['allocation_id'];
+			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id` = ?",0,$allocation_id);
 
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips` WHERE `id`= ?",$trip_id);
 				
 				return $res[0];
@@ -292,10 +293,10 @@
 			$res = query("UPDATE `tbl_trips` SET `approval` = 6 WHERE `id` = ?", $trip_id);
 
 			$res = query("SELECT * FROM `tbl_trips` WHERE `id`=?", $trip_id);
-			$vehicle = $res[0]['vehicle_id'];
-			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id` = ?",0,$vehicle_id);
+			$vehicle = $res[0]['allocation_id'];
+			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id` = ?",0,$allocation_id);
 
-			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`vehicle_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
+			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips` WHERE `id`= ?",$trip_id);
 				
 				return $res[0];
