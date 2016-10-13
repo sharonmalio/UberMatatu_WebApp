@@ -33,10 +33,8 @@
 					
 					}else if($this->verb == "user"){
 						
-						return array('error' => 'please choose a user');
-						
+						return array('error' => 'please choose a user');	
 					}
-
 					//get all trips
 					return $this->trips->all();
 				}else{
