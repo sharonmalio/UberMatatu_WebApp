@@ -31,7 +31,14 @@
 
 					return $this->trips->get_mytrips($trip_creator['id']);
 					
-					}else if($this->verb == "user"){
+					}
+					elseif($this->verb == "uncomplete"){
+					$trip_creator=$this->token->getUser();
+
+					return $this->trips->get_uncomplete($trip_creator['id']);
+					
+					}
+					else if($this->verb == "user"){
 						
 						return array('error' => 'please choose a user');	
 					}

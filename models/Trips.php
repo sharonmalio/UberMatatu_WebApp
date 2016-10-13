@@ -133,7 +133,15 @@
 				return $res;
 			}
 		}
+		function get_uncomplete($user_id){
+			$res = query("SELECT * FROM `tbl_trips` WHERE `approval`  <> ? AND trip_creator = ?",4,$user_id);
+			if($res == null){
+				return array('error' => 'User has no created trips');
+			}else{
+				return $res;
+			}
 
+		}
 		function get_mytrips($trip_creator){
 			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS Project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
