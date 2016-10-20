@@ -68,7 +68,8 @@
 
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]["project_id"];
-			$res = query("SELECT *, tbl_trips.id as trip_id FROM `tbl_project_people` 
+			$res = query("SELECT  tbl_trips.id as trip_id ,`start_coordinate`,start_location,end_coordinate,end_location, trip_date,trip_time, `date`,`trip_creator`,`fName`,`lName`, `phone_no`, `email`,tbl_trips.project_id,`name` AS project_name, `approval`,`status`, fare_estimate,actual_fare
+			 FROM `tbl_project_people` 
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
 			INNER JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
 			LEFT JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
@@ -85,7 +86,6 @@
 	
 		}
 
-//functional error here
 		function project_staff($project_manager){
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$project_manager);
 			$project_id = $res[0]["project_id"];
