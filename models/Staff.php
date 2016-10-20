@@ -52,18 +52,14 @@
 	
 
 		function get_staff($id){
-			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people` WHERE `type` = 1 AND `id` = ?",$id);
 			if ($res==null) {
 				return array('error' => 'staff does not exist');
 			}else{
 				$this->staff = $res[0]["id"];				
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
+				
 					return $this->getStaff();
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+				
 			}
 		}
 	}

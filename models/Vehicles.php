@@ -13,12 +13,24 @@
 			//pre($this->email);
 			if(!$this->plate == null){	
 				$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity`,`vehicle_use`,`vehicle_dispatched` FROM `tbl_vehicles`
-				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id WHERE `plate` = ?",
+				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id
+				 INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id WHERE `plate` = ?",
 					$this->plate);
+
+				if ($res[0]['vehicle_use'] == 1) {
+					$res1 = query("SELECT  driver_id, fName, lName, phone_no FROM tbl_allocation
+					INNER JOIN tbl_vehicles ON tbl_allocation.vehicle_id = tbl_vehicles.id
+					INNER JOIN tbl_people ON tbl_people.user_id = tbl_allocation.driver_id 
+					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$res[0]['id']);
+
+				 $res[0]['driver'] = $res1[0];
+					
+				}
+
 				if(isset($res[0])){
 					return $res[0];
 				}else{
-					return array('error' => 'Company not found' );
+					return array('error' => 'Vehicle not found' );
 				}
 			}
 		}
@@ -26,8 +38,28 @@
 		function all(){
 			//pre($profile);
 			$res = query("SELECT tbl_vehicles.id,`plate`, `make`,`model`, `capacity`,`vehicle_use`,`vehicle_dispatched` FROM `tbl_vehicles`
-				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id ");
-			return $res;
+				 INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+				 INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+				  ");
+
+			foreach ($res as $vehicle_key => $vehicle) {
+				if ($vehicle['vehicle_use'] == 1) {
+					$res1 = query("SELECT  driver_id, fName, lName, phone_no FROM tbl_allocation
+					INNER JOIN tbl_vehicles ON tbl_allocation.vehicle_id = tbl_vehicles.id
+					INNER JOIN tbl_people ON tbl_people.user_id = tbl_allocation.driver_id 
+					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$vehicle['id']);
+
+					
+				 $vehicle['driver']= $res1[0];
+
+				 $res2[] = $vehicle;
+				}
+				else{
+					$res2[]=$vehicle;
+				}
+				
+			}
+			return $res2	;
 		}
 
 		function add_vehicle($plate,  $model_id, $capacity){
