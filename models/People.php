@@ -47,7 +47,7 @@
 		}
 
 		function all(){
-			$res= query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name` FROM `tbl_people`
+			$res= query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name`, `project_id`, `name` FROM `tbl_people`
 				LEFT JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
 				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_project_people.user_id
 				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
