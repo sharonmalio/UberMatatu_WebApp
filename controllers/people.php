@@ -32,29 +32,7 @@
 			}
 		}
 
-		/*function POST(){
-			if (!$this->headerContains(array('authorisation') )) {
-				//return response constructed by contains()
-				return $this->response;
-			}
-			else{
-				if ($this->verb=="assign") {
-					if (!$this->args) {
-						# code...
-					}
-				}
-				//add person
-				//return print_r($this->payload->model_id);
-				if (!$this->contains(array('fName','lName','phone_no','type'))) {
-						//return resposne constructed by contains()
-						return $this->response;
-				}else{
-					$user_id=$this->token->getUser();
-					return $this->people->add_person($this->payload->fName,$this->payload->lName,
-					$this->payload->phone_no,$this->payload->type,$user_id);
-				}
-			}
-		}*/
+		
 
 		function PUT(){
 			if (!$this->headerContains(array('authorisation') )) {

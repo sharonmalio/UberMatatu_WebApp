@@ -12,11 +12,30 @@
 		function getPerson(){
 			//pre($this->email);
 			if($this->user_id != null){	
-				$res = query("SELECT tbl_people.id,`fName`,`lName`,`user_id`,`phone_no`,`type_name`
-					FROM `tbl_people`
-					LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id
-				 	WHERE  `user_id`= ?",$this->user_id);
+				$res = query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name` 
+				FROM `tbl_people`
+				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id
+				 	WHERE  tbl_people.user_id= ?",$this->user_id);
+
+				// get persons projects
+				$res1=query("SELECT `project_id`,`name` FROM `tbl_people`
+				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id 
+				WHERE  tbl_people.user_id= ?",$this->user_id);
+				
+				
 				if(isset($res[0])){
+					if(count($res1) != 0 && !array_key_exists('error', $res1)){
+						foreach ($res1 as $project_key => $project) {
+							//pre($user);
+							$res[0]['projects'][] = $project['name']; 
+						}
+					}
 					return $res[0];
 				}else{
 					return array('error' => 'Person not found' );
@@ -25,44 +44,25 @@
 		}
 
 		function all(){
-			//pre($profile);
-			$res = query("SELECT tbl_people.id,`fName`,`lName`,`user_id`,`phone_no`,`type_name` 
+			$res = query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name`,`project_id`,`name` 
 				FROM `tbl_people`
+				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
 				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id");
 			return $res;
 		}
 
-		/*function add_person($fName, $lName, $phone_no, $type, $user_id){
-			//pre($profile);
-			if($this->searchName($user_id)){
-				return array('error' => 'person already exists');
-			}else{
-					//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-					$res = query("INSERT INTO `tbl_people` (`fName`,`lName`,`phone_no`,`type`,`user_id`) 
-						VALUES (?,?,?,?,?)",$fName, $lName, $phone_no, $type, $user_id);
-					$this->user_id = $user_id;				
-					//regenerate token expiry key
-					$token = new Token();
-					$t = $token->generateToken($this->uid,$api_access);
-					return $this->getPerson();
-				}
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
-		}*/
 
 		function get_person($user_id){
-			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`, `user_id` FROM `tbl_people` WHERE `user_id` = ?",$user_id);
 			if ($res==null) {
 				return array('error' => 'person does not exist');
 			}else{
 				$this->user_id = $res[0]["user_id"];				
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
+				
 				return $this->getPerson();
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+			
 			}
 		}
 
@@ -77,12 +77,9 @@
 				$this->user_id = $res[0]["user_id"];
 				query("UPDATE `tbl_people` SET `fName`=?,`lName`=?,`phone_no`=?,`type`=? WHERE `user_id`=?",
 					$fName, $lName, $phone_no, $type,$user_id);
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
+				
 				return array($this->getPerson());
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+				
 			}
 		}
 
@@ -96,17 +93,13 @@
 				$this->user_id = $res[0]["user_id"];
 				query("UPDATE `tbl_people` SET `fName`=?,`lName`=?,`phone_no`=?,`type`=? WHERE `user_id`=?",
 					$fName, $lName, $phone_no,$type,$user_id);
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
+			
 				return array($this->getPerson());
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+				
 			}
 		}
 
 		function delete_person($user_id){
-			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`fName`,`lName`,`phone_no`,`type`,`user_id` FROM `tbl_people` WHERE `user_id`=?",
 				$user_id);
 			if ($res==null) {
@@ -115,12 +108,9 @@
 				$this->user_id = $res[0]["user_id"];
 				query("DELETE FROM `tbl_people` WHERE `user_id`=?",
 					$user_id);
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
+				
 				return array('person' => $res[0]);
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+				
 			}
 		}
 
