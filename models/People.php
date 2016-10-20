@@ -15,7 +15,7 @@
 				$res = query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name` 
 				FROM `tbl_people`
 				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
-				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_project_people.user_id
 				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
 				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id
 				 	WHERE  tbl_people.user_id= ?",$this->user_id);
@@ -23,7 +23,7 @@
 				// get persons projects
 				$res1=query("SELECT `project_id`,`name` FROM `tbl_people`
 				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
-				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_project_people.user_id
 				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
 				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id 
 				WHERE  tbl_people.user_id= ?",$this->user_id);
@@ -35,8 +35,11 @@
 							//pre($user);
 							$res[0]['projects'][] = $project['name']; 
 						}
+						return $res[0];
 					}
-					return $res[0];
+
+
+					
 				}else{
 					return array('error' => 'Person not found' );
 				}
@@ -44,13 +47,35 @@
 		}
 
 		function all(){
-			$res = query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name`,`project_id`,`name` 
-				FROM `tbl_people`
-				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
-				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_people.user_id
+			$res= query("SELECT tbl_people.id,`fName`,`lName`,tbl_people.user_id,`phone_no`,`email`,`type_name` FROM `tbl_people`
+				LEFT JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_project_people.user_id
 				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
-				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id");
-			return $res;
+				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id ");
+				
+
+				return $res;
+				// if(isset($res)){
+				// 	foreach ($res as $person_key) {
+				// 		$res1=query("SELECT `project_id`,`name` FROM `tbl_people`
+				// 		INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+				// 		LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_project_people.user_id
+				// 		LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
+				// 		LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id 
+				// 		WHERE  tbl_people.user_id= ?",$res[0]['id']);
+
+				// 		if(count($res1) != 0 && !array_key_exists('error', $res1)){
+							
+				// 			foreach ($res1 as $project_key => $project) {
+				// 				pre($user);
+				// 				$res[0]['projects'][] = $project['name']; 
+				// 			}
+				// 		}
+				// 		return $res;
+				// 	}
+				// }else{
+				// 	return array('error' => 'Person not found' );
+				// }
 		}
 
 
