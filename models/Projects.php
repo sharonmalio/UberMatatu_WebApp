@@ -72,6 +72,8 @@
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
 			INNER JOIN `tbl_trips` ON tbl_trips.trip_creator = tbl_people.user_id
 			LEFT JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+			LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval
+			LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_trips.project_id 
 			 WHERE tbl_project_people.project_id = ? ",$project_id);
 
 			if($res == null){
