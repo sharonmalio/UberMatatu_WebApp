@@ -33,22 +33,31 @@
 			if($this->searchName($name)){
 				return array('error' => 'company already exists');
 			}else{
+					//$username = (isset($profile->username)) ? $profile->username : null;
 					$res = query("INSERT INTO `tbl_companies` (`name`,`description`) VALUES (?,?)",
 						$name,$description);
 					$this->name = $name;				
-					
+					/*//regenerate token expiry key
+					$token = new Token();
+					$t = $token->generateToken($this->uid,$api_access);*/
 					return array('company' => $this->getCompany());
 				}
-		
+				//TODO: add profile and handle null values
+				//return array('error' => 'invalid email or password');
 		}
 
 		function company_trips($company_head){
 
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
-			$res = query("SELECT *  FROM `tbl_projects` 
-				LEFT JOIN `tbl_project_people` ON tbl_projects.id = tbl_project_people.project_id
-				LEFT JOIN `tbl_trips` ON tbl_project_people.user_id = tbl_trips.trip_creator WHERE `company_id` =? ", $company);
+			/*$res = query("SELECT * FROM `tbl_projects` 
+				INNER JOIN `tbl_project_people` ON tbl_projects.id = tbl_project_people.project_id
+				INNER JOIN `tbl_trips` ON tbl_project_people.user_id = tbl_trips.trip_creator WHERE `company_id` =? ", $company);*/
+			$res = query("SELECT * FROM `tbl_trips` 
+				INNER JOIN `tbl_project_people` ON tbl_trips.trip_creator = tbl_project_people.user_id
+				INNER JOIN `tbl_projects` ON tbl_project_people.project_id = tbl_projects.id
+				INNER JOIN `tbl_companies` ON tbl_projects.company_id = tbl_companies.id
+				WHERE tbl_companies.id =? ", $company);
 
 			if($res == null){
 				return array('error' => 'You are not a company admin');
@@ -103,9 +112,12 @@
 				return array('error' => 'company does not exist');
 			}else{
 				$this->name = $res[0]["name"];				
-				
+				/*//regenerate token expiry key
+				$token = new Token();
+				$t = $token->generateToken($this->uid,$api_access);*/
 				return $this->getCompany();
-				
+				//TODO: add profile and handle null values
+				//return array('error' => 'invalid email or password');
 			}
 		}
 
@@ -119,9 +131,12 @@
 				$this->name = $res[0]["name"];
 				query("UPDATE `tbl_companies` SET `name`=?, `description`=? WHERE `id`=?",
 					$name,$description,$id);
-				
+				/*//regenerate token expiry key
+				$token = new Token();
+				$t = $token->generateToken($this->uid,$api_access);*/
 				return array('company' => $this->getCompany());
-				
+				//TODO: add profile and handle null values
+				//return array('error' => 'invalid email or password');
 			}
 		}
 
@@ -135,9 +150,12 @@
 				$this->name = $res[0]["name"];
 				query("DELETE FROM `tbl_companies` WHERE `id`=?",
 					$id);
-			
+				/*//regenerate token expiry key
+				$token = new Token();
+				$t = $token->generateToken($this->uid,$api_access);*/
 				return array('company' => $res[0]);
-				
+				//TODO: add profile and handle null values
+				//return array('error' => 'invalid email or password');
 			}
 		}
 
