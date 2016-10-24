@@ -18,7 +18,7 @@
 					$this->plate);
 
 				if ($res[0]['vehicle_use'] == 1) {
-					$res1 = query("SELECT  driver_id, fName, lName, phone_no FROM tbl_allocation
+					$res1 = query("SELECT tbl_allocation.id AS allocation_id,  driver_id, fName, lName, phone_no FROM tbl_allocation
 					INNER JOIN tbl_vehicles ON tbl_allocation.vehicle_id = tbl_vehicles.id
 					INNER JOIN tbl_people ON tbl_people.user_id = tbl_allocation.driver_id 
 					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$res[0]['id']);
@@ -44,7 +44,7 @@
 
 			foreach ($res as $vehicle_key => $vehicle) {
 				if ($vehicle['vehicle_use'] == 1) {
-					$res1 = query("SELECT  driver_id, fName, lName, phone_no FROM tbl_allocation
+					$res1 = query("SELECT tbl_allocation.id AS allocation_id, driver_id, fName, lName, phone_no FROM tbl_allocation
 					INNER JOIN tbl_vehicles ON tbl_allocation.vehicle_id = tbl_vehicles.id
 					INNER JOIN tbl_people ON tbl_people.user_id = tbl_allocation.driver_id 
 					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$vehicle['id']);
@@ -81,19 +81,14 @@
 		}
 
 		function get_vehicle($id){
-			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id`,`plate`,`model_id`,`capacity`,`vehicle_use`,`vehicle_dispatched` FROM `tbl_vehicles` WHERE `id`=?",
 				$id);
 			if ($res==null) {
 				return array('error' => 'vehicle does not exist');
 			}else{
 				$this->plate = $res[0]["plate"];				
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
-				return $this->getVehicle();
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+		
+			 return $this->getVehicle();
 			}
 		}
 
