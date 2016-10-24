@@ -82,7 +82,7 @@
 				return array('error' => 'allocation does not exist');
 			}else{
 
-				$driver_id = $res['driver_id'];
+				$driver_id = $res[0]['driver_id'];
 
 				$this->vehicle_id = $res[0]["vehicle_id"];
 				$res=query("UPDATE `tbl_allocation` SET `return_time` = ?, `return_mileage`=? WHERE `id`=?",$date,
