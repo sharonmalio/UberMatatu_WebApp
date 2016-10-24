@@ -19,11 +19,9 @@
 				
 				 	WHERE  tbl_trips.id= ?",$this->trips);
 
-				$res1 = query("SELECT `fName`, `lName`,`phone_no`,`vehicle_id`,`plate`, `make`,`model` FROM `tbl_allocation`
+				$res1 = query("SELECT `fName`, `lName`,`phone_no` FROM `tbl_allocation`
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
-				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
-				INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
-				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+				
 				WHERE   tbl_allocation.id= ?  ",$res[0]['allocation_id']);
 
 				//pre($res);
@@ -42,7 +40,15 @@
 						// foreach ($res1 as $key => $value) {
 						// 	$res[0]['driver'][]= $res1[$key];
 						// }
-						$res[0]['vehicle_driver']= $res1[0];
+						$res[0]['driver']= $res1[0];
+
+						$res3 = query("SELECT `vehicle_id`,`plate`, `make`,`model` FROM `tbl_allocation`
+						INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+						INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+						INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+						WHERE   tbl_allocation.id= ?  ",$res[0]['allocation_id']);
+
+						$res[0]['vehicle'] = $res3[0];
 					}
 					 
 
@@ -68,8 +74,31 @@
 					");
 			$car = ["allocation_id"];
 
+			foreach ($res as $trip_key => $trip) {
+				if ($trip['allocation_id'] != null) {
+					$res1 = query("SELECT `fName`, `lName`,`phone_no` FROM `tbl_allocation`
+						INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+						WHERE   tbl_allocation.id= ?  ",$trip['allocation_id']);
+					
+					$trip['driver']= $res1[0];
 
-			return $res;
+					$res3 = query("SELECT `vehicle_id`,`plate`, `make`,`model` FROM `tbl_allocation`
+						INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+						INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+						INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+						WHERE   tbl_allocation.id= ?  ",$trip['allocation_id']);
+
+					$trip['vehicle'] = $res3[0];
+					
+					$res2[] = $trip;
+				}
+				else{
+					$res2[]=$trip;
+				}
+				
+			}
+
+			return $res2;
 		}
 
 		function add_trip($trip_creator,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time,$project_id, $fare_estimate){
