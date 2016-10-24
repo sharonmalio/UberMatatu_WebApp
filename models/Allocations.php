@@ -81,11 +81,15 @@
 			if ($res==null) {
 				return array('error' => 'allocation does not exist');
 			}else{
+
+				$driver_id = $res['driver_id'];
+
 				$this->vehicle_id = $res[0]["vehicle_id"];
 				$res=query("UPDATE `tbl_allocation` SET `return_time` = ?, `return_mileage`=? WHERE `id`=?",$date,
 					$return_mileage,$id);
 
 				$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ? ", 0,$this->vehicle_id);
+				$res = query("UPDATE `tbl_people` SET `allocation_status`= ? WHERE `user_id` = ? AND `type` = ?",0,$driver_id,2);
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
