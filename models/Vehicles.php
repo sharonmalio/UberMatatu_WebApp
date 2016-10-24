@@ -21,10 +21,14 @@
 					$res1 = query("SELECT tbl_allocation.id AS allocation_id,  driver_id, fName, lName, phone_no, email FROM tbl_allocation
 					INNER JOIN tbl_vehicles ON tbl_allocation.vehicle_id = tbl_vehicles.id
 					INNER JOIN tbl_people ON tbl_people.user_id = tbl_allocation.driver_id 
-					INNER JOIN tbl_users ON tbl_users.id =  tbl_people.user_id 
+					INNER JOIN tbl_users ON tbl_users.id =  tbl_people.user_id 	
 					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$res[0]['id']);
 
-				 $res[0]['driver'] = $res1[0];
+					$res3 = query("SELECT id as trip_id, start_location, end_location FROM tbl_trips WHERE allocation_id = ?", $res1[0]['allocation_id']);
+
+					$res[0]['driver'] = $res1[0];
+
+					$res[0]['trip'] = $res3[0];
 					
 				}
 
@@ -51,10 +55,13 @@
 					INNER JOIN tbl_users ON tbl_users.id =  tbl_people.user_id 
 					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$vehicle['id']);
 
-					
-				 $vehicle['driver']= $res1[0];
+					$res3 = query("SELECT id as trip_id, start_location, end_location FROM tbl_trips WHERE allocation_id = ?", $res1[0]['allocation_id']);
 
-				 $res2[] = $vehicle;
+					
+					$vehicle['driver']= $res1[0];
+
+					$vehicle['trip'] = $res3[0];
+					$res2[] = $vehicle;
 				}
 				else{
 					$res2[]=$vehicle;

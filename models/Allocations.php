@@ -47,10 +47,10 @@
 
 					$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ?", 1,$vehicle_id);
 					$res = query("UPDATE `tbl_people` SET `allocation_status`= ? WHERE `user_id` = ? AND `type` = ?", 1,$driver_id,2);				
-										return $this->getAllocation();
+					
+					return $this->getAllocation();
 				}
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
+				
 		}
 
 		function get_allocation($id){
@@ -61,9 +61,7 @@
 			}else{
 				$this->allocation_id= $res[0]["id"];
 				$this->vehicle_id=$res[0]["vehicle_id"];				
-				/*//regenerate token expiry key
-				$token = new Token();
-				$t = $token->generateToken($this->uid,$api_access);*/
+				
 				return $this->getAllocation();
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
