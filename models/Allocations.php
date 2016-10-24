@@ -46,7 +46,7 @@
 					$this->vehicle_id = $vehicle_id;
 
 					$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ?", 1,$vehicle_id);
-					$res = query("UPDATE `tbl_people` SET `allocation_status`= ? WHERE `id` = ? AND `type` = ?", 1,$driver_id,2);				
+					$res = query("UPDATE `tbl_people` SET `allocation_status`= ? WHERE `user_id` = ? AND `type` = ?", 1,$driver_id,2);				
 					//regenerate token expiry key
 					/*$token = new Token();
 					$t = $token->generateToken($this->uid,$api_access);*/
