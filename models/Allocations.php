@@ -26,7 +26,7 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `vehicle_id`,`plate`,`make`,`model`,`capacity`, `driver_id`,`fName`, `lName`, `collect_time`, `return_time`, `start_mileage`, `return_mileage` FROM `tbl_allocation`
+			$res = query("SELECT tbl_allocation.id, `vehicle_id`,`plate`,`make`,`model`,`capacity`, `driver_id`,`fName`, `lName`, `collect_time`, `return_time`, `start_mileage`, `return_mileage` FROM `tbl_allocation`
 				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
 				INNER JOIN `tbl_vehicle_model` ON tbl_vehicles.model_id = tbl_vehicle_model.id
@@ -47,10 +47,7 @@
 
 					$res = query("UPDATE `tbl_vehicles` SET `vehicle_use`= ? WHERE `id` = ?", 1,$vehicle_id);
 					$res = query("UPDATE `tbl_people` SET `allocation_status`= ? WHERE `user_id` = ? AND `type` = ?", 1,$driver_id,2);				
-					//regenerate token expiry key
-					/*$token = new Token();
-					$t = $token->generateToken($this->uid,$api_access);*/
-					return $this->getAllocation();
+										return $this->getAllocation();
 				}
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
@@ -93,7 +90,14 @@
 				/*//regenerate token expiry key
 				$token = new Token();
 				$t = $token->generateToken($this->uid,$api_access);*/
-				return $this->getAllocation();
+				$res1 = query("SELECT tbl_allocation.id, `vehicle_id`,`plate`,`make`,`model`,`capacity`, `driver_id`,`fName`, `lName`, `collect_time`, `return_time`, `start_mileage`, `return_mileage` FROM `tbl_allocation`
+				INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+				INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+				INNER JOIN `tbl_vehicle_model` ON tbl_vehicles.model_id = tbl_vehicle_model.id
+				INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_make.id = tbl_vehicle_model.make_id 
+				 WHERE tbl_allocation.id = ? ", $id);
+				
+				return $res1[0];
 				//TODO: add profile and handle null values
 				//return array('error' => 'invalid email or password');
 			}
