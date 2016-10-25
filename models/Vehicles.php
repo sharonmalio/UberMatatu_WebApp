@@ -59,9 +59,17 @@
 
 					
 					$vehicle['driver']= $res1[0];
+					if ($res3 != null) {
+						$vehicle['trip'] = $res3[0];
+						$res2[] = $vehicle;
 
-					$vehicle['trip'] = $res3[0];
-					$res2[] = $vehicle;
+
+						# code...
+					}else{
+						$res2[] = $vehicle;
+					}
+					//$vehicle['trip'] = $res3[0];
+					
 				}
 				else{
 					$res2[]=$vehicle;
