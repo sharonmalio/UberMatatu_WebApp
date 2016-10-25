@@ -26,6 +26,7 @@
 				LEFT JOIN `tbl_project_people` ON tbl_users.id = tbl_project_people.user_id
 				LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id 
 				LEFT JOIN tbl_people_type ON tbl_people.type=tbl_people_type.id 
+				
 				WHERE  tbl_people.user_id= ?",$this->user_id);
 				
 				

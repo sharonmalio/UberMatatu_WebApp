@@ -12,7 +12,7 @@
 		function getOperationmanager(){
 			//pre($this->email);
 			if($this->operationmanager != null){	
-				$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Company Name` FROM `tbl_people`
+				$res = query("SELECT tbl_people.user_id,`fName`,`lName`,`phone_no`,`type`,`email`,`name`  FROM `tbl_people`
 					INNER JOIN `tbl_company_admins` ON tbl_company_admins.user_id = tbl_people.user_id 
 					INNER JOIN `tbl_companies` ON tbl_companies.id = tbl_company_admins.company_id
 					INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id 
@@ -27,7 +27,7 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Company Name` FROM `tbl_people`
+			$res = query("SELECT tbl_people.user_id,`fName`,`lName`,`phone_no`,`type`,`email`,`name` FROM `tbl_people`
 					INNER JOIN `tbl_company_admins` ON tbl_company_admins.user_id = tbl_people.user_id 
 					INNER JOIN `tbl_companies` ON tbl_companies.id = tbl_company_admins.company_id
 					INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id

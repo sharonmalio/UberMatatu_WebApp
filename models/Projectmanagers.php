@@ -12,7 +12,7 @@
 		function getProjectmanager(){
 			//pre($this->email);
 			if($this->projectmanager != null){	
-				$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Project Name` FROM `tbl_people`
+				$res = query("SELECT tbl_people.user_id, `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `project_name` FROM `tbl_people`
 					INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
 					INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id
 					INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id 
@@ -27,7 +27,7 @@
 
 		function all(){
 			//pre($profile);
-			$res = query("SELECT `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `Project Name` FROM `tbl_people`
+			$res = query("SELECT tbl_people.user_id, `fName`,`lName`,`phone_no`,`type`,`email`,`name` AS `project_name` FROM `tbl_people`
 			INNER JOIN `tbl_project_people` ON tbl_project_people.user_id = tbl_people.user_id 
 			INNER JOIN `tbl_projects` ON tbl_projects.id = tbl_project_people.project_id
 			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id 

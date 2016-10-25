@@ -24,6 +24,8 @@
 					INNER JOIN tbl_users ON tbl_users.id =  tbl_people.user_id 	
 					WHERE tbl_vehicles.id = ? AND return_mileage IS NULL",$res[0]['id']);
 
+					
+
 					$res3 = query("SELECT id as trip_id, start_location, end_location FROM tbl_trips WHERE allocation_id = ?", $res1[0]['allocation_id']);
 
 					$res[0]['driver'] = $res1[0];

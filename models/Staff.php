@@ -28,14 +28,20 @@
 		function get_fellow_staff($staff){
 			$res = query("SELECT * FROM `tbl_project_people` WHERE `user_id` = ?",$staff);
 
-			$project = $res[0]["project_id"];
+			if ($res!= null) {
+				# code...
+				$project = $res[0]["project_id"];
 
-			$res= query("SELECT `email`  FROM `tbl_project_people`
-			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
-			INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
-			WHERE project_id = ? ",$project );
+				$res= query("SELECT `email`  FROM `tbl_project_people`
+				INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id
+				INNER JOIN `tbl_users` ON tbl_users.id = tbl_people.user_id
+				WHERE project_id = ? ",$project );
+			}else{
+				return array('error' => 'No fellow workers in this project');
+			}
+			
 
-			return $res[0];
+			return $res;
 
 		}
 
