@@ -178,7 +178,7 @@
 						}
 
 					if($this->verb == "dispatch"){
-						if(!$this->contains(array('vehicle_id','trip_id'))){
+						if(!$this->contains(array('allocation_id','trip_id'))){
 
 							return $this->response;
 						}else{
@@ -192,7 +192,7 @@
 								}
 								foreach ($payload_array as $array_key => $array_value) {
 								
-								$res[]=$this->trips->dispatch_vehicle($array_value->vehicle_id,$array_value->trip_id);
+								$res[]=$this->trips->dispatch_vehicle($array_value->allocation_id,$array_value->trip_id);
 								}
 
 							return $res;

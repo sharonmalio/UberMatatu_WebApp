@@ -303,7 +303,8 @@
 		function dispatch_vehicle($allocation_id, $trip_id){
 			$res = query("UPDATE `tbl_trips` SET `allocation_id` = ?, approval = 2 WHERE `id` = ?",$allocation_id,$trip_id);
 
-			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",1,$allocation_id);
+			$res1 =query("SELECT * FROM tbl_allocation WHERE id =?", $allocation_id);
+			$res = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",1,$res1[0]['vehicle_id']);
 
 			$res = query("SELECT `id`,`start_mileage`,`end_mileage`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`end_coordinate`, `approval`
 					FROM `tbl_trips` WHERE `id`= ?",$trip_id);
