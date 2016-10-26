@@ -283,7 +283,9 @@
 				return array('error'=>'Trip not found');
 			}
 			else{
-				$res = query("SELECT `id`,`allocation_id`,`start_mileage` FROM `tbl_trips` WHERE `id` = ?",$id);
+				$res = query("SELECT `id`,`allocation_id`,`start_mileage`, `vehicle_id` FROM `tbl_trips`
+
+				INNER JOIN tbl_allocation ON tbl_allocation.vehicle_id = tbl_trips.allocation_id WHERE `id` = ?",$id);
 
 				//getting trip cost at 70 ksh per km
 				$start = $res[0]['start_mileage'];
@@ -293,10 +295,9 @@
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $res[0]["id"];
 
-				$fare = 400;
 				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ?  WHERE `id`=?",
 					$end_mileage,$date,$fare,$id);
-				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['allocation_id']);
+				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['vehicle_id']);
 				return $this->getTrip();
 			}
 		}
