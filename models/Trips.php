@@ -293,6 +293,7 @@
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $res[0]["id"];
 
+				$fare = 400;
 				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ?  WHERE `id`=?",
 					$end_mileage,$date,$fare,$id);
 				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['allocation_id']);
