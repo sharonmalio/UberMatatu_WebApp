@@ -103,7 +103,7 @@
 								}
 								foreach ($payload_array as $array_key => $array_value) {
 								
-									$res[]=$this->projects->update_project($array_value->$array_value->name,
+									$res[]=$this->projects->update_project($array_value->id,$array_value->name,
 										$array_value->description);
 								}
 
