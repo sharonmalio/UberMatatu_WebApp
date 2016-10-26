@@ -35,7 +35,7 @@
 
 		function add_project($name, $description, $company_head){
 
-
+		
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
 			if($this->searchName($name)){
@@ -112,15 +112,15 @@
 
 	
 
-		function update_project($id,$name, $description, $company_id){
+		function update_project($id,$name, $description){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
-			$res = query("SELECT `id`,`name`,`description`,`company_id` FROM `tbl_projects` WHERE `id`=?",$id);
+			$res = query("SELECT `id`,`name`,`description`FROM `tbl_projects` WHERE `id`=?",$id);
 			if ($res==null) {
 				return array('error' => 'project does not exist');
 			}else{
 				$this->name = $res[0]["name"];
-				query("UPDATE `tbl_projects` SET `name`=?,`description`=?,`company_id`=? WHERE `id`=?",
-					$name, $description, $company_id,$id);
+				query("UPDATE `tbl_projects` SET `name`=?,`description`=? WHERE `id`=?",
+					$name, $description,$id);
 			
 				return array($this->getProject());
 			

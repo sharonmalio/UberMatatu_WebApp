@@ -89,7 +89,7 @@
 			}
 			else{
 				
-					if (!$this->contains(array('id','name', 'description','company_id'))) {
+					if (!$this->contains(array('id','name', 'description'))) {
 							//return response constructed by contains()
 							return $this->response;
 						}else{
@@ -109,7 +109,7 @@
 										$model_id=$array_value->model_id;
 									}*/
 									$res[]=$this->models->update_project($array_value->$array_value->name,
-										$array_value->description,$array_value->company_id);
+										$array_value->description);
 								}
 
 								return $res;
