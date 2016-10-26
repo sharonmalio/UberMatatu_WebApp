@@ -51,10 +51,12 @@
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
 			
-			$res = query("SELECT * FROM `tbl_trips` 
+			$res = query("SELECT tbl_trips.id AS trip_id,start_mileage,end_mileage,date,trip_date,trip_time,allocation_id,start_time,stop_time,trip_creator,start_coordinate,start_location,end_coordinate,end_location,tbl_trips.project_id,approval,enroute,fare_estimate,actual_fare,user_id,accepted,tbl_projects.name,company_id,email,user_level_id
+   				FROM `tbl_trips` 
 				INNER JOIN `tbl_project_people` ON tbl_trips.trip_creator = tbl_project_people.user_id
 				INNER JOIN `tbl_projects` ON tbl_project_people.project_id = tbl_projects.id
 				INNER JOIN `tbl_companies` ON tbl_projects.company_id = tbl_companies.id
+				INNER JOIN `tbl_users` ON tbl_trips.trip_creator = tbl_users.id
 				WHERE tbl_companies.id =? ", $company);
 
 			if($res == null){

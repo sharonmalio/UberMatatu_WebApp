@@ -37,7 +37,7 @@
 			}else{
 					$res = query("INSERT INTO `tbl_group_trip` (`trip_id`,`email`) 
 						VALUES (?,?)",$trip_id,$email);
-					return $this->get_grouptrip($res);
+					return $this->get_grouptrip($trip_id);
 			}
 	 }
 

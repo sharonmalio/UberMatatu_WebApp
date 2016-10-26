@@ -73,9 +73,11 @@
 							if (!is_array($this->payload)) {
 								$array_value=$this->payload;
 								$res=$this->trips->add_trip($trip_creator["id"],$array_value->start_coordinate,$array_value->start_location,$array_value->end_coordinate,$array_value->end_location,$array_value->trip_date,$array_value->trip_time,$array_value->project_id,$array_value->fare_estimate);
+								$mGroup = new Grouptrips();
+								$mGroup->add_grouptrip($res['id'],$trip_creator["email"]);
+
 								if($this->contains(array('group'),false))
 								{
-									$mGroup = new Grouptrips();
 									foreach ($array_value->group as $email_key => $email) {
 										$mGroup->add_grouptrip($res['id'],$email);
 									}
