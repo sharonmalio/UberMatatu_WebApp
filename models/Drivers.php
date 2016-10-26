@@ -42,7 +42,6 @@
 			$res = query("SELECT tbl_people.id, `fName`, `lName`, `email`,`phone_no`, `type`, `user_id`, `allocation_status` FROM `tbl_people`
 			 INNER JOIN `tbl_users` ON tbl_people.user_id = tbl_users.id 
 			  WHERE `type` = ?", 2);
-
 			foreach ($res as $driver_key => $driver) {
 				if ($driver['allocation_status'] == 1) {
 
@@ -54,12 +53,18 @@
 
 					$res2 = query("SELECT id, start_location, end_location FROM tbl_trips WHERE allocation_id =? ", $res1[0]['id']);
 
-					$res[0]['vehicle'] = $res1[0];
-
-					$res[0]['trip']=$res2[0];
+					$driver['vehicle'] = $res1[0];
+					if ($res2 != NULL) {
+						# code...
+						$driver['trip']=$res2[0];
+					}
 				 	
-				 	$res3[] = $res[0];
+				 	$res3[] = $driver;
 				 } 
+				else{
+					$res3[]=$driver;
+				}
+
 			}
 			return $res3;
 		}
