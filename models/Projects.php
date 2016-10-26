@@ -16,7 +16,7 @@
 					FROM `tbl_projects`
 				 	WHERE  `name`= ?",$this->name);
 				if(isset($res[0])){
-					return $res;
+					return $res[0];
 				}else{
 					return array('error' => 'Project not found' );
 				}
@@ -35,7 +35,7 @@
 
 		function add_project($name, $description, $company_head){
 
-		
+
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
 			if($this->searchName($name)){
