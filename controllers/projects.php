@@ -102,13 +102,8 @@
 									$payload_array=$this->payload;
 								}
 								foreach ($payload_array as $array_key => $array_value) {
-									/*if (isset($array_value->company_id)) {
-										$company_id=$array_value->company_id;
-									}
-									if (isset($array_value->model_id)) {
-										$model_id=$array_value->model_id;
-									}*/
-									$res[]=$this->models->update_project($array_value->$array_value->name,
+								
+									$res[]=$this->projects->update_project($array_value->$array_value->name,
 										$array_value->description);
 								}
 
