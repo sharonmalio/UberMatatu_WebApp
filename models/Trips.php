@@ -171,7 +171,7 @@
 
 		}
 		function get_mytrips($trip_creator){
-			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS Project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
+			$res = query("SELECT tbl_trips.id,`start_mileage`,`end_mileage`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`start_time`,`stop_time`,`trip_creator`,`fName`, `lName`,`phone_no`,`project_id`,`name` AS Project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 					INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_trips.trip_creator
 					LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval
 					LEFT JOIN `tbl_projects` ON tbl_projects.id = tbl_trips.project_id  
