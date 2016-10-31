@@ -51,7 +51,7 @@
 						$res[0]['vehicle'] = $res3[0];
 					}
 					 
-
+					$res[0]['vehicle_driver'] =  array_merge($res[0]['vehicle'],$res[0]['driver']);
 					 return $res[0];
 				}else{
 					return array('error' => 'Trips not found' );
