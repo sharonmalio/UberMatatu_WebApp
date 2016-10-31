@@ -205,26 +205,7 @@
 			}
 			return $res;
 
-			// $res = query("SELECT * FROM `tbl_trips` WHERE trip_creator = ?",$trip_creator);
-			// if($res == null){
-			// 	return array('error' => 'You have no created trips');
-			// }else{
-			// 	$mGroup = new Grouptrips();
-			// 	foreach ($res as $key => $trip) {
-			// 		$trip['id'];
-
-			// 	}
-			// 	$gtrips = $mGroup->get_grouptrip($res[0]['id'],true);
-			// 	if($gtrips !=null ){
-					
-			// 		foreach ($gtrips as $gtrip_key => $user) {
-			// 		$res[$array_key]['group'][] = $user['email'];
-
-			// 		return $this->get_trip($trip); 
-
-			// 		}
-			// 	}	
-			// }	
+	
 		}
 		function update_trips($id,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time){
 			//return $id;
@@ -285,7 +266,8 @@
 			else{
 				$res = query("SELECT tbl_trips.id,`allocation_id`,tbl_trips.start_mileage, `vehicle_id` FROM `tbl_trips`
 
-				INNER JOIN tbl_allocation ON tbl_allocation.vehicle_id = tbl_trips.allocation_id WHERE tbl_trips.id = ?",$id);
+				INNER JOIN tbl_allocation ON tbl_allocation.id = tbl_trips.allocation_id WHERE 
+				tbl_trips.id = ?",$id);
 
 				//getting trip cost at 70 ksh per km
 				$start = $res[0]['start_mileage'];
@@ -295,10 +277,9 @@
 				$date = date('Y-m-d H:i:s');
 				$this->trips = $id;
 
-
 				$res1=query("UPDATE `tbl_trips` SET `end_mileage`=?,`stop_time`=?, `approval`= 4, `actual_fare` = ?  WHERE `id`=?",
 					$end_mileage,$date,$fare,$id);
-				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`=?",0,$res[0]['vehicle_id']);
+				$res2 = query("UPDATE `tbl_vehicles` SET `vehicle_dispatched` = ? WHERE `id`= ? ",0,$res[0]['vehicle_id']);
 				return $this->getTrip();
 			}
 		}
