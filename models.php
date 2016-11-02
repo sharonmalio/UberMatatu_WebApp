@@ -17,6 +17,7 @@
 	require_once('models/Staff.php');
 	require_once('models/Projectmanagers.php');
 	require_once('models/Operationmanagers.php');
+	require_once('models/Payments.php');
 
 
 ?>

@@ -24,7 +24,14 @@
 				
 				WHERE   tbl_allocation.id= ?  ",$res[0]['allocation_id']);
 
-				//pre($res);
+				
+
+				$res4 = query("SELECT `fName`,`lName`,`phone_no`,`email` FROM tbl_people
+						INNER JOIN tbl_users ON tbl_users.id = tbl_people.user_id
+						WHERE tbl_people.user_id = ?",$res[0]['trip_creator']);
+
+					$res[0]['creator']= $res4[0];
+
 				if(isset($res[0])){
 					// return $res;
 					$mGroup = new Grouptrips();
@@ -36,7 +43,7 @@
 							$res[0]['group'][] = $user['email']; 
 						}
 					}
-					if (isset($res1[0])) {
+					if ($res1 != null) {
 						// foreach ($res1 as $key => $value) {
 						// 	$res[0]['driver'][]= $res1[$key];
 						// }
@@ -47,12 +54,12 @@
 						INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
 						INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
 						WHERE   tbl_allocation.id= ?  ",$res[0]['allocation_id']);
-
 						$res[0]['vehicle'] = $res3[0];
+
+						$res[0]['vehicle_driver'] =  array_merge($res[0]['vehicle'],$res[0]['driver']);
 					}
 					 
-					$res[0]['vehicle_driver'] =  array_merge($res[0]['vehicle'],$res[0]['driver']);
-					 return $res[0];
+					return $res[0];
 				}else{
 					return array('error' => 'Trips not found' );
 				}
@@ -63,7 +70,6 @@
 
 
 		function all(){
-			//pre($profile);
 			$res = query("SELECT tbl_trips.id,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`trip_date`,`trip_time`,`date`,`allocation_id`,`plate`, `make`,`model`,`start_time`,`stop_time`,`trip_creator`,`start_coordinate`,`start_location`,`end_coordinate`,`end_location`,`project_id`,`name` AS project_name,`status`,`approval`,`fare_estimate`,`actual_fare` FROM `tbl_trips`
 				LEFT JOIN `tbl_allocation` ON tbl_trips.allocation_id = tbl_allocation.id
 				LEFT JOIN `tbl_vehicles` ON tbl_vehicles.id = tbl_allocation.vehicle_id
@@ -76,6 +82,12 @@
 
 			foreach ($res as $trip_key => $trip) {
 				if ($trip['allocation_id'] != null) {
+					$res4 = query("SELECT `fName`,`lName`,`phone_no`,`email` FROM tbl_people
+						INNER JOIN tbl_users ON tbl_users.id = tbl_people.user_id
+						WHERE tbl_people.user_id = ?",$trip['trip_creator']);
+
+					$trip['creator']= $res4[0];
+
 					$res1 = query("SELECT `fName`, `lName`,`phone_no` FROM `tbl_allocation`
 						INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
 						WHERE   tbl_allocation.id= ?  ",$trip['allocation_id']);

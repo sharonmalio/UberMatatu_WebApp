@@ -51,8 +51,9 @@
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
 			$company = $res[0]["company_id"];
 			
-			$res = query("SELECT tbl_trips.id AS trip_id,start_mileage,end_mileage,date,trip_date,trip_time,allocation_id,start_time,stop_time,trip_creator,start_coordinate,start_location,end_coordinate,end_location,tbl_trips.project_id,approval,enroute,fare_estimate,actual_fare,user_id,accepted,tbl_projects.name,company_id,email,user_level_id
+			$res = query("SELECT tbl_trips.id AS trip_id,tbl_trips.start_mileage,tbl_trips.end_mileage,date,trip_date,trip_time,allocation_id,start_time,stop_time,trip_creator,start_coordinate,start_location,end_coordinate,end_location,tbl_trips.project_id,approval,status,enroute,fare_estimate,actual_fare,user_id,accepted,tbl_projects.name,company_id,user_level_id
    				FROM `tbl_trips` 
+   				LEFT JOIN `tbl_trip_approval_status` ON tbl_trip_approval_status.id = tbl_trips.approval1
 				INNER JOIN `tbl_project_people` ON tbl_trips.trip_creator = tbl_project_people.user_id
 				INNER JOIN `tbl_projects` ON tbl_project_people.project_id = tbl_projects.id
 				INNER JOIN `tbl_companies` ON tbl_projects.company_id = tbl_companies.id
@@ -63,7 +64,35 @@
 				return array('error' => 'You are not a company admin');
 			} 
 			else{
-				return $res;
+				foreach ($res as $trip_key => $trip) {
+					if ($trip['allocation_id'] != null) {
+						$res4 = query("SELECT `fName`,`lName`,`phone_no`,`email` FROM tbl_people
+							INNER JOIN tbl_users ON tbl_users.id = tbl_people.user_id
+							WHERE tbl_people.user_id = ?",$trip['trip_creator']);
+
+						$trip['creator']= $res4[0];
+
+						$res1 = query("SELECT `fName`, `lName`,`phone_no` FROM `tbl_allocation`
+						INNER JOIN `tbl_people` ON tbl_allocation.driver_id = tbl_people.user_id
+						WHERE   tbl_allocation.id= ?  ",$trip['allocation_id']);
+					
+					$trip['driver']= $res1[0];
+
+					$res3 = query("SELECT `vehicle_id`,`plate`, `make`,`model` FROM `tbl_allocation`
+						INNER JOIN `tbl_vehicles` ON tbl_allocation.vehicle_id = tbl_vehicles.id
+						INNER JOIN `tbl_vehicle_model` ON tbl_vehicle_model.id = tbl_vehicles.model_id 
+						INNER JOIN `tbl_vehicle_make` ON tbl_vehicle_model.make_id = tbl_vehicle_make.id
+						WHERE   tbl_allocation.id= ?  ",$trip['allocation_id']);
+
+					$trip['vehicle'] = $res3[0];
+
+						$res2[] = $trip;
+					}else{
+						$res2[] = $trip;
+					}
+
+			}
+				return $res2;
 			}
 
 		}
@@ -76,10 +105,12 @@
 			INNER JOIN `tbl_project_people` ON tbl_project_people.project_id = tbl_projects.id
 			INNER JOIN `tbl_people` ON tbl_project_people.user_id = tbl_people.user_id 
 			 WHERE `company_id` = ? AND `type` = ?",$company,3);
+
+
 			return $res;
 
 
-					}
+			}
 
 		function company_staff($company_head){
 			$res = query("SELECT * FROM `tbl_company_admins` WHERE `user_id` = ?",$company_head);
