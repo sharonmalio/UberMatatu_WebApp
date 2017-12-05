@@ -1,6 +1,8 @@
 <IfModule mod_rewrite.c>
+	Options -MultiViews
 	RewriteEngine On
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule api/(.*)$ api.php?q=$1 [QSA,NC,L]
+	#RewriteRule api/([A-Za-z0-9-_]+)/?$ api.php?q=$1 [L,QSA]
 </IfModule>

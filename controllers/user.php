@@ -63,28 +63,28 @@
 					
 					break;
 				case 'signup':
-						if (!$this->contains(array('email','password','type','api_key'))) {
+						if (!$this->contains(array('fname','lname','phone_no','email','password','api_key'))) {
 							//return resposne constructed by contains()
 							return $this->response;
 						}
 						$payload_array=array();
-						$res=array();
+						//$res=array();
 						if (!is_array($this->payload)) {
 							$payload_array[]=$this->payload;	
 						}else{
 							$payload_array=$this->payload;
 						}
 						foreach ($payload_array as $array_key => $array_value) {
-							$company_id=NULL;
-							$project_id=NULL;
+							$company_id=1;
+							$project_id=1;
 							if (isset($array_value->company_id)) {
 								$company_id=$array_value->company_id;
 							}
 							if (isset($array_value->project_id)) {
 								$project_id=$array_value->project_id;
 							}
-							$res[]=$this->user->signup($array_value->email,$array_value->password,
-								$array_value->type,$company_id,$project_id);
+							$res = $this->user->signup($array_value->fname,$array_value->lname,$array_value->phone_no,$array_value->email,$array_value->password,
+								1,$company_id,$project_id);
 						}
 
 						return $res;					

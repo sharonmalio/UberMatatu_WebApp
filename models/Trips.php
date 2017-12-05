@@ -9,6 +9,52 @@
 		function __construct(){
 		}
 
+		function get_buses($user_id,$start_coordinate,$start_location,$end_coordinate,$end_location,$trip_date,$trip_time){
+
+			//check closest destination stage
+			$destLocation = explode(',',$end_coordinate);
+
+			includeModel("BusStops");
+
+			$busStop = new BusStops();
+
+			$destinationStops = $busStop -> getClosestStops($destLocation[0],$destLocation[1]);
+			//print_r($destinationStops);
+
+			includeModel("Routes");
+			$mRoute = new Routes();
+
+			//get all routes with the nearest stop
+			$possible_routes = $mRoute -> getRoutesWithStage($destinationStops[0]['bus_stop_id']);
+			//print_r($possible_routes);
+
+			//get the routes with the nearest start stage
+			$startLocation = explode(',',$start_coordinate);
+			
+			$startStops = $busStop -> getClosestStops($startLocation[0],$startLocation[1]);
+			//print_r($startStops);
+
+			//for all possible routes, check those with the nearest start stage
+			$nearest_start_stage = $startStops[0];
+				//print_r($nearest_start_stage);
+
+			$valid_routes = array();
+			foreach($possible_routes as $possible_route){
+				if($mRoute->hasStop($possible_route['route_id'],$nearest_start_stage['bus_stop_id'])){
+					$valid_routes[] = $possible_route;
+				}
+			}
+
+			//get the buses on the route 
+			$route_buses = array();
+			foreach ($valid_routes as $key => $valid_route) {
+				$route_buses = array_merge($route_buses,Routes::getBuses($valid_route['route_id']));
+			}
+			//get the buses the closest estimated start time using the buses current location
+			return array('buses' => $route_buses);
+		}
+
+
 		function getTrip(){
 			//pre($this->email);
 			if($this->trips != null){	
@@ -133,23 +179,24 @@
 					
 					return $this->get_trip($trip_id);
 			// }
-	 }
+		}
 
-	 function remove_member($id){
-	 	$res = query("SELECT `id`, `email` FROM `tbl_group_trip` WHERE `id`=?",
-				$id);
-			if ($res==null) {
-				return array('error' => 'member does not exist');
-			}else{
-				$this->id = $res[0]["id"];
-				query("DELETE FROM `tbl_group_trip` WHERE `id`=?",
+		function remove_member($id){
+		 	$res = query("SELECT `id`, `email` FROM `tbl_group_trip` WHERE `id`=?",
 					$id);
-				
-				return array('Removed trip member' => $res[0]['email']);
-				//TODO: add profile and handle null values
-				//return array('error' => 'invalid email or password');
-			}
-	 }
+				if ($res==null) {
+					return array('error' => 'member does not exist');
+				}else{
+					$this->id = $res[0]["id"];
+					query("DELETE FROM `tbl_group_trip` WHERE `id`=?",
+						$id);
+					
+					return array('Removed trip member' => $res[0]['email']);
+					//TODO: add profile and handle null values
+					//return array('error' => 'invalid email or password');
+				}
+		}
+
 		function get_trip($id){
 			//$userplate = (isset($profile->userplate)) ? $profile->userplate : null;
 			$res = query("SELECT `id` FROM `tbl_trips` WHERE `id` = ?",$id);

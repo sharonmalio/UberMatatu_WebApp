@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\xampp\htdocs\Transcomfy\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ac1567da6bc33841e6b33d4f7eea8137e14facc8">
+        <dex dex="C:\xampp\htdocs\Transcomfy\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_b736f6e3aade73174517dacf5fe0afdc81ef267b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\xampp\htdocs\Transcomfy\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\xampp\htdocs\Transcomfy\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_d8e9413a1f9732f824dccece6e0b403faaf400e2\classes.dex" />
+    </item>
+
+</items>

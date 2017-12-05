@@ -11,28 +11,28 @@
 		}
 
 		function getUser(){
-			//pre($this->email);
+			//pre($this->uid);
 			if(!$this->email == null){	
-				$res = query("SELECT tbl_users.id,`email`,`fName`,`lName`,`type`,`token` FROM `tbl_users`
+				$res = query("SELECT tbl_users.id,`email`,`fName`,`lName`,`type`,`phone_no` FROM `tbl_users`
 				 INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id
-				 INNER JOIN `tbl_user_tokens` ON tbl_user_tokens.user_id = tbl_users.id 
 				  WHERE `email` = ?",
 					$this->email);
 				if(isset($res[0])){
+					$res[0]['code'] = 200;
 					return $res[0];
 				}else{
-					return array('error' => 'user not found' );;
+					return array('error' => 'user not found' );
 				}
 			}else{
 				if($this->uid == null){
 					return array('error' => 'user not set');
 				}else{
-					$res = query("SELECT tbl_users.id,`email`,`type`,`fName`,`lName`, `token` FROM `tbl_users`
+					$res = query("SELECT tbl_users.id,`email`,`type`,`fName`,`lName` ,`phone_no`FROM `tbl_users`
 					 INNER JOIN `tbl_people` ON tbl_people.user_id = tbl_users.id
-					 INNER JOIN `tbl_user_tokens` ON tbl_user_tokens.user_id = tbl_users.id
 					  WHERE tbl_users.id = ?",
 						$this->uid);
 					if(isset($res[0])){
+						$res[0]['code'] = 200;
 						return $res[0];
 					}else{
 						return array('error' => 'user not found' );;
@@ -41,7 +41,7 @@
 			}
 		}
 
-		function signup($email, $pass, $type,$company_id,$project_id){
+		function signup($fname,$lname,$phone_no,$email, $pass, $type){
 			//pre($profile);
 			if($this->searchEmail($email)){
 				return array('error' => 'account exists');
@@ -51,22 +51,10 @@
 					$email,$pass);
 				$this->uid = $res;
 				$this->email = $email;
-				$res = query("INSERT INTO `tbl_people` (`user_id`,`type`) VALUES (?,?)",
-					$this->uid,$type); 
+				$res = query("INSERT INTO `tbl_people` (`fName`,`lName`,`phone_no`,`user_id`,`type`) VALUES (?,?,?,?,?)",
+					$fname,$lname,$phone_no,$this->uid,$type); 
 				//TODO: add profile and handle null values
 
-				//handle com
-				if ($company_id!=NULL) {
-					$res = query("INSERT INTO `tbl_company_admins` (`user_id`,`company_id`) VALUES (?,?)",
-					$this->uid,$company_id);	
-				}
-
-				//handle pro
-				if ($project_id!=NULL) {
-					$res = query("INSERT INTO `tbl_project_people` (`user_id`,`project_id`) 
-						VALUES (?,?)",
-					$this->uid,$project_id);	
-				}
 				return $this->getUser();
 			}//
 		}
